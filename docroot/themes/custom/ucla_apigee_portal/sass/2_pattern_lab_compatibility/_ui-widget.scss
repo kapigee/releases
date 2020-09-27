@@ -1,0 +1,16 @@
+.ui-widget-content {
+  li {
+    margin: 0;
+    padding: 0;
+
+    &:before {
+      content: "";
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .button {
+    color: $white;
+  }
+}

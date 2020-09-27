@@ -1,0 +1,276 @@
+//------------------------------------
+//  Mixins
+//------------------------------------
+
+// Fluid Typography
+// @link https://css-tricks.com/snippets/css/fluid-typography/
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-font-size);
+  $u4: unit($max-font-size);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      font-size: $min-font-size;
+      @media screen and (min-width: $min-vw) {
+        font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        font-size: $max-font-size;
+      }
+    }
+  }
+}
+
+/// Make list flush to the left side
+/// @group Lists
+@mixin list-flush() {
+  margin: 0;
+  padding: 0;
+
+  li:before {
+    content: "";
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/// Reset lists to that they have no styling
+@mixin reset-list() {
+  @include list-flush();
+  list-style: none;
+
+  li {
+    list-style: none;
+
+    &:before {
+      content: "";
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+/// Hide text for image replacement
+@mixin hide-text($important: null) {
+  $bang: if($important, !important, null);
+  text-indent: 150% $bang;
+  white-space: nowrap $bang;
+  overflow: hidden $bang;
+}
+
+/// Create a circle border around an element
+/// @param {string} $border-size [1px] - Border size of the circle
+/// @param {string} $border-color [$brand--gray] - Color used for the border
+@mixin circle-border($border-size: 1px, $border-color: $brand--gray) {
+  border: $border-size solid $border-color;
+  border-radius: 50%;
+}
+
+/// Create a circular elements
+/// @param {string} $width - Diameter of the circle
+/// @param {string} $color - Color of the circle
+@mixin circle($width, $color: "") {
+  width: $width;
+  height: $width;
+  background: #{$color};
+  border-radius: $width / 2;
+}
+
+/// Transform scale smoothes rough borders in some browsers (aka Firefox)
+@mixin force-anti-alias() {
+  transform: scale(.9999);
+}
+
+/// Remove default form input styles
+@mixin remove-input-style() {
+  height: auto;
+  box-shadow: none;
+}
+
+/// Hide Visually
+@mixin hide-visually($important: null) {
+  $bang: if($important, !important, null);
+  border: 0 $bang;
+  clip: rect(1px, 1px, 1px, 1px) $bang;
+  height: 1px $bang;
+  overflow: hidden $bang;
+  padding: 0 $bang;
+  position: absolute $bang;
+  width: 1px $bang;
+}
+
+/// Show Visually
+@mixin show-visually($important: null) {
+  $bang: if($important, !important, null);
+  clip: auto $bang;
+  height: auto $bang;
+  position: inherit $bang;
+  width: auto $bang;
+}
+
+// Primary Link Styling
+@mixin link-style() {
+  color: $link-color;
+  text-decoration: underline;
+
+  &:hover {
+    background-color: $state-color-hover;
+    color: $link-color-hover;
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 1px dotted $state-color-focus;
+    outline-offset: .125em;
+  }
+
+  &:active {
+    background-color: $state-color-active;
+    color: $link-color-hover;
+    text-decoration: none;
+  }
+}
+
+// Inverted link color for use on dark backgrounds.
+@mixin link-style--invert() {
+  color: $link-color--invert;
+
+  &:visited {
+    color: $state-color-visited--invert;
+  }
+
+  &:hover {
+    background-color: $state-color-hover--invert;
+    color: $link-color-hover--invert;
+  }
+
+  &:focus {
+    outline-color: $state-color-focus--invert;
+  }
+
+  &:active {
+    background-color: $state-color-active--invert;
+    color: $link-color-hover--invert;
+  }
+}
+
+// Remove link styles for items like links wrapping an image.
+@mixin link-style--reset() {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    background-color: initial;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &:active {
+    background-color: initial;
+    color: inherit;
+  }
+
+  &:visited {
+    color: inherit;
+  }
+}
+
+// Default settings for grid layouts. This will need to be used within each
+// media query because grid-gap is not recognized from a parent by autoprefixer.
+@mixin l-default-settings() {
+  display: grid;
+  grid-column-gap: $grid-gap;
+  grid-template-rows: max-content 1fr;
+}
+
+// Related links styling
+// This mixin creates the base related link styling without icons
+@mixin link-related() {
+  position: relative;
+  border-bottom: 1px solid $gray;
+  padding: $spacer;
+  text-decoration: none;
+  font-weight: bold;
+
+  &:visited {
+    color: $state-color;
+  }
+
+  &:hover {
+    background-color: $state-color-hover;
+    color: $white;
+  }
+
+  &:hover:after,
+  &:focus:after {
+    filter: brightness(0) invert(1);
+  }
+
+  &:focus {
+    background-color: $state-color-hover;
+    color: $white;
+    outline-color: $white;
+    outline-offset: -.45em;
+  }
+}
+
+@mixin custom-icons() {
+  &:after {
+    display: block;
+    content: "";
+    padding-left: $spacer--large;
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 1px);
+  }
+
+  &--internal {
+    &:after {
+      background-image: url("../images/icons/internal-link.svg");
+    }
+  }
+
+  &--external {
+    &:after {
+      background-image: url("../images/icons/external-link.svg");
+    }
+  }
+
+  &--download {
+    &:after {
+      background-image: url("../images/icons/download.svg");
+    }
+  }
+
+  &--play {
+    &:after {
+      background-image: url("../images/icons/play.svg");
+    }
+  }
+}
+
+@mixin meta-style($weight: bold) {
+  font-size: $font-size--small;
+  font-weight: $weight;
+  color: $gray-80;
+}
+
+// Set the widths of the container.
+@mixin container-widths() {
+  width: $container-width;
+
+  @include breakpoint($bp-wide--up) {
+    width: $container-width--lg;
+  }
+}
+
+// This will create a container.
+@mixin container() {
+  @include container-widths();
+  margin: 0 auto;
+}

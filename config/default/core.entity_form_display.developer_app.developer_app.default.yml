@@ -1,0 +1,48 @@
+uuid: 454b48ff-792e-4811-b1cd-136796777b99
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.developer_app.developer_app.field_environments
+  module:
+    - apigee_edge
+    - maxlength
+_core:
+  default_config_hash: utUPnWwbQML5LA-ouyFfrK9k4XD1Ld2gbXmP-QwUpoE
+id: developer_app.developer_app.default
+targetEntityType: developer_app
+bundle: developer_app
+mode: default
+content:
+  description:
+    weight: 1
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 256
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: false
+        maxlength_js_truncate_html: false
+    type: string_textarea
+  displayName:
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: null
+        maxlength_js_label: ''
+    type: string_textfield
+  field_environments:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  callbackUrl: true

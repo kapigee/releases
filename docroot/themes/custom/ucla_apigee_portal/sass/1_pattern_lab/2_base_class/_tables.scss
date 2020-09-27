@@ -1,0 +1,75 @@
+//------------------------------------
+//  Tables
+//------------------------------------
+
+// Table: Zebra-striping `Modifier`
+//
+// Default zebra-stripe styles (alternating gray and transparent backgrounds)
+@mixin table--striped {
+  > tbody > tr:nth-of-type(odd),
+  > tr:nth-of-type(odd) {
+    background-color: $table-bg-accent;
+  }
+}
+
+// Table: Hover effect `Modifier`
+//
+@mixin table--hover {
+  > tbody > tr:hover,
+  > tbody > tr:hover:nth-of-type(odd),
+  > tr:hover,
+  > tr:hover:nth-of-type(odd) {
+    background-color: $table-bg-hover;
+  }
+}
+
+// Assign placeholders to classes
+.table {
+  @include table--striped;
+  @include table--hover;
+
+  &__row {
+    &--empty {
+      display: block;
+      height: 0;
+      padding: 0;
+      margin: 0;
+      border-top: 1.25em solid $white;
+      border-bottom: 1.25em solid $white;
+
+      td,
+      th {
+        text-indent: -999em;
+        text-align: left;
+      }
+    }
+
+    &--subtotal {
+      font-weight: bold;
+      background-color: $table-bg-hover;
+
+      @at-root {
+        tbody > tr.table__row--subtotal:nth-of-type(odd) { // sass-lint:disable-line no-qualifying-elements
+          background-color: $table-bg-hover;
+        }
+      }
+    }
+
+    &--total {
+      font-weight: bold;
+      background-color: $gold;
+
+      @at-root {
+        tbody > tr.table__row--total:nth-of-type(odd) { // sass-lint:disable-line no-qualifying-elements
+          background-color: $gold;
+        }
+      }
+    }
+  }
+
+  &__cell {
+    &--right {
+      text-align: right;
+    }
+  }
+}

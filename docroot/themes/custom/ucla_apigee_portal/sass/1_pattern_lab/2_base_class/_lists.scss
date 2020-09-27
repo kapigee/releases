@@ -1,0 +1,140 @@
+//------------------------------------
+//  Lists
+//------------------------------------
+
+// List: Flush `Modifier`
+//
+// Make list flush to the left side
+%list--flush {
+  @include list-flush();
+  // add padding so that bullet points still show up inline
+  padding-left: $spacer + ($spacer * .25);
+}
+
+// List: Pipe `Modifier`
+//
+// Places each item in a horizontal list separated by a vertical pipe
+%list--pipe {
+  @include reset-list();
+
+  li {
+    border-right: 1px solid $gray-40;
+    margin-right: $spacer--tiny;
+    padding-right: $spacer--small;
+    display: inline-block;
+    line-height: 1;
+
+    &:last-child {
+      border-right: 0;
+      margin-right: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+// List: Footer Links `Modifier`
+//
+// Places each item in a horizontal list separated by a vertical pipe
+%list--inline {
+  @include reset-list();
+
+  li {
+    margin-right: $spacer--tiny;
+    padding-right: $spacer--small;
+    display: inline-block;
+  }
+}
+
+// List: Link `Modifier`
+//
+// Make list links show a styles link blocks
+%list--link {
+  @include reset-list();
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    @include link-related();
+    display: block;
+  }
+}
+
+// List: Link Icon `Modifier`
+//
+// Make lists look like a .list--link once .icon-link classes get added via JS.
+%list--link-icon {
+  @include reset-list();
+
+  li {
+    margin: 0;
+  }
+}
+
+// Assign placeholders to classes
+.list--flush {
+  @extend %list--flush;
+}
+
+.list--pipe {
+  @extend %list--pipe;
+}
+
+.list--reset {
+  @include reset-list();
+}
+
+.list--link {
+  @extend %list--link;
+}
+
+.list--link-icon {
+  @extend %list--link-icon;
+}
+
+.list--inline {
+  @extend %list--inline;
+}
+
+// List Wrappers
+
+// List Wrappers so that any lists further down the DOM will inherit the style
+// even if they don't have the class applied directly to their list.
+$list-wrapper-parents: (
+  "flush",
+  "pipe",
+  "link",
+  "link-icon"
+);
+
+@each $item in $list-wrapper-parents {
+  .list-wrapper--#{$item} ul {
+    @extend %list--#{$item};
+  }
+}
+
+// List Modifiers
+.list--lower-alpha {
+  list-style-type: lower-alpha;
+}
+
+.list--lower-roman {
+  list-style-type: lower-roman;
+}
+
+.list--upper-alpha {
+  list-style-type: upper-alpha;
+}
+
+.list--upper-roman {
+  list-style-type: upper-roman;
+}
+
+.list--none {
+  list-style-type: none;
+}
+
+.list--inherit {
+  list-style-type: inherit;
+}

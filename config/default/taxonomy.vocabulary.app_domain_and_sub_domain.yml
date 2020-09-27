@@ -1,0 +1,8 @@
+uuid: fcf0391f-326c-4a8e-9502-6e1b4ed00346
+langcode: en
+status: true
+dependencies: {  }
+name: 'App Domain and Sub Domain'
+vid: app_domain_and_sub_domain
+description: 'Used in creation of Apps'
+weight: 0

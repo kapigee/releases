@@ -1,0 +1,25 @@
+// Admin Toolbar
+.toolbar {
+  ul {
+    @include reset-list();
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    &:hover {
+      background-color: inherit;
+    }
+
+    &:visited {
+      color: #565656;
+    }
+  }
+
+  .toolbar-bar {
+    z-index: $zindex-navbar-fixed;
+  }
+}

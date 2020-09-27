@@ -1,0 +1,50 @@
+@mixin accordian-title() {
+  display: flex;
+  color: $brand--primary-darker;
+  margin: 0;
+  padding: ($spacer * 1.25) $spacer--large;
+  border-bottom: 1px solid $gray;
+
+  &:hover {
+    background-color: $brand--primary;
+    color: $white;
+    cursor: pointer;
+
+    &:after {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: .5em;
+    margin-left: auto;
+    background: url("../images/chevron-blue.svg") no-repeat center;
+    background-size: .4em;
+    transform: rotate(90deg);
+  }
+
+  &--open {
+    border-bottom: 0;
+
+    &:after {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@mixin accordian-content() {
+  padding: $spacer $spacer--large;
+  border-bottom: 1px solid $gray;
+}
+
+.accordion {
+  &__label {
+    @include accordian-title();
+  }
+
+  &__content {
+    @include accordian-content();
+  }
+}

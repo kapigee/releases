@@ -1,0 +1,29 @@
+.search-form {
+  &__input {
+    width: 99%;
+  }
+
+  &__btn {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  label {
+    @include hide-visually();
+  }
+
+  .form-item {
+    width: 100%;
+  }
+
+  .form-item,
+  .form-actions {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  // remove padding on search page
+  .path-search & {
+    padding: 0 0 1em;
+  }
+}

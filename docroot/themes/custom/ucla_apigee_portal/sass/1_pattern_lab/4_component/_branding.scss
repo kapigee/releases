@@ -1,0 +1,47 @@
+.branding {
+  margin-right: $spacer;
+
+  .footer & {
+    display: block;
+    margin-bottom: $spacer;
+  }
+
+  @include breakpoint($bp-small--down) {
+    display: block;
+  }
+
+  &__figure {
+
+    @include breakpoint($bp-small--down) {
+      margin-bottom: $spacer;
+    }
+
+
+    .footer & {
+      margin-bottom: $spacer;
+
+      // Remove hover effect used on footer links from logo
+      a:hover {
+        background-color: inherit;
+      }
+    }
+  }
+
+  &__body {
+    align-self: center;
+  }
+
+  &__title {
+    margin-bottom: $spacer--tiny;
+    font-size: 1.625rem;
+
+    a {
+      color: $font-color;
+      text-decoration: none;
+
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+}

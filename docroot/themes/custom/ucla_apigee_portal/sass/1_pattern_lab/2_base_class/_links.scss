@@ -1,0 +1,13 @@
+//------------------------------------
+//  Links
+//------------------------------------
+
+// Useful for links on a dark background.
+.link-invert {
+  @include link-style--invert();
+}
+
+// Remove a link's styles when wrapping an image.
+.link-img {
+  @include link-style--reset();
+}

@@ -1,0 +1,44 @@
+//------------------------------------
+//  Focal Link
+//------------------------------------
+
+$focal-link-size: 64px;
+
+.focal-link {
+  @include link-style--reset();
+  @include o-media();
+  align-items: center;
+  text-decoration: none;
+
+  &:hover {
+    background-color: transparent;
+
+    .focal-link__body {
+      background-color: $state-color-hover--invert;
+    }
+  }
+
+  &__figure {
+    @include o-media__figure();
+
+    // Sizing uploaded img's to match svg sprite
+    img {
+      width: $focal-link-size;
+    }
+
+    .fa,
+    .far,
+    .fas {
+      width: 1.5em;
+      text-align: center;
+    }
+  }
+
+  &__body {
+    @include o-media__body();
+    font-size: 1.125rem;
+    background-color: $brand--secondary;
+    padding: $spacer;
+    color: $font-color;
+  }
+}

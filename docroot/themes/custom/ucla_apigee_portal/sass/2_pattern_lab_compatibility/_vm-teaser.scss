@@ -1,0 +1,13 @@
+// Remove the bottom margin from paragraphs which cause the meta info to be too
+// far down the page.
+.vm-teaser__summary {
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.vm-teaser__meta--date {
+  > span {
+    display: block;
+  }
+}

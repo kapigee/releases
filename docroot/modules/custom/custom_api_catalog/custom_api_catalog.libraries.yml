@@ -1,0 +1,6 @@
+custom_api_catalog:
+  js:
+    js/custom.js: {}
+custom_teams:
+  js:
+    js/teams.js: {}

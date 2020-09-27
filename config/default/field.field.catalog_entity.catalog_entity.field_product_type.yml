@@ -1,0 +1,21 @@
+uuid: 8a91167a-9579-4f28-b173-e072d073d6db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_product_type
+  module:
+    - custom_api_catalog
+    - options
+id: catalog_entity.catalog_entity.field_product_type
+field_name: field_product_type
+entity_type: catalog_entity
+bundle: catalog_entity
+label: 'Product Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

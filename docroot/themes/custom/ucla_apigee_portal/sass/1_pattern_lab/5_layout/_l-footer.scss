@@ -1,0 +1,21 @@
+//------------------------------------
+//  Footer
+//------------------------------------
+
+.l-footer {
+  @include breakpoint($bp-medium--up) {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  > * {
+    flex-grow: 1;
+  }
+
+  &__info {
+    @include breakpoint($bp-medium--up) {
+      width: 30%;
+      margin-right: 5%;
+    }
+  }
+}

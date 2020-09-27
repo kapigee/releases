@@ -1,0 +1,23 @@
+// Set social icon svg size to match those in PL and make it look right in footer
+.social-follow {
+
+  a:hover {
+    background-color: inherit;
+  }
+
+  img {
+    width: 2em;
+    height: 2em;
+  }
+
+  .footer & {
+
+    a:hover img {
+      filter: brightness(0) invert(1) sepia(100%) saturate(2000%);
+    }
+
+    img {
+      filter: brightness(0) invert(1);
+    }
+  }
+}

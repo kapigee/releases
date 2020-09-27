@@ -1,0 +1,5 @@
+name: My Team Apps
+type: module
+description: Custom module to display all team apps
+core: 8.x
+package: Example

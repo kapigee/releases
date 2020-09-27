@@ -1,0 +1,28 @@
+//------------------------------------
+//  Tables
+//------------------------------------
+
+table {
+  max-width: 100%;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: $spacer;
+  font-size: .75rem;
+}
+
+th {
+  padding: $spacer--small;
+  text-align: left;
+  vertical-align: bottom;
+
+  thead &,
+  tbody & {
+    color: $gray-60;
+    text-transform: uppercase;
+  }
+}
+
+td {
+  padding: $spacer--small;
+}

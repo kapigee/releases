@@ -1,0 +1,33 @@
+uuid: 67ece7c4-e6e5-4c06-9d83-ddc21db76863
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - apigee_kickstart_content
+  module:
+    - system
+  theme:
+    - apigee_kickstart
+_core:
+  default_config_hash: RTC8fZNdJS_J8zzA6wJxYaMVfDULC00TG6WBRl74YUY
+id: apigee_kickstart_title_bar_forum
+theme: apigee_kickstart
+region: header
+weight: 0
+provider: null
+plugin: 'block_content:922c5ce8-6d11-4aa6-8d82-542c77b33bec'
+settings:
+  id: 'block_content:922c5ce8-6d11-4aa6-8d82-542c77b33bec'
+  label: 'Title bar: Forum'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: "/forum\r\n/forum/*"
+    negate: false
+    context_mapping: {  }

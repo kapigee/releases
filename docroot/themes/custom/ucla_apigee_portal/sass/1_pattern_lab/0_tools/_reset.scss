@@ -1,0 +1,21 @@
+//------------------------------------
+//  Reset global browser styles.
+//------------------------------------
+
+// https://github.com/at-import/toolkit#kickstart
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+// Prevent the Slick Slider
+// https://github.com/kenwheeler/slick/issues/982#issuecomment-73517458
+* {
+  min-height: 0;
+  min-width: 0;
+}

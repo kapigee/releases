@@ -1,0 +1,8 @@
+services:
+  example.auth:
+    class: Drupal\custom_team_apps\AuthenticationKeyService
+    arguments: ['@config.factory']
+  example.boot_subscriber_new:
+    class: Drupal\custom_team_apps\EventSubscriber\BootSubscriber
+    tags:
+      - { name: 'event_subscriber' }

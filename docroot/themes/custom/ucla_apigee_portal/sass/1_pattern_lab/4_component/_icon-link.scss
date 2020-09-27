@@ -1,0 +1,31 @@
+.icon-link {
+  @include link-related();
+  @include custom-icons();
+  display: flex;
+  align-items: center;
+
+  &:after {
+    margin-left: auto;
+  }
+
+  &--internal {
+    &:after {
+      width: 1.5em;
+      height: .875em;
+    }
+  }
+
+  &--external {
+    &:after {
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  &--download {
+    &:after {
+      width: 1.375em;
+      height: 1.375em;
+    }
+  }
+}

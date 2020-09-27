@@ -1,0 +1,10 @@
+uuid: 4c3e742f-58e4-4abd-a571-90b96c953ac0
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_edge
+id: developer_app.collapsible_card
+label: 'Collapsible card'
+targetEntityType: developer_app
+cache: true

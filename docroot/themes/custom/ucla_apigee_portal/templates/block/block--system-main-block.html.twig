@@ -1,0 +1,28 @@
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+  class_panel ? 'panel u-space-mt',
+  class_box ? 'o-box',
+  class_box_large ? 'o-box--large'
+]
+%}
+{% set block_title_class = class_panel ? 'panel__title' %}
+<div{{ attributes.addClass(classes) }}>
+  {% block title %}
+  {{ title_prefix }}
+  {% if label %}
+    <h2{{ title_attributes.addClass(block_title_class) }}>{{ label }}</h2>
+  {% endif %}
+  {{ title_suffix }}
+  {% endblock %}
+{% block content %}
+{% set fromdate = url %}
+  {% if fromdate == '/teams' %}
+    <div class="teams-list">{{ content }}</div>
+  {% else %}
+    {{ content }}
+  {% endif %}
+{% endblock %}
+</div>

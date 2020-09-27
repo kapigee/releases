@@ -1,0 +1,1971 @@
+<?php
+
+/**
+ * @file
+ * Contains custom_api_catalog.module.
+ */
+
+use Drupal\apigee_edge_teams\Entity\TeamRoleInterface;
+use Drupal\user\Entity\User;
+use Apigee\Edge\Api\Management\Controller\ApiProductController;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Link;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\custom_api_catalog\Entity\CatalogEntity;
+use Apigee\Edge\Api\Management\Controller\CompanyController;
+use Apigee\Edge\Api\Management\Controller\CompanyAppController;
+use Apigee\Edge\Api\Management\Controller\DeveloperAppController;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * Updating title and description in User Login form
+ * Changes label from user name to email address
+ */
+function custom_api_catalog_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $form['name']['#title'] = t('Email');
+    $form['name']['#description'] = t('Enter your email address.');
+}
+
+/**
+ * Implements hook_help().
+ */
+function custom_api_catalog_help($route_name, RouteMatchInterface $route_match) {
+    switch ($route_name) {
+        // Main module help for the custom_api_catalog module.
+        case 'help.page.custom_api_catalog':
+            $output = '';
+            $output .= '<h3>' . t('About') . '</h3>';
+            $output .= '<p>' . t('Sync Api Products from Apigee and listing in Developer Portal') . '</p>';
+            return $output;
+
+        default:
+    }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function custom_api_catalog_cron() {
+  Drupal::logger('custom_api_catalog')->info('Started Fetching Products from Apigee Edge');
+  $auth = \Drupal::service('apigee_edge.sdk_connector');
+  $client = $auth->getClient();
+  //$client = $this->apigeeEdgeSdkConnector->getClient();
+  $product_controller = new ApiProductController($auth->getOrganization(), $client);
+  $api_products = $product_controller->getEntities();
+  _custom_api_catalog_sync_api_product_catalog_entity($api_products);
+  _custom_api_catalog_sync_api_product_node_apidoc($api_products);
+}
+
+/**
+ * Sync Product to catalog entity.
+ *
+ * @todo Remove post custom entity to apidoc node migration.
+ */
+function _custom_api_catalog_sync_api_product_catalog_entity($api_products) {
+  $products = \Drupal::entityTypeManager()
+    ->getStorage('catalog_entity')
+    ->loadMultiple();
+  $existing_products = [];
+  foreach ($products as $product) {
+    $existing_products[] = $product->get('name')->getValue()[0]['value'];
+  }
+
+  $terms = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadTree('app_domain_and_sub_domain');
+  $existing_terms = [];
+  foreach ($terms as $term) {
+    $existing_terms[] = $term->name;
+  }
+  foreach ($api_products as $api_product) {
+    $environment = '';
+    if (in_array('qa', $api_product->getEnvironments()) && in_array('prod', $api_product->getEnvironments())) {
+      $environment = '';
+    }
+    if (in_array('qa', $api_product->getEnvironments())) {
+      $environment = 'qa';
+    }
+    if (in_array('prod', $api_product->getEnvironments())) {
+      $environment = 'prod';
+    }
+    if (in_array('qa', $api_product->getEnvironments()) && in_array('prod', $api_product->getEnvironments())) {
+      $environment = '';
+    }
+    if ((!in_array($api_product->getName(), $existing_products))) {
+      if ($api_product->getAttributes()->getValue('DEV-PORTAL-APP-DOMAIN') != '') {
+        $term_ids_1 = '';
+        $term_ids_2 = '';
+        $term = trim($api_product->getAttributes()->getValue('DEV-PORTAL-APP-DOMAIN'));
+        $term_exploded = explode("/", $term);
+        if (!in_array($term_exploded[1], $existing_terms)) {
+          $new_term = Term::create(
+            [
+              'vid' => 'app_domain_and_sub_domain',
+              'name' => $term_exploded[1]
+            ]
+          );
+          $new_term->enforceIsNew();
+          $new_term->save();
+          $term_ids_1 = $new_term->id();
+          $existing_terms[] = $new_term->getName();
+          if ($term_exploded[2]) {
+            if (!in_array($term_exploded[2], $existing_terms)) {
+              $new_term2 = Term::create(
+                [
+                  'vid' => 'app_domain_and_sub_domain',
+                  'name' => $term_exploded[2]
+                ]
+              );
+              $new_term2->enforceIsNew();
+              $existing_terms[] = $new_term2->getName();
+              $new_term2->parent = $new_term->id();
+              $new_term2->save();
+              $term_ids_2 = $new_term2->id();
+            }
+          }
+          if ($term_exploded[3]) {
+            if (!in_array($term_exploded[3], $existing_terms)) {
+              $new_term3 = Term::create(
+                [
+                  'vid' => 'app_domain_and_sub_domain',
+                  'name' => $term_exploded[3]
+                ]
+              );
+              $new_term3->enforceIsNew();
+              $existing_terms[] = $new_term3->getName();
+              $new_term3->parent = $new_term2->id();
+              $new_term3->save();
+              $term_ids_3 = $new_term3->id();
+            }
+          }
+        }
+        else{
+          $term = \Drupal::entityTypeManager()
+            ->getStorage('taxonomy_term')
+            ->loadByProperties(['name' => $term_exploded[1], 'vid' => 'app_domain_and_sub_domain']);
+          $term = reset($term);
+          $term_ids_1 = $term->id();
+          if ($term_exploded[2]) {
+            $term1 = \Drupal::entityTypeManager()
+              ->getStorage('taxonomy_term')
+              ->loadByProperties(['name' => $term_exploded[2], 'vid' => 'app_domain_and_sub_domain']);
+            $term1 = reset($term1);
+            $term_ids_2 = $term1->id();
+          }
+          if ($term_exploded[3]) {
+            $term2 = \Drupal::entityTypeManager()
+              ->getStorage('taxonomy_term')
+              ->loadByProperties(['name' => $term_exploded[3], 'vid' => 'app_domain_and_sub_domain']);
+            $term2 = reset($term2);
+            $term_ids_3 = $term2->id();
+          }
+        }
+      }
+      $product = CatalogEntity::create(
+        [
+          'name' => $api_product->getName(),
+          'field_environment' => $environment,
+          'field_product_type' => $api_product->getAttributes()->getValue('DEV-PORTAL-PRODUCT-TYPE'),
+          'field_portal_visibility' => $api_product->getAttributes()->getValue('DEV-PORTAL-VISIBILITY'),
+          'field_a' => [$term_ids_1,$term_ids_2,$term_ids_3],
+        ]
+      );
+      $product->save();
+    } else {
+      $up_product_entity = \Drupal::entityTypeManager()
+        ->getStorage('catalog_entity')
+        ->loadByProperties(['name' => $api_product->getName()]);
+      $update_product = reset($up_product_entity);
+      if ($api_product->getAttributes()->getValue('DEV-PORTAL-APP-DOMAIN') != '') {
+        $term = trim($api_product->getAttributes()->getValue('DEV-PORTAL-APP-DOMAIN'));
+        $term_exploded = explode("/", $term);
+        if (!in_array($term_exploded[1], $existing_terms)) {
+          $new_term = Term::create(
+            [
+              'vid' => 'app_domain_and_sub_domain',
+              'name' => $term_exploded[1]
+            ]
+          );
+          $new_term->enforceIsNew();
+          $new_term->save();
+          $term_ids_1 = $new_term->id();
+          $existing_terms[] = $new_term->getName();
+          if ($term_exploded[2]) {
+            if (!in_array($term_exploded[2], $existing_terms)) {
+              $new_term2 = Term::create(
+                [
+                  'vid' => 'app_domain_and_sub_domain',
+                  'name' => $term_exploded[2]
+                ]
+              );
+              $new_term2->enforceIsNew();
+              $existing_terms[] = $new_term2->getName();
+              $new_term2->parent = $new_term->id();
+              $new_term2->save();
+              $term_ids_2 = $new_term2->id();
+            }
+          }
+          if ($term_exploded[3]) {
+            if (!in_array($term_exploded[3], $existing_terms)) {
+              $new_term3 = Term::create(
+                [
+                  'vid' => 'app_domain_and_sub_domain',
+                  'name' => $term_exploded[3]
+                ]
+              );
+              $new_term3->enforceIsNew();
+              $existing_terms[] = $new_term3->getName();
+              $new_term3->parent = $new_term2->id();
+              $new_term3->save();
+              $term_ids_3 = $new_term3->id();
+            }
+          }
+        }
+        else{
+          $term = \Drupal::entityTypeManager()
+            ->getStorage('taxonomy_term')
+            ->loadByProperties(['name' => $term_exploded[1], 'vid' => 'app_domain_and_sub_domain']);
+          $term = reset($term);
+          $term_ids_1 = $term->id();
+          if (isset($term_exploded[2])) {
+            $term1 = \Drupal::entityTypeManager()
+              ->getStorage('taxonomy_term')
+              ->loadByProperties(['name' => $term_exploded[2], 'vid' => 'app_domain_and_sub_domain']);
+            $term1 = reset($term1);
+            $term_ids_2 = $term1->id();
+          }
+          if (isset($term_exploded[3])) {
+            $term2 = \Drupal::entityTypeManager()
+              ->getStorage('taxonomy_term')
+              ->loadByProperties(['name' => $term_exploded[3], 'vid' => 'app_domain_and_sub_domain']);
+            $term2 = reset($term2);
+            $term_ids_3 = $term2->id();
+          }
+        }
+        if (isset($term_ids_1) && isset($term_ids_2) && isset($term_ids_3)) {
+          $update_product->set('field_a', [
+            $term_ids_1,
+            $term_ids_2,
+            $term_ids_3
+          ]);
+        }
+        elseif (isset($term_ids_1) && isset($term_ids_2)) {
+          $update_product->set('field_a', [
+            $term_ids_1,
+            $term_ids_2
+          ]);
+        }
+        elseif (isset($term_ids_1) && isset($term_ids_3)) {
+          $update_product->set('field_a', [
+            $term_ids_1,
+            $term_ids_3
+          ]);
+        }
+        elseif (isset($term_ids_1)) {
+          $update_product->set('field_a', [
+            $term_ids_1
+          ]);
+        }
+      }
+      $update_product->set('field_environment', $environment);
+      $update_product->set('field_product_type', $api_product->getAttributes()->getValue('DEV-PORTAL-PRODUCT-TYPE'));
+      $update_product->set('field_portal_visibility', $api_product->getAttributes()->getValue('DEV-PORTAL-VISIBILITY'));
+      $update_product->save();
+    }
+  }
+}
+
+/**
+ * Sync Product to node apidoc.
+ */
+function _custom_api_catalog_sync_api_product_node_apidoc($api_products) {
+  $entityTypeManager = \Drupal::entityTypeManager();
+  $products = $entityTypeManager->getStorage('node')->loadByProperties(['type' => 'apidoc']);
+  $existing_products = [];
+  foreach ($products as $product) {
+    $existing_products[] = $product->getTitle();
+  }
+
+  $api_category_vocab = 'api_category';
+  $terms = $entityTypeManager
+    ->getStorage('taxonomy_term')
+    ->loadTree($api_category_vocab);
+  $existing_terms = [];
+  foreach ($terms as $term) {
+    $existing_terms[] = $term->name;
+  }
+
+  // Start processing fetched API Products.
+  foreach ($api_products as $api_product) {
+    Drupal::logger('custom_api_catalog')
+      ->info('Started processing API Product : ' . $api_product->getName());
+
+    // Compute environment value.
+    $api_product_envts = $api_product->getEnvironments();
+    $environment = '';
+    if (in_array('qa', $api_product_envts) && in_array('prod', $api_product_envts)) {
+      $environment = '';
+    }
+    elseif (in_array('qa', $api_product_envts)) {
+      $environment = 'qa';
+    }
+    elseif (in_array('prod', $api_product_envts)) {
+      $environment = 'prod';
+    }
+
+    // Compute product category / app domain.
+    $field_categories = [];
+    if (!empty($app_domains = $api_product->getAttributes()->getValue('DEV-PORTAL-APP-DOMAIN'))) {
+      $app_domains = trim($app_domains);
+      $app_domains = explode('/', $app_domains);
+      foreach ($app_domains as $app_domain) {
+        if (!empty($app_domain)) {
+          // Create term if it does not exists.
+          if (!in_array($app_domain, $existing_terms)) {
+            $term = Term::create(
+              [
+                'vid' => $api_category_vocab,
+                'name' => $app_domain
+              ]
+            );
+            $term->enforceIsNew();
+            $term->save();
+            $existing_terms[] = $term->getName();
+          }
+          else {
+            $term = \Drupal::entityTypeManager()
+              ->getStorage('taxonomy_term')
+              ->loadByProperties(['name' => $app_domain, 'vid' => $api_category_vocab]);
+            $term = reset($term);
+          }
+
+          if ($term instanceof Term) {
+            $field_categories[] = $term->id();
+          }
+        }
+      }
+      $field_categories = array_filter($field_categories);
+    }
+
+    // Compute product type.
+    $product_type = $api_product->getAttributes()->getValue('DEV-PORTAL-PRODUCT-TYPE');
+    $product_type = strtolower($product_type);
+    $product_type = str_replace('-', '_', $product_type);
+
+    // Compute portal visibility.
+    $portal_visibility = $api_product->getAttributes()->getValue('DEV-PORTAL-VISIBILITY');
+    $portal_visibility = strtolower($portal_visibility);
+    $portal_visibility = str_replace(' ', '_', $portal_visibility);
+
+    // Create product if does not already exists.
+    if (!in_array($api_product->getName(), $existing_products)) {
+      Drupal::logger('custom_api_catalog')
+        ->info('Creating API Doc node for API Product : ' . $api_product->getName());
+      $product = $entityTypeManager->getStorage('node')->create(
+        [
+          'title' => $api_product->getName(),
+          'type' => 'apidoc',
+          'field_environment' => $environment,
+          'field_product_type' => $product_type,
+          'field_portal_visibility' => $portal_visibility,
+          'field_categories' => $field_categories,
+        ]
+      );
+      $product->save();
+    }
+    else {
+      // Update Existing product.
+      Drupal::logger('custom_api_catalog')
+        ->info('Updating Existing API Doc node for API Product : ' . $api_product->getName());
+      $product = $entityTypeManager->getStorage('node')
+        ->loadByProperties(['title' => $api_product->getName()]);
+      $product = reset($product);
+      if ($product instanceof \Drupal\node\Entity\Node) {
+        $field_categories_value = [];
+        foreach ($field_categories as $field_category) {
+          $field_categories_value[] = ['target_id' => $field_category];
+        }
+        $product->set('field_categories', $field_categories_value);
+        $product->set('field_environment', $environment);
+        $product->set('field_product_type', $product_type);
+        $product->set('field_portal_visibility', $portal_visibility);
+        $product->save();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function custom_api_catalog_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    if ($form_id == 'system_cron_settings') {
+        $form['cron_url']['#markup'] = '';
+        $form['cron']['interval']['#options'] = array(0 => t('Never'), 60 => t('1 Min'), 900 => t('15 Mins'), 1800 => t('30 Mins'), 3600 => t('1 Hour'), 10800 => t('3 Hours'), 21600 => t('6 Hours'), 43200 => t('12 Hours'), 86400 => t('1 Day'), 604800 => t('1 Week'));
+    }
+    if($form_id == 'ucla_exposed_home_form'){
+        $form['search_ucla']['#attributes']['placeholder'] = t('Search API Products');
+    }
+    if($form_id == 'team_add_form'){
+        $form['name']['#title'] = '';
+        $form['name']['#type'] = 'textfield';
+        $form['#attached']['library'][] = 'custom_api_catalog/custom_teams';
+
+        $form['#validate'] = ['custom_team_validate'];
+
+        foreach (array_keys($form['actions']) as $action) {
+            if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+                $form['actions'][$action]['#submit'] = ['custom_team_submit'];
+                $form['#submit'] = [];
+            }
+        }
+        $redirect_url_teams = '/teams';
+        $form['actions'][] =  [
+            '#type' => 'markup',
+            '#markup' => '<a class="button button--cancel   btn-block" href="'.$redirect_url_teams.'">Cancel</a>',
+            '#weight' => 1000,
+        ];
+
+    }
+    if($form_id == 'team_form') {
+        $team_default_name = $form['name']['#default_value'];
+        $redirect_url_to_team = '/teams/'.$team_default_name;
+        $form['actions'][] =  [
+            '#type' => 'markup',
+            '#markup' => '<a class="button button--cancel   btn-block" href="'.$redirect_url_to_team.'">Cancel</a>',
+            '#weight' => 1000,
+        ];
+        $form['#validate'] = ['custom_team_edit_validate'];
+    }
+    if ($form_id == 'team_app_add_for_team_form') {
+        $form['name']['#title'] = '';
+        $form['name']['#type'] = 'textfield';
+        $form['#attached']['library'][] = 'custom_api_catalog/custom_api_catalog';
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            $environments[] = $api_product->getEnvironments();
+            $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+        }
+        $form['field_environments']['widget']['#ajax'] = [
+            'callback' => 'updateModalUrl',
+            'wrapper' => 'api-catalog-grid',
+            'method' => 'replace',
+            'event' => 'change',
+        ];
+        $form['field_environments']['widget']['#description'] = t('Select the Environment for API product selection.');
+        unset($form['field_environments']['widget']['#options']['_none']);
+        $attributes = [
+            'class' => ['use-ajax'],
+            'data-dialog-options' => '{"width":1000}',
+            'data-dialog-type' => 'modal',
+        ];
+        if (!empty($form_state->getValue('field_environments')) && $form_state->getValue('field_environments')[0]['value'] == 'test') {
+            $url = Url::fromRoute('view.apigee_select_products.page_1', [], ['query' => ['environment_type' => NULL]]);
+        }
+        else {
+            $url = Url::fromRoute('view.apigee_select_products_prod.page_1', [], ['query' => ['environment_type' => NULL]]);
+        }
+        $link = Link::fromTextAndUrl(t('Select Product'), $url)->toRenderable();
+        $link['#attributes'] = $attributes;
+        $form['view_api_catalog'] = [
+            '#type' => 'markup',
+            '#markup' => render($link),
+            '#prefix' => '<div class="api-catalog-grid">',
+            '#suffix' => '</div>',
+            '#weight' => 2,
+        ];
+        $form['api_products']['#options'] = $test_api_products;
+        $form['#validate'][] = 'custom_team_app_validate';
+        $form['api_products']['#required'] = FALSE;
+        $form['products_selected'] = [
+            '#type' => 'item',
+            '#markup' => '<div class="productsdisplay"  ></div>',
+            '#weight' => 75,
+        ];
+        foreach (array_keys($form['actions']) as $action) {
+            if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+                $form['actions'][$action]['#submit'] = ['custom_api_catalog_form_submit'];
+                $form['#submit'] = [];
+            }
+        }
+        $company_name_red = $form['owner']['#value'];
+        $redirect_url_comp = '/teams/'.$company_name_red.'/apps';
+        $form['actions'][] =  [
+            '#type' => 'markup',
+            '#markup' => '<a class="button button--cancel   btn-block" href="'.$redirect_url_comp.'">Cancel</a>',
+            '#weight' => 1000,
+        ];
+    }
+    if($form_id == 'user_login_form'){
+        $form['#submit'][]='redirect_to_homepage';
+    }
+
+    if ($form_id == 'developer_app_add_for_developer_form') {
+        $form['name']['#title'] = '';
+        $form['name']['#type'] = 'textfield';
+        $form['#attached']['library'][] = 'custom_api_catalog/custom_api_catalog';
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            $environments[] = $api_product->getEnvironments();
+            $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+        }
+        $form['field_environments']['widget']['#ajax'] = [
+            'callback' => 'updateModalUrl',
+            'wrapper' => 'api-catalog-grid',
+            'method' => 'replace',
+            'event' => 'change',
+        ];
+        $form['field_environments']['widget']['#description'] = t('Select the Environment for API product selection.');
+        unset($form['field_environments']['widget']['#options']['_none']);
+        $attributes = [
+            'class' => ['use-ajax'],
+            'data-dialog-options' => '{"width":1000}',
+            'data-dialog-type' => 'modal',
+        ];
+        if (!empty($form_state->getValue('field_environments')) && $form_state->getValue('field_environments')[0]['value'] == 'test') {
+            $url = Url::fromRoute('view.apigee_select_products.page_1', [], ['query' => ['environment_type' => NULL]]);
+        }
+        else {
+            $url = Url::fromRoute('view.apigee_select_products_prod.page_1', [], ['query' => ['environment_type' => NULL]]);
+        }
+        $link = Link::fromTextAndUrl(t('Select Product'), $url)->toRenderable();
+        $link['#attributes'] = $attributes;
+        $form['view_api_catalog'] = [
+            '#type' => 'markup',
+            '#markup' => render($link),
+            // '#markup' => '<a href="#">Find out more</a>',.
+            '#prefix' => '<div class="api-catalog-grid">',
+            '#suffix' => '</div>',
+            '#weight' => 2,
+        ];
+        $form['api_products']['#options'] = $test_api_products;
+        $form['#validate'][] = 'custom_developer_app_validate';
+        $form['api_products']['#required'] = FALSE;
+        $form['products_selected'] = [
+            '#type' => 'item',
+            '#markup' => '<div class="productsdisplay"  ></div>',
+            '#weight' => 75,
+        ];
+
+        foreach (array_keys($form['actions']) as $action) {
+            if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+                $form['actions'][$action]['#submit'] = ['custom_api_catalog_developer_form_submit'];
+                $form['#submit'] = [];
+            }
+        }
+        $user_id_developer = \Drupal::currentUser()->id();
+        $redirect_url_dev = '/user/'.$user_id_developer.'/apps';
+        $form['actions'][] =  [
+            '#type' => 'markup',
+            '#markup' => '<a class="button button--cancel   btn-block" href="'.$redirect_url_dev.'">Cancel</a>',
+            '#weight' => 1000,
+        ];
+    }
+    /*
+     * Team App Edit Form Alter;
+     *
+     */
+    if ($form_id == 'team_app_edit_form') {
+        $form['field_environments']['#access'] = false;
+        $form['displayName']['#disabled'] = TRUE;
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+        }
+        $attributes = [
+            'class' => ['use-ajax'],
+            'data-dialog-options' => '{"width":1000}',
+            'data-dialog-type' => 'modal',
+        ];
+        $team_app_name = $form['name']['#value'];
+        $team_app_env = substr($team_app_name, -2);
+        if ($team_app_env == 'QA') {
+            $url = Url::fromRoute('view.apigee_select_products_qa_prod.page_1', [], ['query' => ['environment_type' => NULL]]);
+        } else {
+            $url = Url::fromRoute('view.apigee_select_products_prod_unrestricted.page_1', [], ['query' => ['environment_type' => NULL]]);
+        }
+        $link = Link::fromTextAndUrl(t('Select Product'), $url)->toRenderable();
+        $link['#attributes'] = $attributes;
+        $form['view_api_catalog'] = [
+            '#type' => 'markup',
+            '#markup' => render($link),
+            '#prefix' => '<div class="api-catalog-grid">',
+            '#suffix' => '</div>',
+            '#weight' => 3,
+        ];
+        $form['edit_env'] = [
+            '#type' => 'textfield',
+            '#title' => t('Environment'),
+            '#attributes' => ['readonly' => 'readonly'],
+            '#weight' => 2,
+        ];
+        $form['products_selected'] = [
+            '#type' => 'item',
+            '#markup' => '<div class="productsdisplay"  ></div>',
+            '#weight' => 75,
+        ];
+        if ($team_app_env == 'QA') {
+            $form['edit_env']['#value'] = 'QA';
+        }
+        else {
+            $form['edit_env']['#value'] = 'PROD';
+        }
+        $key = array_keys($form['credential']);
+        $consume_key = $key[2];
+        $form['credential'][$consume_key]['api_products']['#options'] = $test_api_products;
+        $current_path = \Drupal::service('path.current')->getPath();
+        $split_path = explode("/",$current_path);
+        foreach (array_keys($form['actions']) as $action) {
+            if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+                $form['actions'][$action]['#submit'][] = 'custom_edit_team_app_submit';
+            }
+        }
+
+        $redirecturl = $split_path[0].'/'.$split_path[1].'/'.$split_path[2].'/'.$split_path[3];
+        $form['actions'][] =  [
+            '#type' => 'markup',
+            '#markup' => '<a class="button button--cancel   btn-block" href="'.$redirecturl.'">Cancel</a>',
+            //'#weight' => 1000,
+        ];
+    }
+
+    /*
+     * Changing the Form labels to Singular in Team Member form
+     */
+    if ($form_id == 'apigee_edge_teams_add_team_member_form') {
+        $form['developers']['#title'] = 'Developer Email';
+        $form['team_roles']['#title'] = 'Role';
+		$form['developers']['#description'] = \Drupal\Core\Field\FieldFilteredMarkup::create(t('Please ask the person to log into the portal before you add them as a team member.  Then, their email address should be auto-populated when you type it in the Developer Email field.'));
+    }
+
+    /* Adding environment on edit
+    form - my apps
+     */
+    if ($form_id == 'developer_app_edit_for_developer_form') {
+        $form['field_environments']['#access'] = false;
+        $form['edit_env'] = [
+            '#type' => 'textfield',
+            '#title' => t('Environment'),
+            '#attributes' => ['readonly' => 'readonly'],
+            '#weight' => 1,
+        ];
+        $attributes = [
+            'class' => ['use-ajax'],
+            'data-dialog-options' => '{"width":1000}',
+            'data-dialog-type' => 'modal',
+        ];
+        $team_app_name = $form['name']['#value'];
+        $team_app_env = substr($team_app_name, -2);
+        if ($team_app_env == 'QA') {
+            $url = Url::fromRoute('view.apigee_select_products_qa_prod.page_1', [], ['query' => ['environment_type' => NULL]]);
+        } else {
+            $url = Url::fromRoute('view.apigee_select_products_prod_unrestricted.page_1', [], ['query' => ['environment_type' => NULL]]);
+        }
+        $link = Link::fromTextAndUrl(t('Select Product'), $url)->toRenderable();
+        $link['#attributes'] = $attributes;
+        $form['view_api_catalog'] = [
+            '#type' => 'markup',
+            '#markup' => render($link),
+            '#prefix' => '<div class="api-catalog-grid">',
+            '#suffix' => '</div>',
+            '#weight' => 2,
+        ];
+
+        if ($team_app_env == 'QA') {
+            $form['edit_env']['#value'] = 'QA';
+        }
+        else {
+            $form['edit_env']['#value'] = 'PROD';
+        }
+        $form['displayName']['#disabled'] = TRUE;
+
+        $count =1;
+        $form['products_selected'] = [
+            '#type' => 'item',
+            '#markup' => '<div class="productsdisplay"  ></div>',
+            '#weight' => 75,
+
+        ];
+        foreach (array_keys($form['actions']) as $action) {
+            $count++;
+            if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+                $form['actions'][$action]['#submit'][] = 'custom_edit_developer_submit';
+            }
+        }
+        $current_path = \Drupal::service('path.current')->getPath();
+        $split_path = explode("/",$current_path);
+
+
+        $redirecturl = $split_path[0].'/'.$split_path[1].'/'.$split_path[2].'/'.$split_path[3];
+        $form['actions'][$count] =  [
+            '#type' => 'markup',
+            '#markup' => '<a class="button button--cancel   btn-block" href="'.$redirecturl.'">Cancel</a>',
+            //'#weight' => 1000,
+        ];
+    }
+	/*
+    * Changing the Form labels to Singular in Team Member form
+    */
+    if ($form_id == 'apigee_edge_teams_edit_team_member_form') {
+        $form['#submit'][] = 'custom_edit_member_form_submit';
+    }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function custom_api_catalog_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $storge = $form_state->getStorage();
+    if (!empty($storge['view']) && $storge['view']->id() === 'apigee_select_products') {
+        if (isset($form['actions']['reset']) && isset($form['actions']['submit'])) {
+            $submit_id = $form['actions']['submit']['#id'];
+            $form['actions']['reset']['#attributes']['onclick'] = 'javascript:jQuery(this.form).clearForm();jQuery("#' . $submit_id . '").trigger("click");return false;';
+        }
+    }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_team_edit_validate(array $form, FormStateInterface $form_state) {
+    $company_edit_display_name = $form_state->getValues()['displayName'][0]['value'];
+
+    if (!preg_match("/^[A-Za-z0-9_\ ]*$/", $company_edit_display_name)) {
+        $form_state->setErrorByName('displayName', t("Only '_' is allowed to create or update a team name."));
+    }
+}
+/**
+ * {@inheritdoc}
+ */
+function custom_team_submit(array $form, FormStateInterface $form_state) {
+    $config = \Drupal::service('config.factory')->getEditable('custom_team_apps.environment_settings_form');
+    $env_name = $config->get('ucla_env_name');
+    if ($env_name) {
+        $team_display_name = $form_state->getValues()['displayName'][0]['value'] . '_' . $env_name;
+        $team_name = $form_state->getValues()['name'] . '_' . strtolower($env_name);
+    }
+    else {
+        $team_display_name = $form_state->getValues()['displayName'][0]['value'];
+        $team_name = $form_state->getValues()['name'];
+    }
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $org_name = $auth->getOrganization();
+    $client = $auth->getClient();
+    $team_creation = $client->post("https://api.enterprise.apigee.com/v1/organizations/$org_name/companies",
+        json_encode(
+            [
+                "name" => $team_name,
+                "displayName" => $team_display_name
+            ]
+        ), ['Content-Type' => 'application/json']);
+
+    $account = \Drupal::currentUser();
+    $user_email = $account->getEmail();
+    $team_membership_manager = \Drupal::service('apigee_edge_teams.team_membership_manager');
+    $team_membership_manager->addMembers($team_name, [$user_email]);
+
+    $team_member_role_storage = \Drupal::entityTypeManager()->getStorage('team_member_role');
+    $team_storage = \Drupal::entityTypeManager()->getStorage('team');
+    $team_storage_obj = $team_storage->load($team_name);
+    $team_member_role_storage->addTeamRoles($account, $team_storage_obj, [TeamRoleInterface::TEAM_ADMIN_ROLE]);
+
+    $url = Url::fromUri("internal:/teams");
+    $form_state->setRedirectUrl($url);
+    \Drupal::messenger()->addStatus(t('Team has been successfully created'));
+}
+
+/**
+ * {@inheritdoc}
+ */
+function updateModalUrl(array &$form, FormStateInterface $form_state) {
+    $env = $form_state->getValue('field_environments')[0]['value'];
+    //\Drupal::logger('some_channel_name')->warning('<pre><code>' . print_r($env, TRUE) . '</code></pre>');
+    $response = new AjaxResponse();
+    if ($env == 'prod') {
+        $text = "<a href='/select-products-prod' class='use-ajax' data-dialog-options='{&quot;width&quot;:1000}' data-dialog-type='modal'>Select Product</a>";
+    }
+    else {
+        $text = "<a href='/select-products' class='use-ajax' data-dialog-options='{&quot;width&quot;:1000}' data-dialog-type='modal'>Select Product</a>";
+    }
+    $command = new HtmlCommand('.api-catalog-grid', $text);
+    $response->addCommand($command);
+    $form_state->setResponse($response);
+    return $response;
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_team_validate(&$form, FormStateInterface $form_state){
+    $config = \Drupal::service('config.factory')->getEditable('custom_team_apps.environment_settings_form');
+    $env_name = $config->get('ucla_env_name');
+
+    $company_name_form = $form_state->getValues()['name'] . '_' . strtolower($env_name);
+    $company_display_name = $form_state->getValues()['displayName'][0]['value'];
+
+    if (!preg_match("/^[A-Za-z0-9_\ ]*$/", $company_display_name)) {
+        $form_state->setErrorByName('displayName', t("Only '_' is allowed to create or update a team name."));
+    }
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $org_name = $auth->getOrganization();
+    $client = $auth->getClient();
+    $company = new CompanyController($org_name,$client);
+    $company_list = $company->getEntities();
+    foreach($company_list as $companyname){
+        $companyNames[] = strtolower($companyname->getName());
+    }
+
+    if(isset($companyNames)) {
+        if (in_array(strtolower($company_name_form), $companyNames)) {
+            $form_state->setErrorByName('displayName', t('The Team ' . $company_display_name . ' already exists, It must be unique.'));
+        }
+    }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_developer_app_validate(&$form, FormStateInterface $form_state){
+    $app_name = $form['name']['#value'];
+    if ((!preg_match("/^[a-zA-Z0-9][A-Za-z0-9_\-#.$% ]*$/", $app_name))) {
+      $form_state->setErrorByName('name', t('App name allowed characters are _ - . # $ %. App name should not start with special characters.'));
+    }
+    if(empty($form['api_products']['#value'])) {
+        $form_state->setErrorByName('name', t( 'Products field is Required.'));
+    }
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $org_name = $auth->getOrganization();
+    $client = $auth->getClient();
+    $user = User::load(\Drupal::currentUser()->id());
+    $email = $user->get('mail')->value;
+    $developer = new DeveloperAppController($org_name,$email,$client);
+    $developer_entities = $developer->getEntities();
+    foreach($developer_entities as $app_id => $value){
+        $existing_app_names[] = strtolower($value->getName());
+    }
+    if(isset($existing_app_names)) {
+        if (in_array(strtolower($app_name), $existing_app_names)) {
+            $form_state->setErrorByName('name', t('' . $app_name . ' already exists, It must be unique.'));
+        }
+    }
+}
+
+function redirect_to_homepage(array &$form, FormStateInterface $form_state){
+    return $form_state->setRedirect('<front>');
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_team_app_validate(&$form, FormStateInterface $form_state){
+    if(empty($form['api_products']['#value'])) {
+        $form_state->setErrorByName('name', t( 'Products field is Required.'));
+    }
+    $app_name = $form['name']['#value'];
+    $team_name = $form_state->getValue('owner');
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $org_name = $auth->getOrganization();
+    $client = $auth->getClient();
+    $company_entities = new CompanyAppController($org_name,$team_name,$client);
+    $company_attributes = $company_entities->getEntities();
+    if ((!preg_match("/^[a-zA-Z0-9][A-Za-z0-9_\-#.$% ]*$/", $app_name))) {
+     $form_state->setErrorByName('name', t('App name allowed characters are _ - . # $ %. App name should not start with special characters.'));
+    }
+    foreach($company_attributes as $app_id => $value){
+        $existing_app_names[] = strtolower($value->getName());
+    }
+    if(isset($existing_app_names)){
+        if(in_array(strtolower($app_name), $existing_app_names)){
+            $form_state->setErrorByName('name', t(''.$app_name.' already exists, It must be unique.'));
+        }
+    }
+
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_api_catalog_form_submit(array $form, FormStateInterface $form_state) {
+    $description = $form['description']['widget'][0]['value']['#value'];
+    $path = \Drupal::request()->getpathInfo();
+    $arg = explode('/', $path);
+    $company_name = $arg[2];
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $org_name = $auth->getOrganization();
+    $client = $auth->getClient();
+    $env = $form_state->getValue('field_environments')[0]['value'];
+    $val = $form['api_products']['#value'];
+    $selected_api_products = array_values($val);
+    foreach ($selected_api_products as $value) {
+        $api_product_attributes[] = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$value/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+            'headers' => ['Content-Type' => 'application/json'],
+        ])->getBody()->getContents();
+    }
+    $comb_attrs = array_unique($api_product_attributes);
+    if (count($comb_attrs) == 1) {
+        $attr_final = json_decode($comb_attrs[0], TRUE);
+        $value = $attr_final['value'];
+    }
+    if (count($comb_attrs) > 1) {
+        $value = 'Combine';
+    }
+    //$permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+    $user = User::load(\Drupal::currentUser()->id());
+    $email = $user->get('mail')->value;
+    $roles = $user->getRoles();
+    $app_name = $form_state->getValue('name');
+    $team_name = $form_state->getValue('owner');
+    /* Default attribute selected */
+    if ($value == 'SINGLE-APP') {
+        if ($env == 'test') {
+            $env1 = 'QA';
+        }
+        elseif ($env == 'prod') {
+            $env1 = '';
+        }
+    }
+
+    /* Student Service attribute selected
+    Based on the current environment,
+    second aoo will get created in different environment;
+     */
+    if ($value == 'DUAL-APP') {
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            if (in_array('qa', $api_product->getEnvironments())) {
+                $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+            if (in_array('prod', $api_product->getEnvironments())) {
+                $prod_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+        }
+        $env = $form_state->getValue('field_environments')[0]['value'];
+        if ($env == 'test') {
+            $env1 = 'QA';
+            $env2 = '';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = substr($val, 0, (strlen($val) - 3));
+                    $replace_arr[] = $crop_value;
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $prod_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+        if ($env == 'prod') {
+            $env1 = '';
+            $env2 = 'QA';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = $val;
+                    $replace_arr[] = $crop_value . '-QA';
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $test_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+    }
+
+    /* Combination of Student service and Default attribute selected
+    Two Apps will create if Default api product available in both environments
+    One App will create if Default Api product is
+    not available in alternative environment.;
+     */
+    if ($value == 'Combine') {
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            if (in_array('qa', $api_product->getEnvironments())) {
+                $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+            if (in_array('prod', $api_product->getEnvironments())) {
+                $prod_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+        }
+        if ($env == 'test') {
+            $env1 = 'QA';
+            $env2 = '';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = substr($val, 0, (strlen($val) - 3));
+                    $replace_arr[] = $crop_value;
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $prod_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+        if ($env == 'prod') {
+            $env1 = '';
+            $env2 = 'QA';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = $val;
+                    $replace_arr[] = $crop_value . '-QA';
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $test_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+    }
+    //$random_string = substr(str_shuffle($permitted_chars), 0, 6);
+    //$name = $app_name . _ . $random_string;
+    if (isset($env1)) {
+        if ($env1 == '') {
+            $display_name = $app_name;
+        }
+        else {
+            $display_name = $app_name . '_' . $env1;
+        }
+    }
+    else {
+        $display_name = $app_name;
+    }
+    if (isset($env2)) {
+        if ($env2 == '') {
+            $display_name2 = $app_name;
+        }
+        else {
+            $display_name2 = $app_name . '_' . $env2;
+        }
+    }
+    else {
+        $display_name2 = $app_name;
+    }
+    $disp_final1 = str_replace('_','-', $display_name);
+    $disp_final2 = str_replace('_','-', $display_name2);
+    $company_apps = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/companies/$team_name/apps", [
+        'headers' => ['Content-Type' => 'application/json'],
+    ])->getBody()->getContents();
+    $company_apps_exist = json_decode($company_apps, TRUE);
+    if(empty($company_apps_exist)){
+        drupal_flush_all_caches();
+    }
+    $app_create_env_one = $client->post("https://api.enterprise.apigee.com/v1/organizations/$org_name/companies/$team_name/apps",
+        json_encode(
+            [
+                "name" => $disp_final1,
+                "apiProducts" => $selected_api_products,
+                "attributes" => [
+                    ["name" => "DisplayName", "value" => $disp_final1],
+                    ["name" => "Notes", "value" => $description],
+                ],
+            ]
+        ), ['Content-Type' => 'application/json']);
+    if ($value != 'SINGLE-APP') {
+        $app_msg = 'Apps are successfully created.';
+        $app_create_env_two = $client->post("https://api.enterprise.apigee.com/v1/organizations/$org_name/companies/$team_name/apps",
+            json_encode(
+                [
+                    "name" => $disp_final2,
+                    "apiProducts" => $selected_api_products_env,
+                    "attributes" => [
+                        ["name" => "DisplayName", "value" => $disp_final2],
+                        ["name" => "Notes", "value" => $description],
+                    ],
+                ]
+            ), ['Content-Type' => 'application/json']);
+    }else{
+        $app_msg = 'App is successfully created.';
+    }
+    $url = Url::fromUri("internal:/teams/$company_name/apps");
+    $form_state->setRedirectUrl($url);
+    \Drupal::messenger()->addStatus(t($app_msg));
+    if(isset($selected_api_products)) {
+        $i=0;
+        foreach($selected_api_products as $val) {
+            $users = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val", [
+                'headers' => ['Content-Type' => 'application/json'],
+            ])->getBody()->getContents();
+            $user_emails[$i] = json_decode($users, TRUE);
+            $i++;
+        }
+        foreach ($user_emails as $user) {
+            $user_creators[$user['displayName']][] = $user['createdBy'];
+        }
+        $toImplode1 = array();
+        $api_products = array();
+        foreach($user_creators as $key => $value) {
+            $users_env_one = user_load_by_mail($value[0]);
+            if($users_env_one != '') {
+                $user_name_team_cap = $users_env_one->get('first_name')->getValue()[0]['value'].' '. $users_env_one->get('last_name')->getValue()[0]['value'];
+            }
+            else{
+                $user_name_team_cap = '';
+            }
+			$user_name_team = ucwords(strtolower($user_name_team_cap));
+            $api_products[] = $key.",";
+            $toImplode1[]= "$key, $user_name_team, $value[0]".",";
+        }
+        $imploded1=implode('',$toImplode1);
+        $nameDetails = '<ul>';
+        foreach($toImplode1 as $value_tapp){
+            $nameDetails.= '<li>'.$value_tapp.'</li>';
+        }
+        $nameDetails.= '</ul>';
+        //\Drupal::logger('Details App')->notice($nameDetails);
+        $comma_seperated_apiproducts = implode('',$api_products);
+        $config = \Drupal::service('config.factory')->getEditable('custom_app_email.settings');
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $to = $config->get('ucla_emails');
+        $var = '<br />';
+        $url = '<a href = "https://ucla.login.apigee.com/login" target=_blank>UCLA Edge</a>';
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $params = [
+            'subject' => "Approval Required for an $disp_final1 – Notification from UCLA Portal",
+            'body' => "
+      Greetings All," . $var . "" . $var . "
+
+      Please be informed about an APP created in UCLA Developer Portal. Action of APP approval is required by the product owners.If you are the product owner for the selected products, please login to edge and take appropriate action. Here the details available for your review." . $var . "" . $var . "
+
+      APP Details:" . $var . "
+      App Created by : " . $team_name . " " . $var . "
+      APP Name: ".$disp_final1." " . $var . "
+      Selected Products: ".$comma_seperated_apiproducts."   " . $var . "
+
+      Product Owner Details:
+      ".$nameDetails."" . $var . "
+
+      UCLA Login URL : " . $url . "",
+        ];
+        $from = \Drupal::config('system.site')->get('mail');
+        $result = $mailManager->mail('custom_app_email', 'ucla_app_emails', $to, $langcode, $params, $from, true);
+        // \Drupal::messenger()->addStatus(t('The '.$disp_final1.' App has been created by a '.$developer_email.' The Api Products and their owners associated with this app are '. $imploded1));
+    }
+    if(isset($selected_api_products_env)) {
+        $j=0;
+        foreach($selected_api_products_env as $val1) {
+            $users_env = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val1", [
+                'headers' => ['Content-Type' => 'application/json'],
+            ])->getBody()->getContents();
+            $user_emails_env[$j] = json_decode($users_env, TRUE);
+            $j++;
+        }
+        foreach ($user_emails_env as $user1) {
+            $user_creators_env[$user1['displayName']][] = $user1['createdBy'];
+        }
+        $toImplode=array();
+        $api_products1 = array();
+        foreach($user_creators_env as $key1 => $value1) {
+            $user_env = user_load_by_mail($value1[0]);
+            if($user_env != '') {
+                $user_name_team_one_cap = $user_env->get('first_name')->getValue()[0]['value'].' '. $user_env->get('last_name')->getValue()[0]['value'];
+            }
+            else{
+                $user_name_team_one_cap = '';
+            }
+            $api_products1[] = $key1.",";
+			$user_name_team_one = ucwords(strtolower($user_name_team_one_cap));
+            $toImplode[]= "$key1, $user_name_team_one, $value1[0]".",";
+        }
+        $imploded=implode('',$toImplode);
+        $nameDetails1 = '<ul>';
+        foreach($toImplode as $value_team_app_one){
+            $nameDetails1.= '<li>'.$value_team_app_one.'</li>';
+        }
+        $nameDetails1.= '</ul>';
+        $comma_seperated_apiproducts1 = implode('',$api_products1);
+        $config = \Drupal::service('config.factory')->getEditable('custom_app_email.settings');
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $to = $config->get('ucla_emails');
+        $var = '<br />';
+        $url = '<a href = "https://ucla.login.apigee.com/login" target=_blank>UCLA Edge</a>';
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $params = [
+            'subject' => "Approval Required for an $disp_final2 – Notification from UCLA Portal",
+            'body' => "
+      Greetings All," . $var . "" . $var . "
+
+      Please be informed about an APP created in UCLA Developer Portal. Action of APP approval is required by the product owners.If you are the product owner for the selected products, please login to edge and take appropriate action. Here the details available for your review.      " . $var . "" . $var . "
+
+      APP Details: " . $var . "
+      App Created by : " . $team_name . "" . $var . "
+      APP Name: ".$disp_final2." " . $var . "
+      Selected Products: ".$comma_seperated_apiproducts1." " . $var . "
+
+      Product Owner Details:
+      ".$nameDetails1."" . $var . "
+
+      UCLA Login URL : " . $url . "",
+
+        ];
+        $from = \Drupal::config('system.site')->get('mail');
+        $result = $mailManager->mail('custom_app_email', 'ucla_app_emails', $to, $langcode, $params, $from, true);
+        //\Drupal::messenger()->addStatus(t('The '.$disp_final2.' App has been created by a '.$developer_email.' The Api Products and their owners associated with this app are '. $imploded));
+    }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_api_catalog_developer_form_submit(array $form, FormStateInterface $form_state)
+{
+    $description = $form['description']['widget'][0]['value']['#value'];
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $client = $auth->getClient();
+    $org_name = $auth->getOrganization();
+    $env = $form_state->getValue('field_environments')[0]['value'];
+    $val = $form['api_products']['#value'];
+    $selected_api_products = array_values($val);
+    $app_msg = '';
+    foreach ($selected_api_products as $value) {
+        $api_product_attributes[] = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$value/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+            'headers' => ['Content-Type' => 'application/json'],
+        ])->getBody()->getContents();
+    }
+    $comb_attrs = array_unique($api_product_attributes);
+    if (count($comb_attrs) == 1) {
+        $attr_final = json_decode($comb_attrs[0], TRUE);
+        $value = $attr_final['value'];
+    }
+    if (count($comb_attrs) > 1) {
+        $value = 'Combine';
+    }
+    // $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+    $user_id = \Drupal::currentUser()->id();
+    $app_name = $form_state->getValue('name');
+    $developer_email = $form['owner']['#value'];
+    $developer_entity = user_load_by_mail($developer_email);
+    if($developer_entity != '') {
+        $developer_name_cap = $developer_entity->get('first_name')->getValue()[0]['value'].' '. $developer_entity->get('last_name')->getValue()[0]['value'];
+    }
+    else{
+        $developer_name_cap = '';
+    }
+	$developer_name = ucwords(strtolower($developer_name_cap));
+    /* Default attribute selected */
+    if ($value == 'SINGLE-APP') {
+        if ($env == 'test') {
+            $env1 = 'QA';
+        } elseif ($env == 'prod') {
+            $env1 = '';
+        }
+    }
+    /* Student Service attribute selected
+    Based on the current environment, second app
+    will get created in different environment;
+     */
+    if ($value == 'DUAL-APP') {
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            if (in_array('qa', $api_product->getEnvironments())) {
+                $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+            if (in_array('prod', $api_product->getEnvironments())) {
+                $prod_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+        }
+        $env = $form_state->getValue('field_environments')[0]['value'];
+        if ($env == 'test') {
+            $env1 = 'QA';
+            $env2 = '';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = substr($val, 0, (strlen($val) - 3));
+                    $replace_arr[] = $crop_value;
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $prod_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+        if ($env == 'prod') {
+            $env1 = '';
+            $env2 = 'QA';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = $val;
+                    $replace_arr[] = $crop_value . '-QA';
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $test_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+    }
+
+    /* Combination of Student service and Default attribute selected
+    Two Apps will create if Default api product available in both environments
+    One App will create if Default Api product is not available
+    in alternative environment.;
+     */
+    if ($value == 'Combine') {
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $client = $auth->getClient();
+        $product_controller = new ApiProductController($auth->getOrganization(), $client);
+        $api_products = $product_controller->getEntities();
+        foreach ($api_products as $api_product) {
+            if (in_array('qa', $api_product->getEnvironments())) {
+                $test_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+            if (in_array('prod', $api_product->getEnvironments())) {
+                $prod_api_products[$api_product->getName()] = $api_product->getDisplayName();
+            }
+        }
+        if ($env == 'test') {
+            $env1 = 'QA';
+            $env2 = '';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = substr($val, 0, (strlen($val) - 3));
+                    $replace_arr[] = $crop_value;
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $prod_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+        if ($env == 'prod') {
+            $env1 = '';
+            $env2 = 'QA';
+            foreach ($selected_api_products as $key => $val) {
+                $api_product_attributes = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val/attributes/DEV-PORTAL-PRODUCT-TYPE", [
+                    'headers' => ['Content-Type' => 'application/json'],
+                ])->getBody()->getContents();
+                $attr_value = json_decode($api_product_attributes, TRUE);
+                $check_value = $attr_value['value'];
+                if ($check_value != 'SINGLE-APP') {
+                    $crop_value = $val;
+                    $replace_arr[] = $crop_value . '-QA';
+                }
+            }
+            foreach ($replace_arr as $val) {
+                if (in_array($val, $test_api_products)) {
+                    $selected_api_products_env[] = $val;
+                }
+            }
+        }
+    }
+    //$random_string = substr(str_shuffle($permitted_chars), 0, 6);
+    // $name = $app_name . _ . $random_string;
+    if (isset($env1)) {
+        if ($env1 == '') {
+            //$tname1 = $name;
+            $display_name = $app_name;
+        } else {
+            //  $tname1 = $name . '_' . $env1;
+            $display_name = $app_name . '_' . $env1;
+        }
+    } else {
+        // $tname1 = $name;
+        $display_name = $app_name;
+    }
+    if (isset($env2)) {
+        if ($env2 == '') {
+            // $tname2 = $name;
+            $display_name2 = $app_name;
+        } else {
+            // $tname2 = $name . '_' . $env2;
+            $display_name2 = $app_name . '_' . $env2;
+        }
+    } else {
+        $display_name2 = $app_name;
+    }
+    $disp_final1 = str_replace('_', '-', $display_name);
+    $disp_final2 = str_replace('_', '-', $display_name2);
+    $developer_apps = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/developers/$developer_email/apps", [
+        'headers' => ['Content-Type' => 'application/json'],
+    ])->getBody()->getContents();
+    $developer_apps_exist = json_decode($developer_apps, TRUE);
+    if (empty($developer_apps_exist)) {
+        drupal_flush_all_caches();
+    }
+    $response = $client->post("https://api.enterprise.apigee.com/v1/organizations/$org_name/developers/$developer_email/apps",
+        json_encode(
+            [
+                "name" => $disp_final1,
+                "apiProducts" => $selected_api_products,
+                "attributes" => [
+                    ["name" => "DisplayName", "value" => $disp_final1],
+                    ["name" => "Notes", "value" => $description],
+                ],
+            ]
+        ), ['Content-Type' => 'application/json']);
+    if ($value != 'SINGLE-APP') {
+        $app_msg = 'Apps are successfully created.';
+        $response = $client->post("https://api.enterprise.apigee.com/v1/organizations/$org_name/developers/$developer_email/apps",
+            json_encode(
+                [
+                    "name" => $disp_final2,
+                    "apiProducts" => $selected_api_products_env,
+                    "attributes" => [
+                        ["name" => "DisplayName", "value" => $disp_final2],
+                        ["name" => "Notes", "value" => $description],
+                    ],
+                ]
+            ), ['Content-Type' => 'application/json']);
+    } else {
+        $app_msg = 'App is successfully created.';
+    }
+    $url = Url::fromUri("internal:/user/$user_id/apps");
+    $form_state->setRedirectUrl($url);
+    \Drupal::messenger()->addStatus(t($app_msg));
+    if(isset($selected_api_products)) {
+        $i=0;
+        foreach($selected_api_products as $val) {
+            $users = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val", [
+                'headers' => ['Content-Type' => 'application/json'],
+            ])->getBody()->getContents();
+            $user_emails[$i] = json_decode($users, TRUE);
+            $i++;
+        }
+        foreach ($user_emails as $user) {
+            $user_creators[$user['displayName']][] = $user['createdBy'];
+        }
+        $toImplode1 = array();
+        $api_products = array();
+        foreach($user_creators as $key => $value) {
+            $user_env_one = user_load_by_mail($value[0]);
+            if($user_env_one != '') {
+                $user_name_one_cap = $user_env_one->get('first_name')->getValue()[0]['value'].' '. $user_env_one->get('last_name')->getValue()[0]['value'];
+            }
+            else{
+                $user_name_one_cap = '';
+            }
+            $api_products[] = $key.",";
+			$user_name_one = ucwords(strtolower($user_name_one_cap));
+            $toImplode1[]= "$key, $user_name_one, $value[0]".",";
+        }
+        $imploded1=implode('',$toImplode1);
+        $nameDetails = '<ul>';
+        foreach($toImplode1 as $value_env){
+            $nameDetails.= '<li>'.$value_env.'</li>';
+        }
+        $nameDetails.= '</ul>';
+        $comma_seperated_apiproducts = implode('',$api_products);
+        $config = \Drupal::service('config.factory')->getEditable('custom_app_email.settings');
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $to = $config->get('ucla_emails');
+        $var = '<br />';
+        $url = '<a href = "https://ucla.login.apigee.com/login" target=_blank>UCLA Edge</a>';
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $params = [
+            'subject' => "Approval Required for an $disp_final1 – Notification from UCLA Portal",
+            'body' => "
+      Greetings All," . $var . "" . $var . "
+
+      Please be informed about an APP created in UCLA Developer Portal. Action of APP approval is required by the product owners.If you are the product owner for the selected products, please login to edge and take appropriate action. " . $var . " Here the details available for your review." . $var . "" . $var . "
+
+      APP Details:" . $var . "
+      App Created by : " . $developer_name . "," . $developer_email . "" . $var . "
+      APP Name: ".$disp_final1."" . $var . "
+      Selected Products: ".$comma_seperated_apiproducts." " . $var . "
+
+      Product Owner Details:" . $var . "
+      ".$nameDetails." " . $var . "
+
+      UCLA Login URL : " . $url . "",
+        ];
+        $from = \Drupal::config('system.site')->get('mail');
+        $result = $mailManager->mail('custom_app_email', 'ucla_app_emails', $to, $langcode, $params, $from, true);
+        // \Drupal::messenger()->addStatus(t('The '.$disp_final1.' App has been created by a '.$developer_email.' The Api Products and their owners associated with this app are '. $imploded1));
+    }
+    if(isset($selected_api_products_env)) {
+        $j=0;
+        foreach($selected_api_products_env as $val1) {
+            $users_env = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val1", [
+                'headers' => ['Content-Type' => 'application/json'],
+            ])->getBody()->getContents();
+            $user_emails_env[$j] = json_decode($users_env, TRUE);
+            $j++;
+        }
+        foreach ($user_emails_env as $user1) {
+            $user_creators_env[$user1['displayName']][] = $user1['createdBy'];
+        }
+        $toImplode=array();
+        $api_products1 = array();
+        foreach($user_creators_env as $key1 => $value1) {
+            $users_env_two = user_load_by_mail($value1[0]);
+            if($users_env_two != '') {
+                $user_name_two_cap = $users_env_two->get('first_name')->getValue()[0]['value'].' '. $users_env_two->get('last_name')->getValue()[0]['value'];
+            }
+            else{
+                $user_name_two_cap = '';
+            }
+            $api_products1[] = $key1.",";
+			$user_name_two = ucwords(strtolower($user_name_two_cap));
+            $toImplode[]= "$key1, $user_name_two, $value1[0]".",";
+        }
+        $imploded=implode('',$toImplode);
+        $nameDetails1 = '<ul>';
+        foreach($toImplode as $value_final){
+            $nameDetails1.= '<li>'.$value_final.'</li>';
+        }
+        $nameDetails1.= '</ul>';
+        $comma_seperated_apiproducts1 = implode('',$api_products1);
+        $config = \Drupal::service('config.factory')->getEditable('custom_app_email.settings');
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $to = $config->get('ucla_emails');
+        $var = '<br />';
+        $url = '<a href = "https://ucla.login.apigee.com/login" target=_blank>UCLA Edge</a>';
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $params = [
+            'subject' => "Approval Required for an $disp_final2 – Notification from UCLA Portal",
+            'body' => "
+      Greetings All,". $var ."". $var ."
+
+      Please be informed about an APP created in UCLA Developer Portal. Action of APP approval is required by the product owners.If you are the product owner for the selected products, please login to edge and take appropriate action. Here the details available for your review.". $var ."" . $var . "
+
+      APP Details: ". $var ."
+      App Created by : " . $developer_name . "," . $developer_email . "" . $var . "
+      APP Name: ".$disp_final2." ". $var ."
+      Selected Products: ".$comma_seperated_apiproducts1." ". $var ."" . $var . "
+
+      Product Owner Details:". $var ."
+      ".$nameDetails1." " . $var . "
+
+      UCLA Login URL : " . $url . "",
+
+        ];
+        $from = \Drupal::config('system.site')->get('mail');;
+        $result = $mailManager->mail('custom_app_email', 'ucla_app_emails', $to, $langcode, $params, $from, true);
+    }
+}
+
+/**
+ * Restrict Catalog entity list edit access only to app domain owner
+ * for description,swagger fields.
+ * @todo Remove post custom entity to apidoc node migration.
+ */
+function custom_api_catalog_form_catalog_entity_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    $account = \Drupal::currentUser();
+    $roles_array = $account->getRoles();
+    $user_data  = \Drupal\user\Entity\User::load($account->id());
+    $user_app_domain = $user_data->get('field_product_category')->getValue();
+    $product_app_domain = array();
+    $product_app_domain = $form['field_a']['widget']['#default_value'];
+    $user_app_domain_final = array();
+    foreach($user_app_domain as $key=>$value){
+        $user_app_domain_final[] = $user_app_domain[$key]['target_id'];
+    }
+    $bef_diff_product_app_domain = count($product_app_domain);
+    sort($product_app_domain);
+    sort($user_app_domain_final);
+    $aft_dif_product_app_domain = count(array_diff($product_app_domain,$user_app_domain_final));
+
+    if($bef_diff_product_app_domain != $aft_dif_product_app_domain) {
+        $bundle_fields = \Drupal::entityManager()->getFieldDefinitions('catalog_entity', 'catalog_entity');
+        $all_fields = array_keys($bundle_fields);
+        if (!in_array('app', $roles_array)) {
+            $form['#disabled'] = 'disabled';
+        } else {
+            foreach ($all_fields as $field) {
+                if ($field == 'field_api_product_description' || $field == 'field_swagger_document') {
+                    continue;
+                }
+                $form[$field]['#disabled'] = 'disabled';
+            }
+        }
+    } else {
+        $form['#disabled'] = 'disabled';
+    }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Restrict Catalog entity list edit
+ * access only to app domain owner for description,swagger fields.
+ */
+function custom_api_catalog_form_node_apidoc_edit_form_alter(&$form, FormStateInterface $formState, $form_id) {
+  $user = User::load(\Drupal::currentUser()->id());
+  $userRoles = $user->getRoles();
+  $user_app_domain = $user->get('field_product_category')->getValue();
+  $product_app_domain = $form['field_categories']['widget']['#default_value'];
+
+  $user_app_domain_final = [];
+  foreach ($user_app_domain as $key => $value){
+    $user_app_domain_final[] = $user_app_domain[$key]['target_id'];
+  }
+  $bef_diff_product_app_domain = count($product_app_domain);
+  sort($product_app_domain);
+  sort($user_app_domain_final);
+  $aft_dif_product_app_domain = count(array_diff($product_app_domain, $user_app_domain_final));
+  $allowedFields = [
+    'body',
+    'field_apidoc_spec',
+    'field_apidoc_spec_md5',
+    'field_apidoc_fetched_timestamp',
+    'field_apidoc_spec_file_source',
+    'field_apidoc_file_link'
+  ];
+
+  if ($bef_diff_product_app_domain != $aft_dif_product_app_domain) {
+    $bundle_fields = \Drupal::service('entity_field.manager')->getFieldDefinitions('node', 'apidoc');
+    $all_fields = array_keys($bundle_fields);
+    if (!in_array('app', $userRoles)) {
+      $form['#disabled'] = 'disabled';
+    }
+    else {
+      foreach ($all_fields as $field) {
+        if (in_array($field, $allowedFields)) {
+          continue;
+        }
+        $form[$field]['#disabled'] = 'disabled';
+      }
+    }
+  }
+  else {
+    $form['#disabled'] = 'disabled';
+  }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_edit_developer_submit(array $form, FormStateInterface $form_state) {
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $client = $auth->getClient();
+    $org_name = $auth->getOrganization();
+    $consumer_developer_app = array_keys($form['credential']);
+    $developer_selected_products = array_values($form_state->getValues()['credential'][$consumer_developer_app[2]]['api_products']);
+    foreach ($developer_selected_products as $dev) {
+        if(gettype($dev) == 'string'){
+            $developer_products[] = $dev;
+        }
+    }
+    $user_id = \Drupal::currentUser()->id();
+    $account = \Drupal\user\Entity\User::load($user_id);
+    $name_cap = $account->get('first_name')->getValue()[0]['value'].' '. $account->get('last_name')->getValue()[0]['value'];
+	$name = ucwords(strtolower($name_cap));
+    $developer_email = $account->get('mail')->getValue()[0]['value'];
+    $url = Url::fromUri("internal:/user/$user_id/apps");
+    $form_state->setRedirectUrl($url);
+    $app_name_developer = $form_state->getValue('name');
+    if(isset($developer_products)) {
+        $j=0;
+        foreach($developer_products as $dev_prod) {
+            $users_dev_env = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$dev_prod", [
+                'headers' => ['Content-Type' => 'application/json'],
+            ])->getBody()->getContents();
+            $user_emails_env_developer[$j] = json_decode($users_dev_env, TRUE);
+            $j++;
+        }
+        foreach ($user_emails_env_developer as $user_developer) {
+            $user_create_env[$user_developer['displayName']][] = $user_developer['createdBy'];
+        }
+        $toImplode=array();
+        $api_products1 = array();
+        foreach($user_create_env as $prod => $user_obj) {
+            $users_env_two = user_load_by_mail($user_obj[0]);
+            if($users_env_two != '') {
+                $user_name_two_cap = $users_env_two->get('first_name')->getValue()[0]['value'].' '. $users_env_two->get('last_name')->getValue()[0]['value'];
+            }
+            else{
+                $user_name_two_cap = '';
+            }
+			$user_name_two = ucwords(strtolower($user_name_two_cap));
+            $api_products1[] = $prod.",";
+            $toImplode[]= "$prod, $user_name_two, $user_obj[0]".",";
+        }
+        $imploded=implode('',$toImplode);
+        $nameDetails1 = '<ul>';
+        foreach($toImplode as $value_final){
+            $nameDetails1.= '<li>'.$value_final.'</li>';
+        }
+        $nameDetails1.= '</ul>';
+        $comma_seperated_apiproducts1 = implode('',$api_products1);
+        $config = \Drupal::service('config.factory')->getEditable('custom_app_email.settings');
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $to = $config->get('ucla_emails');
+        $var = '<br />';
+        $url = '<a href = "https://ucla.login.apigee.com/login" target=_blank>UCLA Edge</a>';
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $params = [
+            'subject' => "App updated - Approval Required for an $app_name_developer – Notification from UCLA Portal",
+            'body' => "
+      Greetings All,". $var ."". $var ."
+
+      Please be informed about an APP updated in UCLA Developer Portal. Action of API Products approval is required by the product owners.If you are the product owner for the selected products, please login to edge and take appropriate action. Here the details available for your review.". $var ."" . $var . "
+
+      APP Details: ". $var ."
+      App Created by : " . $name . " , " . $developer_email . " " . $var . "
+      APP Name: ".$app_name_developer." ". $var ."
+      Selected Products: ".$comma_seperated_apiproducts1." ". $var ."" . $var . "
+
+      Product Owner Details:". $var ."
+      ".$nameDetails1." " . $var . "
+
+      UCLA Login URL : " . $url . "",
+
+        ];
+        $from = \Drupal::config('system.site')->get('mail');;
+        $result = $mailManager->mail('custom_app_email', 'ucla_app_emails', $to, $langcode, $params, $from, true);
+    }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_edit_team_app_submit(array $form, FormStateInterface $form_state){
+    $auth = \Drupal::service('apigee_edge.sdk_connector');
+    $client = $auth->getClient();
+    $org_name = $auth->getOrganization();
+    $consumer_team_app = array_keys($form['credential']);
+    $team_selected_products = array_values($form_state->getValues()['credential'][$consumer_team_app[2]]['api_products']);
+    foreach ($team_selected_products as $team) {
+        if(gettype($team) == 'string'){
+            $team_products[] = $team;
+        }
+    }
+    $app_name_team = $form_state->getValue('name');
+    $team_name = $form['owner']['#value'];
+    if(isset($team_products)) {
+        $i=0;
+        foreach($team_products as $val) {
+            $users = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/apiproducts/$val", [
+                'headers' => ['Content-Type' => 'application/json'],
+            ])->getBody()->getContents();
+            $user_emails[$i] = json_decode($users, TRUE);
+            $i++;
+        }
+        foreach ($user_emails as $user) {
+            $user_creators[$user['displayName']][] = $user['createdBy'];
+        }
+        $toImplode1 = array();
+        $api_products = array();
+        foreach($user_creators as $key => $value) {
+            $users_env_one = user_load_by_mail($value[0]);
+            if($users_env_one != '') {
+                $user_name_team_cap = $users_env_one->get('first_name')->getValue()[0]['value'].' '. $users_env_one->get('last_name')->getValue()[0]['value'];
+            }
+            else{
+                $user_name_team_cap = '';
+            }
+            $api_products[] = $key.",";
+			$user_name_team = ucwords(strtolower($user_name_team_cap));
+            $toImplode1[]= "$key, $user_name_team, $value[0]".",";
+        }
+        $imploded1=implode('',$toImplode1);
+        $nameDetails = '<ul>';
+        foreach($toImplode1 as $value_tapp){
+            $nameDetails.= '<li>'.$value_tapp.'</li>';
+        }
+        $nameDetails.= '</ul>';
+        //\Drupal::logger('Details App')->notice($nameDetails);
+        $comma_seperated_apiproducts = implode('',$api_products);
+        $config = \Drupal::service('config.factory')->getEditable('custom_app_email.settings');
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $to = $config->get('ucla_emails');
+        $var = '<br />';
+        $url = '<a href = "https://ucla.login.apigee.com/login" target=_blank>UCLA Edge</a>';
+        $langcode = \Drupal::currentUser()->getPreferredLangcode();
+        $params = [
+            'subject' => "App updated - Approval Required for an $app_name_team – Notification from UCLA Portal",
+            'body' => "
+      Greetings All," . $var . "" . $var . "
+
+      Please be informed about an APP updated in UCLA Developer Portal. Action of API Product approval is required by the product owners.If you are the product owner for the selected products, please login to edge and take appropriate action. Here the details available for your review." . $var . "" . $var . "
+
+      APP Details:" . $var . "
+      App Created by : " . $team_name . " " . $var . "
+      APP Name: ".$app_name_team." " . $var . "
+      Selected Products: ".$comma_seperated_apiproducts."   " . $var . "
+
+      Product Owner Details:
+      ".$nameDetails."" . $var . "
+
+      UCLA Login URL : " . $url . "",
+        ];
+        $from = \Drupal::config('system.site')->get('mail');
+        $result = $mailManager->mail('custom_app_email', 'ucla_app_emails', $to, $langcode, $params, $from, true);
+        // \Drupal::messenger()->addStatus(t('The '.$disp_final1.' App has been created by a '.$developer_email.' The Api Products and their owners associated with this app are '. $imploded1));
+    }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * @todo Remove post custom entity to apidoc node migration.
+ */
+function custom_api_catalog_preprocess_page(&$variables){
+    $current_route = \Drupal::routeMatch();
+    $route_name = $current_route->getRouteName();
+    if($route_name == 'entity.catalog_entity.canonical'){
+        $current_path = \Drupal::service('path.current')->getPath();
+        $explode_path = explode("/", $current_path);
+        $id = end($explode_path);
+        $entity_storage = \Drupal::entityTypeManager()->getStorage('catalog_entity');
+        $entity_id = $entity_storage->load($id);
+        if($entity_id->hasField('field_a')){
+            $entity_field = $entity_id->get('field_a');
+            $entity_value = $entity_field->getValue();
+            $product_app_domain_final = array();
+            foreach($entity_value as $key=>$value){
+                $product_app_domain_final[] = $entity_value[$key]['target_id'];
+            }
+            $account = \Drupal::currentUser();
+            $user_data  = \Drupal\user\Entity\User::load($account->id());
+            if ($user_data->hasField('field_product_category')) {
+                $user_app_domain = $user_data->get('field_product_category')->getValue();
+                $user_app_domain_final = array();
+                foreach($user_app_domain as $key=>$value){
+                    $user_app_domain_final[] = $user_app_domain[$key]['target_id'];
+                }
+                $bef_diff_product_app_domain = count($product_app_domain_final);
+                sort($product_app_domain_final);
+                sort($user_app_domain_final);
+                $aft_dif_product_app_domain = count(array_diff($product_app_domain_final,$user_app_domain_final));
+
+                if($bef_diff_product_app_domain == $aft_dif_product_app_domain){
+                    unset($variables['page']['pre_content']['tabs']);
+                }
+                if($bef_diff_product_app_domain == $aft_dif_product_app_domain){
+                    unset($variables['page']['pre_content']['ucla_apigee_portal_tabs']);
+                }
+            }
+        }
+    }
+}
+
+function custom_api_catalog_preprocess_page_title(&$variables) {
+    $variables['route_name'] = \Drupal::routeMatch()->getRouteName();
+    if($variables['route_name'] == 'entity.team_app.collection_by_team'){
+        $variables['#attached']['library'][] =  'custom_api_catalog/custom_api_catalog';
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $org_name = $auth->getOrganization();
+        $client = $auth->getClient();
+        $current_path = \Drupal::service('path.current')->getPath();
+        $explode_path = explode("/", $current_path);
+        $mycomp = $explode_path[2];
+        $company_app_controller = new CompanyAppController($org_name, $mycomp, $client);
+        /* Get call to retrieve team display name */
+
+        $company_mydetail = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/companies/$mycomp");
+        $company_mydetail_results = json_decode($company_mydetail->getBody());
+        $company_display_name = $company_mydetail_results->displayName;
+        $company_display_name= $company_display_name;
+        $variables['title'] =t($company_display_name.' Team Apps');
+    }
+    if($variables['route_name'] == 'entity.team.members'){
+        $auth = \Drupal::service('apigee_edge.sdk_connector');
+        $org_name = $auth->getOrganization();
+        $client = $auth->getClient();
+        $current_path = \Drupal::service('path.current')->getPath();
+        $explode_path = explode("/", $current_path);
+        $mycomp = $explode_path[2];
+        $company_app_controller = new CompanyAppController($org_name, $mycomp, $client);
+
+        /* Get call to retrieve team display name */
+
+        $company_mydetail = $client->get("https://api.enterprise.apigee.com/v1/organizations/$org_name/companies/$mycomp");
+        $company_mydetail_results = json_decode($company_mydetail->getBody());
+        $company_display_name = $company_mydetail_results->displayName;
+        $company_display_name= $company_display_name;
+        $variables['title'] =t($company_display_name.' Team Members');
+    }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function custom_api_catalog_page_attachments_alter(&$page){
+    $path = $current_path = \Drupal::service('path.current')->getPath();
+    $path_split = explode('/', $path);
+    if(isset($path_split[1]) && isset($path_split[3])) {
+        if($path_split[1] == 'user' && $path_split[3] == 'apps') {
+            $page['#attached']['library'][] ='custom_api_catalog/custom_api_catalog';
+        }
+    }
+}
+
+/**
+ * Implements hook_views_pre_view.
+ */
+function custom_api_catalog_views_pre_view(ViewExecutable $view, $display_id, $args){
+    if (in_array($view->id(), ['api_catalog', 'apigee_api_catalog'])){
+        if (\Drupal::currentUser()->isAnonymous() === TRUE) {
+          $filters = $view->display_handler->getOption('filters');
+          // @todo Remove api_catalog views condition.
+          if ($view->id() === 'api_catalog') {
+            unset($filters['field_portal_visibility_value']['value']['Logged In']);
+          }
+          else {
+            unset($filters['field_portal_visibility_value']['value']['logged_in']);
+          }
+          $view->display_handler->overrideOption('filters', $filters);
+        }
+    }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function custom_edit_member_form_submit(array $form, FormStateInterface $form_state) {
+    $messenger = \Drupal::messenger();
+    $messenger->deleteByType('warning');
+}

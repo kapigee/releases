@@ -1,0 +1,5 @@
+enabled: 1
+plaintext_enabled: 0
+autopreview_enabled: 0
+css: ".collapsible-card .collapsible-card__header .field.field--name-status .field__label {\r\n  display: none;\r\n}\r\nform a.use-ajax:before,\r\nform a.use-ajax:after{\r\n  pointer-events: none;\r\n}\r\n.select-products .view-filters .views-exposed-form .form-actions,\r\n.select-products .view-filters .views-exposed-form .form-actions .form-submit {\r\n  display: block !important;\r\n}\r\n.profile .field-display-name {\r\n    text-transform: lowercase;\r\n}\r\n.profile .field-display-name div:first-letter {\r\n    text-transform: uppercase;\r\n}"
+path: 'public://css_editor/ucla_apigee_portal.css'

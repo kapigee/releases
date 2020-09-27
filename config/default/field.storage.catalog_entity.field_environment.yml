@@ -1,0 +1,29 @@
+uuid: 060b28cb-0beb-4fbb-8b3c-c6c9b591a6f8
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - options
+_core:
+  default_config_hash: ZoVFk0g3D2vV0T2BylBsyq4ttThZz29XOl4OwngmteU
+id: catalog_entity.field_environment
+field_name: field_environment
+entity_type: catalog_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: qa
+      label: QA
+    -
+      value: prod
+      label: PROD
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

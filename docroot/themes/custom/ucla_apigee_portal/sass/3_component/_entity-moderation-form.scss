@@ -1,0 +1,13 @@
+.entity-moderation-form {
+  &__item {
+    margin: 0 2rem 0 0;
+
+    &:before {
+      display: none;
+    }
+  }
+
+  label {
+    font-weight: $font-weight--bold;
+  }
+}

@@ -1,0 +1,23 @@
+uuid: 3db8c7e8-5473-4289-969e-6b135ff8ae6c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.developer_app.field_environments
+  module:
+    - apigee_edge
+    - options
+id: developer_app.developer_app.field_environments
+field_name: field_environments
+entity_type: developer_app
+bundle: developer_app
+label: Environments
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: prod
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,20 @@
+uuid: 96ed78bf-3a5b-4d6d-878c-9c62b7d3d546
+langcode: en
+status: true
+dependencies:
+  theme:
+    - apigee_kickstart
+_core:
+  default_config_hash: hwdHa18yjGOYn7Aag8iof5QKhzg6RPA4VCDEAmiVqP8
+id: apigee_kickstart_actions
+theme: apigee_kickstart
+region: tasks
+weight: 1
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

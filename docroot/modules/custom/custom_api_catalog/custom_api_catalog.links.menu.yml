@@ -1,0 +1,14 @@
+
+# Catalog entity menu items definition
+entity.catalog_entity.collection:
+  title: 'Catalog entity list'
+  route_name: entity.catalog_entity.collection
+  description: 'List Catalog entity entities'
+  parent: system.admin_structure
+  weight: 100
+
+catalog_entity.admin.structure.settings:
+  title: 'Catalog entity settings'
+  description: 'Configure Catalog entity entities'
+  route_name: catalog_entity.settings
+  parent: system.admin_structure

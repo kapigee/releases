@@ -1,0 +1,19 @@
+uuid: 2b9106c2-0a77-423b-ac7c-b85628709e4d
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - text
+id: catalog_entity.field_api_product_description
+field_name: field_api_product_description
+entity_type: catalog_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

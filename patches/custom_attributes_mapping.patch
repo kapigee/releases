@@ -1,0 +1,48 @@
+diff --git a/src/ExternalAuth.php b/src/ExternalAuth.php
+index 286a394..863962c 100644
+--- a/src/ExternalAuth.php
++++ b/src/ExternalAuth.php
+@@ -116,16 +116,27 @@ class ExternalAuth implements ExternalAuthInterface {
+     }
+ 
+     // Set up the account data to be used for the user entity.
+-    $account_data = array_merge(
+-      [
+-        'name' => $authmap_event->getUsername(),
+-        'init' => $provider . '_' . $authmap_event->getAuthname(),
+-        'status' => 1,
+-        'access' => (int) $_SERVER['REQUEST_TIME'],
+-      ],
+-      $account_data
++    /*   $account_data = array_merge(
++         [
++           'name' => $authmap_event->getUsername(),
++           'init' => $provider . '_' . $authmap_event->getAuthname(),
++           'status' => 1,
++           'access' => (int) $_SERVER['REQUEST_TIME'],
++         ],
++         $account_data
++       );
++       $account = $entity_storage->create($account_data);
++   */
++    $values = array(
++      'first_name' => 'FirstName',
++      'last_name' => 'LastName',
++      'name' => $authmap_event->getUsername(),
++      'mail' => $authname,
++      'init' => $provider . '_' . $authmap_event->getAuthname(),
++      'status' => 1,
++      'access' => (int) $_SERVER['REQUEST_TIME'],
+     );
+-    $account = $entity_storage->create($account_data);
++    $account = $entity_storage->create($values);
+ 
+     $account->enforceIsNew();
+     $account->save();
+@@ -179,4 +190,4 @@ class ExternalAuth implements ExternalAuthInterface {
+     }
+   }
+ 
+-}
++}
+\ No newline at end of file

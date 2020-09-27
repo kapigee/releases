@@ -1,0 +1,287 @@
+//------------------------------------
+//  Variables
+//------------------------------------
+
+// Base colors
+// -------------------------
+
+$black:   #000 !default;
+$gray:    #e5e5e5 !default;
+$white:   #fff !default;
+$blue:    #2774ae !default;
+$gold:    #ffd100 !default;
+
+// Grays
+$gray-90:       tint($black, 10) !default;
+$gray-80:       tint($black, 19.9) !default;
+$gray-70:       tint($black, 30) !default;
+$gray-60:       tint($black, 40) !default;
+$gray-50:       tint($black, 49.7) !default;
+$gray-40:       tint($black, 60) !default;
+$gray-30:       tint($black, 69.7) !default;
+$gray-20:       tint($black, 80) !default;
+$gray-10:       $gray !default;
+$lightest-gray: #ebebeb !default;
+
+
+// Brand Colors
+// -------------------------
+
+$brand--primary:          $blue !default;
+$brand--primary-darker:   #005587 !default;
+$brand--primary-darkest:  #003b5c !default;
+$brand--primary-lighter:  #8bb8e8 !default;
+$brand--primary-lightest: #c3d7ee !default;
+$brand--secondary:        $gold !default;
+
+// Brand Color Tints
+//$brand--primary-90:     tint($brand--primary, 10) !default;
+//$brand--primary-80:     tint($brand--primary, 19.9) !default;
+//$brand--primary-70:     tint($brand--primary, 30) !default;
+//$brand--primary-60:     tint($brand--primary, 40) !default;
+//$brand--primary-50:     tint($brand--primary, 49.7) !default;
+//$brand--primary-40:     tint($brand--primary, 60) !default;
+//$brand--primary-30:     tint($brand--primary, 69.7) !default;
+//$brand--primary-20:     tint($brand--primary, 80) !default;
+//$brand--primary-10:     tint($brand--primary, 90) !default;
+//
+//$brand--secondary-90:   tint($brand--secondary, 10) !default;
+//$brand--secondary-80:   tint($brand--secondary, 20) !default;
+//$brand--secondary-70:   tint($brand--secondary, 30) !default;
+//$brand--secondary-60:   tint($brand--secondary, 40) !default;
+//$brand--secondary-50:   tint($brand--secondary, 49.9) !default;
+//$brand--secondary-40:   tint($brand--secondary, 60) !default;
+//$brand--secondary-30:   tint($brand--secondary, 70) !default;
+//$brand--secondary-20:   tint($brand--secondary, 80) !default;
+//$brand--secondary-10:   tint($brand--secondary, 90) !default;
+
+// Denotive Colors
+$brand--success:        #007339 !default;
+$brand--warning:        #f57f17 !default;
+$brand--danger:         #d60000 !default;
+$brand--info:           #8bb8e8 !default;
+$brand--gray:           #949494 !default;
+
+// Interactive State Colors
+// -------------------------
+$state-color:                   #00598c !default;
+$state-color-hover:             #0079bf !default;
+$state-color-active:            #003b5c !default;
+$state-color-focus:             #0079bf !default;
+$state-color-disabled:          #757575 !default;
+$state-color-visited:           #5223b0 !default;
+
+$state-color--invert:           $gold !default;
+$state-color-hover--invert:     #ffe500 !default;
+$state-color-active--invert:    #ffbf0f !default;
+$state-color-focus--invert:     #ffe500 !default;
+$state-color-disabled--invert:  #e5e5e5 !default;
+$state-color-visited--invert:   $white !default;
+$state-color-featured:          $lightest-gray !default;
+
+// Filter Colors
+// -------------------------
+$filter-color-white: brightness(0) invert(1);
+$filter-color-black: brightness(0);
+$filter-color-yellow: brightness(0) invert(1) sepia(100%) saturate(2000%);
+
+// Links
+// -------------------------
+
+$link-color:                  $state-color !default;
+$link-color-hover:            $white !default;
+$link-color--secondary:       $state-color--invert !default;
+$link-color-hover--secondary: $state-color-hover--invert !default;
+$link-color--invert:          $white !default;
+$link-color-hover--invert:    $black !default;
+
+
+// Typography
+// -------------------------
+
+$font-color:                $gray-80 !default;
+
+$font-family--native:       Helvetica, -apple-system, system-ui, BlinkMacSystemFont, Arial, "Segoe UI", "Roboto", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
+$font-family--sans-serif:   $font-family--native !default; // Add custom fonts here with a native fallback.
+$font-family--serif:        Georgia, "Times New Roman", Times, serif !default;
+$font-family--monospace:    Menlo, Monaco, Consolas, "Courier New", monospace !default;
+
+$font-family:               $font-family--sans-serif !default;
+$font-family--headings:     $font-family--serif !default;
+
+$font-size:                 16px !default;
+$font-size--large:          ceil($font-size * 1.3125) !default; // ~21px
+$font-size--small:          ceil($font-size * 0.85) !default; // ~14px
+
+$line-height:               1.5 !default;
+$line-height--tiny:         1.125 !default;
+$line-height--small:        1.25 !default;
+
+$font-weight:               normal !default;
+$font-weight--light:        lighter !default;
+$font-weight--bold:         bold !default;
+
+
+// Default Spacing Units
+// -------------------------
+
+$spacer:                1rem !default;
+$spacer--tiny:          $spacer / 4 !default;
+$spacer--small:         $spacer / 2 !default;
+$spacer--large:         $spacer * 2 !default;
+$spacer--huge:          $spacer * 4 !default;
+
+// Preferable to not use fixed spacers.
+//$fixed-spacer:          $font-size !default; // This is 1em at default.
+//$fixed-spacer--tiny:    $fixed-spacer / 4 !default;
+//$fixed-spacer--small:   $fixed-spacer / 2 !default;
+//$fixed-spacer--large:   $fixed-spacer * 2 !default;
+//$fixed-spacer--huge:    $fixed-spacer * 4 !default;
+
+
+// Components
+// -------------------------
+
+$border-radius:             5px !default;
+$border-radius--large:      10px !default;
+$border-radius--small:      3px !default;
+
+// Tables
+$table-bg-accent:           $lightest-gray;
+$table-bg-hover:            #daebfe !default;
+$table-bg-footer-primary:   $gold;
+
+// Forms
+$input-bg:                  $gray-10 !default;
+$input-bg--disabled:        $state-color-disabled !default;
+
+$input-color:               $font-color !default;
+$input-border-color:        $gray-60 !default;
+$input-border-radius:       $border-radius !default;
+$input-border-focus:        $state-color-hover !default;
+$input-bg-focus:            $state-color-focus !default;
+
+$input-color-placeholder:   $gray-80 !default;
+
+$input-height:              $spacer--large + $spacer--small !default;
+
+$legend-color:              $gray-60 !default;
+$legend-border-color:       #e5e5e5 !default;
+
+
+// Miscellaneous
+// -------------------------
+
+// Hr border color
+$hr-border:                   $gray !default;
+
+// Default transition time
+$transition-time:             0.3s !default;
+
+
+// Z-index master list
+// -------------------------
+// Used for a bird's eye view of components dependent on the z-axis
+// Try to avoid customizing these :)
+$zindex-component-bg:     800 !default;
+$zindex-component-mg:     810 !default;
+$zindex-component-fg:     820 !default;
+$zindex-navbar:           830 !default;
+$zindex-dropdown:         840 !default;
+$zindex-popover:          850 !default;
+$zindex-tooltip:          860 !default;
+$zindex-navbar-fixed:     1000 !default;
+$zindex-modal-background: 1100 !default;
+$zindex-modal:            1200 !default;
+
+
+// Object Overrides
+// -------------------------
+// Override objects here or enable modifiers like $o-media-enable--flush
+$o-media-gutter:        $spacer !default;
+$o-box-spacer:          $spacer !default;
+$o-pack-spacer:         $spacer !default;
+
+// Enable object classes
+$o-box-enable--flush:   true !default;
+$o-box-enable--small:   true !default;
+$o-box-enable--large:   true !default;
+$o-media-enable--rev:   true !default;
+$o-media-enable--flush: true !default;
+$o-media-enable--small: true !default;
+$o-media-enable--large: true !default;
+$o-pack-enable--flush:  true !default;
+$o-pack-enable--small:  true !default;
+$o-pack-enable--large:  true !default;
+$o-pack-enable--rev:    true !default;
+$o-pack-enable--auto:   true !default;
+
+
+// Container sizes
+// -------------------------
+
+// Small screen / tablet
+$container-width:       93.75% !default;
+
+// Medium screen / desktop
+//$container-width--md:   $container-width !default;
+
+// Large screen / wide desktop
+$container-width--lg:   85% !default;
+
+// Container margin space
+$container-space:       (100% - $container-width) / 2 !default;
+//$container-space--md:   (100% - $container-width--md) / 2 !default;
+$container-space--lg:   (100% - $container-width--lg) / 2 !default;
+
+
+// Breakpoint Media Queries
+// -------------------------
+
+$media-xsmall:          330px !default;
+$media-small:           576px !default;
+$media-narrow:          768px !default;
+$media-medium:          1024px !default;
+$media-wide:            1200px !default;
+$media-huge:            1600px !default;
+
+$media-xsmall-max:      $media-xsmall - 1px;
+$media-small-max:       $media-small - 1px;
+$media-narrow-max:      $media-narrow - 1px;
+$media-medium-max:      $media-medium - 1px;
+$media-wide-max:        $media-wide - 1px;
+$media-huge-max:        $media-huge - 1px;
+
+// Create breakpoints
+$bp-xsmall:             $media-xsmall $media-small-max;
+$bp-small:              $media-small $media-narrow-max;
+$bp-narrow:             $media-narrow $media-medium-max;
+$bp-medium:             $media-medium $media-wide-max;
+$bp-wide:               $media-wide $media-huge-max;
+$bp-huge:               $media-huge;
+
+$bp-xsmall--up:         $media-xsmall;
+$bp-small--up:          $media-small;
+$bp-narrow--up:         $media-narrow;
+$bp-medium--up:         $media-medium; // This is the standard break point to desktop.
+$bp-wide--up:           $media-wide;
+
+$bp-xsmall--down:       max-width $media-xsmall-max;
+$bp-small--down:        max-width $media-small-max;
+$bp-narrow--down:       max-width $media-narrow-max;
+$bp-medium--down:       max-width $media-medium-max;
+$bp-wide--down:         max-width $media-wide-max;
+$bp-huge--down:         max-width $media-huge-max;
+
+$bp-narrow--landscape:  ($bp-narrow--down) (orientation landscape) !default;
+
+
+// Setup grids
+// -------------------------
+
+// First enable Autoprefixer to use grids.
+// sass-lint:disable no-css-comments
+/*! autoprefixer grid: on */
+
+$grid-gap: 1rem;

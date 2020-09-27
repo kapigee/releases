@@ -1,0 +1,42 @@
+//------------------------------------
+//  Hamburger
+//------------------------------------
+.hamburger {
+  display: flex;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: .15rem;
+
+  &__icon {
+    @include burger(22px, 3px, 4px, $state-color, 0, 0);
+  }
+
+  &:hover {
+    .hamburger__icon,
+    .hamburger__icon:before,
+    .hamburger__icon:after {
+      background: $white;
+    }
+  }
+
+  &:focus {
+    outline: 1px dotted $state-color;
+  }
+
+  // Close Modifier
+  &--close {
+
+    .hamburger__icon {
+      @include burger-to-cross();
+    }
+
+    &:hover {
+      .hamburger__icon {
+        background: transparent;
+      }
+    }
+  }
+}

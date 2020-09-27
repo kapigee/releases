@@ -1,0 +1,33 @@
+uuid: c323382e-4573-4a6d-93b6-32f6466b45ea
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - apigee_kickstart_content
+  module:
+    - system
+  theme:
+    - apigee_kickstart
+_core:
+  default_config_hash: AGBt0DOmhIsracoQha5bMs3L7nJUHiUJxF9n5yMY3jk
+id: apigee_kickstart_title_bar_apis
+theme: apigee_kickstart
+region: header
+weight: 0
+provider: null
+plugin: 'block_content:a94fbb45-8667-451a-b173-cb50cc6faabb'
+settings:
+  id: 'block_content:a94fbb45-8667-451a-b173-cb50cc6faabb'
+  label: 'Title bar: APIs'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /apis
+    negate: false
+    context_mapping: {  }

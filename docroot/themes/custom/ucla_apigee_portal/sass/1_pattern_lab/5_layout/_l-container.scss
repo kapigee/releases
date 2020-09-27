@@ -1,0 +1,8 @@
+//------------------------------------
+//  Container
+//------------------------------------
+
+.l-container {
+  @include clearfix();
+  @include container();
+}

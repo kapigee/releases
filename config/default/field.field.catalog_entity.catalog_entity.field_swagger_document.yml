@@ -1,0 +1,27 @@
+uuid: 42602bf5-38df-43ba-adc6-d42d329692f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_swagger_document
+  module:
+    - custom_api_catalog
+    - file
+id: catalog_entity.catalog_entity.field_swagger_document
+field_name: field_swagger_document
+entity_type: catalog_entity
+bundle: catalog_entity
+label: 'Swagger Documents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'json yaml yml'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

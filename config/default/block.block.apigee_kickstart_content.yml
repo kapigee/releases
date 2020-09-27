@@ -1,0 +1,22 @@
+uuid: 2e0331b7-1443-4435-b851-09147b1fde78
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - apigee_kickstart
+_core:
+  default_config_hash: CGGnuhy-JU0oIvm4VxSAeb_Yb0zoLVjBltRXGxrUkHs
+id: apigee_kickstart_content
+theme: apigee_kickstart
+region: content
+weight: 10
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

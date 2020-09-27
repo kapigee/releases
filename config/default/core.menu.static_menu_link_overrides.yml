@@ -1,0 +1,21 @@
+definitions:
+  contact__site_page:
+    enabled: false
+    menu_name: footer
+    parent: ''
+    expanded: false
+    weight: 0
+  apigee_edge_teams__teams:
+    weight: -45
+    enabled: false
+    menu_name: main
+    parent: ''
+    expanded: false
+  apigee_edge__apps:
+    weight: -47
+    enabled: false
+    menu_name: main
+    parent: ''
+    expanded: false
+_core:
+  default_config_hash: o4bYR9ZupWb3AsOIizTUG4g-nu1mdJqA59UB7QT-ifQ

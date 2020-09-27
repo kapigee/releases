@@ -1,0 +1,14 @@
+.tabs {
+
+  li {
+    @extend .tabs__tab;
+
+    a {
+      @extend .tabs__link;
+    }
+
+    &.is-active a {
+      @extend .tabs__link.active;
+    }
+  }
+}

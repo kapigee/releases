@@ -1,0 +1,7 @@
+custom_api_catalog.sync_api_products_form:
+  path: '/admin/config/syncmyapiproducts'
+  defaults:
+    _form: '\Drupal\custom_api_catalog\Form\SyncApiProductsForm'
+    _title: 'SyncApiProductsForm'
+  requirements:
+    _access: 'TRUE'

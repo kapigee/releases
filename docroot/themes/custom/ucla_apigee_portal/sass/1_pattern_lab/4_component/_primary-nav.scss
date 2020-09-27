@@ -1,0 +1,221 @@
+//------------------------------------
+//  Primary Main navigation
+//------------------------------------
+.nav-primary {
+
+  // The main list of navigation links.
+  &__list {
+    @include reset-list();
+
+    // Make the navigation a flexbox above 1200px
+    @include breakpoint($bp-medium--up) {
+      display: flex;
+    }
+
+    // Style li(s)
+    li {
+      margin: 0;
+      min-width: 100%;
+      border-bottom: 1px solid $gray-20;
+
+      // Style li(s) above 1200px
+      @include breakpoint($bp-medium--up) {
+        min-width: inherit;
+        flex-basis: auto;
+        align-self: flex-end;
+        border:  1px solid $white;
+        border-bottom: 0;
+
+        &:hover {
+
+          // Keep top level item hover state when inside child elements
+          & > .nav-primary__link {
+            background: $state-color-hover;
+            color: $white;
+
+            &:after {
+              filter: brightness(0) invert(1);
+            }
+          }
+
+          // Show child links on hover of parents container
+          & > ul {
+            display: block;
+            margin-top: 0;
+            z-index: $zindex-component-fg;
+          }
+        }
+      }
+
+      // Style child links below 1200px
+      & > ul {
+        @include reset-list();
+
+        a {
+          display: block;
+          background-color: $gray-10;
+          padding-left: $spacer--large;
+
+          // Unset child link styles above 1200px
+          @include breakpoint($bp-medium--up) {
+            background-color: $white;
+            padding-left: $spacer;
+          }
+        }
+      }
+    }
+  }
+
+  &__toggle {
+    background-color: $white;
+    border: 0;
+    border-left: 1px solid $gray;
+    width: 3.2em;
+    margin-left: auto;
+
+    &.is-open {
+      &:after {
+        transform: rotate(-90deg);
+      }
+    }
+
+    &:after {
+      transform: rotate(90deg);
+    }
+
+    &:hover {
+      background-color: $state-color-hover;
+
+      &:after {
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    &:focus {
+      outline-offset: -$spacer--tiny;
+      outline: 1px dotted $state-color-hover;
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1em;
+      background: url("../images/chevron-blue.svg") no-repeat center;
+      background-size: .5em;
+    }
+
+    @include breakpoint($bp-medium--up) {
+      display: none;
+    }
+  }
+
+  // Child list ul(s)
+  &__sublist {
+    width: 100%;
+
+    @include breakpoint($bp-medium--up) {
+      position: absolute;
+      width: 20rem;
+    }
+
+    &--open {
+      display: block;
+    }
+
+    // TODO refactor this to .nav-primary__list li>ul li
+    .nav-primary__item {
+
+      @include breakpoint($bp-medium--up) {
+        border: 1px solid $gray-20;
+        border-top: 0;
+      }
+
+      &:first-child {
+        @include breakpoint($bp-medium--up) {
+          border-top: 1px solid $gray-20;
+        }
+      }
+
+      &:last-child {
+        border-bottom: 0;
+
+        @include breakpoint($bp-medium--up) {
+          border-bottom: 1px solid $gray-20;
+        }
+      }
+    }
+  }
+
+  // Link styling
+  // TODO most of this could be moved to the a selector. Really only need this to target the has children class.
+  &__link {
+    display: block;
+
+    &:hover {
+      background: $state-color-hover;
+      color: $white;
+    }
+
+    &:focus {
+      outline-offset: -$spacer--tiny;
+      outline: 1px dotted $state-color-hover;
+    }
+
+    &--has-children {
+      display: flex;
+      flex-wrap: wrap;
+
+      & > *:nth-child(1) {
+        flex: 1;
+      }
+
+      @include breakpoint($bp-medium--up) {
+        display: inline-block;
+        position: relative;
+        padding-right: 10px;
+
+        .nav-primary__link {
+
+          &:hover {
+            border-bottom: 1px;
+          }
+        }
+
+        & > a {
+          display: flex;
+          align-items: center;
+
+          &:after {
+            content: "";
+            display: block;
+            height: 1em;
+            width: 1em;
+            background: url("../images/chevron-blue.svg") no-repeat center;
+            background-size: .5em;
+            margin-left: 1em;
+            transform: rotate(90deg);
+          }
+        }
+      }
+    }
+  }
+
+  // Hide child items with this class
+  // Class added vis JS
+  &__sublist {
+
+    &--hidden {
+      display: none;
+    }
+  }
+
+  // All primary nav links
+  a {
+    padding: 0.875rem 1rem;
+    color: $state-color;
+    font-weight: $font-weight--bold;
+    text-decoration: none;
+    background: $white;
+  }
+}

@@ -1,0 +1,40 @@
+uuid: 86fada47-97cb-40dc-9a68-976ba5d7c49e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.app_domain_and_sub_domain.field_category_description
+    - field.field.taxonomy_term.app_domain_and_sub_domain.field_display_on_home_page
+    - taxonomy.vocabulary.app_domain_and_sub_domain
+  module:
+    - text
+id: taxonomy_term.app_domain_and_sub_domain.default
+targetEntityType: taxonomy_term
+bundle: app_domain_and_sub_domain
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_category_description:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_display_on_home_page:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+hidden: {  }

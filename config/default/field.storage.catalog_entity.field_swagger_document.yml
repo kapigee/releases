@@ -1,0 +1,23 @@
+uuid: 9bcb05cb-6a5a-438c-8c07-66a5a2c7a3d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - file
+id: catalog_entity.field_swagger_document
+field_name: field_swagger_document
+entity_type: catalog_entity
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

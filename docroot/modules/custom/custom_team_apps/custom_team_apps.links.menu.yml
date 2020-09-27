@@ -1,0 +1,6 @@
+custom_team_apps.environment_settings_form:
+  title: 'Environment Settings'
+  route_name: custom_team_apps.environment_settings_form
+  description: 'Environment Settings form'
+  parent: system.admin_config_system
+  weight: 99

@@ -1,0 +1,90 @@
+//------------------------------------
+//  Image gallery using PhotoSwipe
+//------------------------------------
+
+$gallery-spacing: $spacer--small;
+
+
+// Gallery Grid
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 (-$gallery-spacing) $spacer;
+  overflow: hidden;
+  text-align: center;
+
+  &__item {
+    position: relative;
+    margin-bottom: $spacer;
+    padding: 0 $gallery-spacing;
+    width: 50%;
+
+    @include breakpoint($bp-small--up) {
+      width: 33%;
+    }
+
+    @include breakpoint($bp-wide--up) {
+      width: 25%;
+    }
+  }
+
+  &__title {
+    display: none;
+  }
+
+  // Single Poster image visible
+  &--poster,
+  &--poster & {
+    margin-bottom: 0;
+  }
+
+  &--poster &__item {
+    display: none;
+
+    &:first-child {
+      display: block;
+      margin-bottom: 0;
+      width: 100%;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  &--poster &__title {
+    display: block;
+    width: 100%;
+    padding: $spacer $spacer--large;
+    background: $brand--primary-lightest;
+    text-align: left;
+  }
+
+  a {
+    position: relative;
+    display: block;
+
+    &:after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      content: "";
+      display: block;
+      width: 2em;
+      height: 2em;
+      opacity: .7;
+      background: url("../images/icons/search.svg") $white no-repeat .4em .4em;
+      background-size: 1.2em;
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    &:hover:after {
+      opacity: .8;
+      transform: scale(1.2);
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+}

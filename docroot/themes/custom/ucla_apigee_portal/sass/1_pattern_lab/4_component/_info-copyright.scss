@@ -1,0 +1,32 @@
+//styles for Info Copyright block
+
+.info-copyright {
+
+  a {
+    text-decoration: none;
+    font-weight: $font-weight--bold;
+  }
+
+  @include breakpoint($bp-medium--up) {
+    display: flex;
+    align-items: center;
+    font-size: .75em;
+  }
+
+  &__text {
+    margin-bottom: 0;
+  }
+
+  @include breakpoint($bp-medium--up) {
+    &__list {
+      margin-left: auto;
+      text-align: right;
+    }
+  }
+
+  @include breakpoint($bp-medium--up) {
+    &__social-follow {
+      flex-basis: auto;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+uuid: d0aa7a0b-57e8-4ebf-9a99-d827d3cc36ff
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - apigee_kickstart_content
+  module:
+    - system
+  theme:
+    - apigee_kickstart
+_core:
+  default_config_hash: AUVRtxmZNBYUoBryf-6aPgX0LYMmZvYi0p-p98orIRw
+id: apigee_kickstart_cta_blog
+theme: apigee_kickstart
+region: content_below
+weight: 0
+provider: null
+plugin: 'block_content:de9351da-3424-4401-ba46-64709a9f12d4'
+settings:
+  id: 'block_content:de9351da-3424-4401-ba46-64709a9f12d4'
+  label: 'CTA: Blog'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /blog
+    negate: false
+    context_mapping: {  }

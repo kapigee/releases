@@ -1,0 +1,13 @@
+// Fix the z-index of contextual link buttons
+.contextual {
+  z-index: $zindex-popover;
+
+  ul {
+    @include reset-list();
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+}

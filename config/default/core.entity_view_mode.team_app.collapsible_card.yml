@@ -1,0 +1,12 @@
+uuid: 783ff025-9eb6-4d19-a86c-f02ece20350f
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_edge_teams
+_core:
+  default_config_hash: bCm85MQCVsISpdXVJ0DNqPwJl3Orxf2pVMYRp7AbA08
+id: team_app.collapsible_card
+label: 'Collapsible card'
+targetEntityType: team_app
+cache: true

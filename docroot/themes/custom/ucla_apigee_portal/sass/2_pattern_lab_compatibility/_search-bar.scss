@@ -1,0 +1,16 @@
+.search-bar {
+  // Fix the contextual links breaking layout.
+  &.contextual-region {
+    position: static;
+  }
+
+  .form-item {
+    width: 100%;
+  }
+
+  .form-item,
+  .form-actions {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

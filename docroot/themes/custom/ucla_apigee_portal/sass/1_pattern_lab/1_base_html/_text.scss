@@ -1,0 +1,55 @@
+//------------------------------------
+//  Text-Related Elements
+//------------------------------------
+
+p {
+  margin-top: 0;
+  margin-bottom: $spacer;
+}
+
+strong,
+%strong {
+  font-weight: $font-weight--bold;
+}
+
+// Blockquote
+blockquote {
+  border-left: .25rem solid $brand--primary;
+  padding-left: $spacer;
+}
+
+// Horizontal Rule
+hr {
+  display: block;
+  border: 0;
+  height: 1px;
+  border-top: 1px solid $hr-border;
+  margin: $spacer--large 0;
+  padding: 0;
+}
+
+abbr {
+  border-bottom: 1px dotted $gray-40;
+  cursor: help;
+}
+
+mark {
+  background-color: #fff0a5;
+}
+
+ins {
+  background-color: #daebfe;
+  text-decoration: none;
+}
+
+small {
+  font-size: .75rem;
+
+  @include breakpoint($bp-narrow--up) {
+    font-size: .6667rem;
+  }
+
+  @include breakpoint($bp-medium--up) {
+    font-size: .5714rem;
+  }
+}

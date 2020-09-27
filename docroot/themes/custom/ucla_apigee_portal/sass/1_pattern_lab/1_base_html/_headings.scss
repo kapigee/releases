@@ -1,0 +1,65 @@
+//------------------------------------
+//  Headings
+//------------------------------------
+
+// H1 Heading style
+h1 {
+  @include heading-default();
+  font-size: 1.75rem;
+
+  @include breakpoint($bp-narrow--up) {
+    font-size: 2.3333rem;
+  }
+
+  @include breakpoint($bp-medium--up) {
+    font-size: 2.2857rem;
+  }
+}
+
+// H2 Heading style: Implements the heading--primary() style
+h2 {
+  @include heading--primary();
+}
+
+// H3 Heading style: Implements the heading--secondary() style
+h3 {
+  @include heading--secondary();
+}
+
+// H4 Heading style
+h4 {
+  @include heading-default();
+  font-size: 1.125rem;
+
+  @include breakpoint($bp-narrow--up) {
+    font-size: 1rem;
+  }
+}
+
+// H5 Heading style
+h5 {
+  @include heading-default();
+  font-size: 1rem;
+
+  @include breakpoint($bp-narrow--up) {
+    font-size: .7778rem;
+  }
+
+  @include breakpoint($bp-medium--up) {
+    font-size: .6667rem;
+  }
+}
+
+// H6 Heading style
+h6 {
+  @include heading-default();
+  font-size: .875rem;
+
+  @include breakpoint($bp-narrow--up) {
+    font-size: .6667rem;
+  }
+
+  @include breakpoint($bp-medium--up) {
+    font-size: .5714rem;
+  }
+}

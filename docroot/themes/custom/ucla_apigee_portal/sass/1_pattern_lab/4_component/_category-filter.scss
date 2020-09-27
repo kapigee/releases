@@ -1,0 +1,30 @@
+//------------------------------------
+//  Category Filter
+//------------------------------------
+
+.category-filter {
+  @include reset-list();
+
+  @include breakpoint($bp-medium--up) {
+    font-size: 1rem;
+  }
+
+  &__list-item {
+    margin: 0;
+  }
+
+  &__link {
+    @include link-related();
+    display: block;
+    padding: $spacer--small $spacer;
+
+    &:visited {
+      color: $link-color;
+    }
+
+    .category-filter__list-item--active & {
+      background-color: $brand--secondary;
+      color: $black;
+    }
+  }
+}

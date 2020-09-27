@@ -1,0 +1,21 @@
+uuid: fb24579a-1003-4f8b-987f-210396bce589
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_portal_visibility
+  module:
+    - custom_api_catalog
+    - options
+id: catalog_entity.catalog_entity.field_portal_visibility
+field_name: field_portal_visibility
+entity_type: catalog_entity
+bundle: catalog_entity
+label: 'Portal Visibility'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

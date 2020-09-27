@@ -1,0 +1,27 @@
+uuid: ac11b553-bdeb-441f-8aa2-c934482135d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - options
+id: catalog_entity.field_product_type
+field_name: field_product_type
+entity_type: catalog_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: SINGLE-APP
+      label: SINGLE-APP
+    -
+      value: DUAL-APP
+      label: DUAL-APP
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,27 @@
+uuid: b580f0c3-14a9-4e5c-8802-654ee82ca6ea
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_edge
+    - options
+id: developer_app.field_environments
+field_name: field_environments
+entity_type: developer_app
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: test
+      label: QA
+    -
+      value: prod
+      label: PROD
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

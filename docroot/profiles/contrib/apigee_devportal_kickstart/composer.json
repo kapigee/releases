@@ -1,0 +1,33 @@
+{
+  "name": "apigee/apigee_devportal_kickstart",
+  "description": "A fast demo and starting point for Apigee Developer Portals.",
+  "type": "drupal-profile",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "cweagans/composer-patches": "^1.6.5",
+    "drupal/admin_toolbar": "^2.0",
+    "drupal/adminimal_admin_toolbar": "^1.9",
+    "drupal/apigee_api_catalog": "^2.2",
+    "drupal/apigee_edge": "^1.15",
+    "drupal/better_exposed_filters": "^5.0",
+    "drupal/default_content": "^1.0@alpha",
+    "drupal/email_registration": "^1.0@RC",
+    "drupal/fontawesome": "^2.12",
+    "drupal/paragraphs": "^1.6",
+    "drupal/pathauto": "^1.6",
+    "drupal/radix": "^4.8"
+  },
+  "conflict": {
+    "drupal/pathauto": "<1.6"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "patches": {
+      "drupal/core": {
+        "Fix issue with #summary_details introduced in Drupal 8.6.x": "https://www.drupal.org/files/issues/2018-12-17/core-undefined-index-summary_attributes-2998194-9.patch"
+      }
+    }
+  }
+}

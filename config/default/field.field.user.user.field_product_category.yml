@@ -1,0 +1,32 @@
+uuid: 1efa85ca-60b4-4ed8-882d-8f4cc22409cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_product_category
+    - taxonomy.vocabulary.api_category
+    - taxonomy.vocabulary.app_domain_and_sub_domain
+  module:
+    - user
+id: user.user.field_product_category
+field_name: field_product_category
+entity_type: user
+bundle: user
+label: 'Product Category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      api_category: api_category
+      app_domain_and_sub_domain: app_domain_and_sub_domain
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: api_category
+field_type: entity_reference

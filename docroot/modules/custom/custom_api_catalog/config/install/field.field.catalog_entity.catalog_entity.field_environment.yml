@@ -1,0 +1,21 @@
+uuid: f4867230-1dad-4ebf-bb4f-3cd55f283f77
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_environment
+  module:
+    - custom_api_catalog
+    - options
+id: catalog_entity.catalog_entity.field_environment
+field_name: field_environment
+entity_type: catalog_entity
+bundle: catalog_entity
+label: Environment
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

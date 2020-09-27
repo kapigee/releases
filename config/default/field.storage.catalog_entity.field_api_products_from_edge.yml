@@ -1,0 +1,23 @@
+uuid: 09439b60-f553-4e69-8940-53d73374a3f1
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - options
+_core:
+  default_config_hash: PvVThm3VFjHVX6jprzZoH6Hp0AEEBXkKUGUGsRw-o0s
+id: catalog_entity.field_api_products_from_edge
+field_name: field_api_products_from_edge
+entity_type: catalog_entity
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

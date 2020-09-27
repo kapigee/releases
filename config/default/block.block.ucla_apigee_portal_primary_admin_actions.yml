@@ -1,0 +1,20 @@
+uuid: 8d5b31da-fe6c-48b5-a6b6-49fb6be384ce
+langcode: en
+status: true
+dependencies:
+  theme:
+    - ucla_apigee_portal
+_core:
+  default_config_hash: '-IqhwZ3NDftNRh0CTs4h8ipKt1R2kzZtZ1a32uoz1iI'
+id: ucla_apigee_portal_primary_admin_actions
+theme: ucla_apigee_portal
+region: pre_content
+weight: -4
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

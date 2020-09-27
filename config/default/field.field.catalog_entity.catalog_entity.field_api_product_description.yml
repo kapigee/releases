@@ -1,0 +1,21 @@
+uuid: f62e7963-34f0-4ab8-ba21-7bd3c054131a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_api_product_description
+  module:
+    - custom_api_catalog
+    - text
+id: catalog_entity.catalog_entity.field_api_product_description
+field_name: field_api_product_description
+entity_type: catalog_entity
+bundle: catalog_entity
+label: 'Api Product Description'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

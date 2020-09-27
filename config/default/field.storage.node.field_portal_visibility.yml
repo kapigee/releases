@@ -1,0 +1,30 @@
+uuid: f97aa5e8-10b6-4fee-ba80-b4a2ce67a97c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_portal_visibility
+field_name: field_portal_visibility
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: not_logged_in
+      label: 'Not Logged In'
+    -
+      value: logged_in
+      label: 'Logged In'
+    -
+      value: not_visible
+      label: 'Not Visible'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

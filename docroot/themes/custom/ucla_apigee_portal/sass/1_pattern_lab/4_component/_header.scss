@@ -1,0 +1,101 @@
+//------------------------------------
+//  Header
+//------------------------------------
+.header {
+  position: relative;
+  margin-bottom: $spacer--large;
+  border-bottom: 1px solid $gray-10;
+
+  // Remove the bottom spacing.
+  &--flush {
+    margin-bottom: 0;
+  }
+
+  &__container {
+    @include container();
+    padding-top: 1.5rem;
+
+    @include breakpoint($bp-medium--down) {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+
+  &__main {
+
+    .hamburger {
+      position: absolute;
+      bottom: $spacer;
+      right: $container-space;
+
+      @include breakpoint($bp-medium--up) {
+        display: none;
+      }
+    }
+
+    @include breakpoint($bp-small--down) {
+      margin-right: 2.5rem;
+    }
+  }
+
+  &__navbar {
+    position: fixed;
+    display: block;
+    z-index: $zindex-component-fg;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 100%;
+    background-color: $white;
+    border-top: .5em solid $brand--primary;
+
+    & .nav-primary {
+      margin-top: 3.4em;
+    }
+
+    & .search-bar__form {
+      top: 3em;
+    }
+
+    @include breakpoint($bp-narrow) {
+      width: 23em;
+      right: -23em;
+    }
+
+    @include breakpoint($bp-medium--up) {
+      position: relative;
+      display: flex;
+      right: inherit;
+      align-items: flex-end;
+      justify-content: flex-end;
+      margin-top: $spacer;
+      width: 100%;
+      border-top: 0;
+
+      & .nav-primary {
+        margin-top: 0;
+      }
+
+      & .search-bar__form {
+        top: inherit;
+      }
+    }
+
+    &--open {
+      right: 0;
+      box-shadow: -1px 0 5px 0 rgba(0, 0, 0, 0.48);
+    }
+
+    .hamburger {
+      margin: $spacer--small;
+      margin-left: auto;
+
+      @include breakpoint($bp-medium--up) {
+        display: none;
+      }
+    }
+  }
+}

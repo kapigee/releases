@@ -1,0 +1,38 @@
+uuid: fd519e58-a27a-4234-acb2-872b32d8cf10
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.catalog_entity.catalog_entity.field_api_product_name
+    - field.field.catalog_entity.catalog_entity.field_environment
+  module:
+    - custom_api_catalog
+id: catalog_entity.catalog_entity.default
+targetEntityType: catalog_entity
+bundle: catalog_entity
+mode: default
+content:
+  field_api_product_name:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_environment:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  user_id: true

@@ -1,0 +1,21 @@
+//------------------------------------
+//  Main styles for global items
+//------------------------------------
+
+html {
+  // This font size is what the rest of the fonts in the site using REM will be
+  // based off of. Changing this size will change it throughout the site.
+  @include fluid-type($media-small, 1920px, $font-size, $font-size--large);
+
+  // Add background color to ensure the footer color cascades to the bottom when
+  // there is very minimal vertical content on the site.
+  background-color: $brand--primary;
+}
+
+body {
+  position: relative;
+  background-color: $white;
+  color: $font-color;
+  font-family: $font-family;
+  line-height: $line-height;
+}

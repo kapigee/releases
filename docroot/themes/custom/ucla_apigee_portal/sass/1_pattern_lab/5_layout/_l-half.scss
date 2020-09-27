@@ -1,0 +1,13 @@
+// Create a layout for halves
+@include breakpoint($bp-small--up) {
+  .l-half {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &>* {
+      width: 48%;
+    }
+
+  }
+}

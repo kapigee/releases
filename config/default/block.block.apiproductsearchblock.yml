@@ -1,0 +1,34 @@
+uuid: 4ca305ba-ebc2-4302-be6d-c4ffc0f4524e
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_kickstart_enhancement
+    - custom_team_apps
+    - system
+  theme:
+    - ucla_apigee_portal
+id: apiproductsearchblock
+theme: ucla_apigee_portal
+region: full_width
+weight: 0
+provider: null
+plugin: api_search_product_block
+settings:
+  id: api_search_product_block
+  label: 'Api Product Search Block'
+  provider: custom_team_apps
+  label_display: '0'
+visibility:
+  block_type:
+    id: block_type
+    uuid: 4ca305ba-ebc2-4302-be6d-c4ffc0f4524e
+    bundles: {  }
+    is_adjacent: 0
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

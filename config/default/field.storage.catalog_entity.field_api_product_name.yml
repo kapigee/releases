@@ -1,0 +1,23 @@
+uuid: 6406cb51-a4b2-47c2-aa44-3a4e1ef53063
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+_core:
+  default_config_hash: cZBLFgUXN3CnthpisHqdtmQs1mFWkS3iQHekhmxF0CU
+id: catalog_entity.field_api_product_name
+field_name: field_api_product_name
+entity_type: catalog_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

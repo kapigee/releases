@@ -1,0 +1,5 @@
+entity.catalog_entity.add_form:
+  route_name: entity.catalog_entity.add_form
+  title: 'Add Catalog entity'
+  appears_on:
+    - entity.catalog_entity.collection

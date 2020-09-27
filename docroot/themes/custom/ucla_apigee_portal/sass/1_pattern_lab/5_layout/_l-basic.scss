@@ -1,0 +1,76 @@
+//------------------------------------
+//  Basic sidebar layout
+//------------------------------------
+
+.l-basic {
+  @include breakpoint($bp-medium--up) {
+    @include l-default-settings();
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+    ". title"
+    "first content";
+  }
+
+  .l-title {
+    grid-area: title;
+  }
+
+  .l-content {
+    grid-area: content;
+  }
+
+  .l-sidebar-first {
+    grid-area: first;
+  }
+
+  .l-sidebar-second {
+    grid-area: second;
+  }
+
+  &--reverse {
+    @include breakpoint($bp-medium--up) {
+      @include l-default-settings();
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+      "title ."
+      "content second";
+    }
+  }
+
+  &--3col {
+    @include breakpoint($bp-medium--up) {
+      @include l-default-settings();
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-areas:
+      ". title ."
+      "first content second";
+    }
+  }
+
+  &--left-split {
+    @include breakpoint($bp-medium--up) {
+      grid-template-areas:
+      ". title"
+      "first content"
+      "second content";
+    }
+    @include breakpoint($bp-medium--down) {
+      display: grid;
+      grid-template-areas: "title" "first" "content" "second";
+    }
+  }
+
+  &--right-split {
+    @include breakpoint($bp-medium--up) {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+      "title ."
+      "content first"
+      "content second";
+    }
+    @include breakpoint($bp-medium--down) {
+      display: grid;
+      grid-template-areas: "title" "first" "content" "second";
+    }
+  }
+}

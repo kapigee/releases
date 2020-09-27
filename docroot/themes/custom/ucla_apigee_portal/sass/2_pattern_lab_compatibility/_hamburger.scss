@@ -1,0 +1,5 @@
+.hamburger--mobile {
+  @include breakpoint($bp-medium--up) {
+    display: none;
+  }
+}

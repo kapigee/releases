@@ -1,0 +1,23 @@
+uuid: ccc38449-dcff-4a37-abc1-f88daf0cfddd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.team_app.field_environments
+  module:
+    - apigee_edge_teams
+    - options
+id: team_app.team_app.field_environments
+field_name: field_environments
+entity_type: team_app
+bundle: team_app
+label: Environments
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: prod
+default_value_callback: ''
+settings: {  }
+field_type: list_string

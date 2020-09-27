@@ -1,0 +1,13 @@
+{
+    "name": "custom_api_catalog",
+    "type": "drupal-module",
+    "description": "Sync Api Products from Apigee and listing in Developer Portal",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/custom_api_catalog",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/custom_api_catalog",
+        "source": "http://cgit.drupalcode.org/custom_api_catalog",
+    },
+}

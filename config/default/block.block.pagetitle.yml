@@ -1,0 +1,33 @@
+uuid: b20926ae-22f9-4aa3-a4b7-d370bd36d98c
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_kickstart_enhancement
+    - system
+  theme:
+    - ucla_apigee_portal
+id: pagetitle
+theme: ucla_apigee_portal
+region: title
+weight: 0
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: "<front>\r\n/user/*/apps"
+    negate: true
+    context_mapping: {  }
+  block_type:
+    id: block_type
+    uuid: b20926ae-22f9-4aa3-a4b7-d370bd36d98c
+    bundles: {  }
+    is_adjacent: 0
+    negate: false
+    context_mapping: {  }

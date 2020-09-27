@@ -1,0 +1,84 @@
+//------------------------------------
+//  Slideshow using Slick
+//------------------------------------
+
+$slideshow-button-width: 50px;
+
+// Ajax Loader
+.slick-loading {
+  background: #fff url("../images/slideshow-ajax-loader.gif") center center no-repeat;
+}
+
+// Arrows
+.slick-prev,
+.slick-next {
+  @include vertical-center();
+  position: absolute;
+  z-index: $zindex-component-bg;
+  height: $slideshow-button-width;
+  width: $slideshow-button-width;
+  border: 0;
+  background-color: $white;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 32%;
+  color: transparent;
+  transition: background-position .5s ease;
+}
+
+.slick-next {
+  right: $spacer;
+  background-image: url("../images/slideshow-button-next.svg");
+
+  &:hover {
+    background-position: 1.5em center;
+  }
+}
+
+.slick-prev {
+  left: $spacer;
+  background-image: url("../images/slideshow-button-prev.svg");
+
+  &:hover {
+    background-position: .5em center;
+  }
+}
+
+// Main Slideshow
+.slideshow {
+
+  &__title {
+    @include heading--secondary();
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__text {
+    position: absolute;
+    right: $spacer;
+    bottom: $spacer;
+    padding: $spacer $spacer--large;
+    background-color: $white;
+    border: 1px solid $gray;
+  }
+}
+
+// Thumbnails Navigation Controls
+.slider-nav {
+
+  .slideshow__item {
+    padding: .25em;
+
+    img {
+      cursor: pointer;
+    }
+  }
+
+}
+
+// Slide img
+.slick-slide img {
+  width: 100%;
+}

@@ -1,0 +1,260 @@
+//------------------------------------
+//  Buttons
+//------------------------------------
+
+// Button: Primary styles
+@mixin btn() {
+  @include link-style(); // Adding link styles for <button> compatibility.
+  display: inline-block;
+  padding: $spacer--small $spacer;
+  background-color: $state-color;
+  border: 0; // Needed to clean up <button> tags.
+  border-radius: .125em;
+  color: $white;
+  cursor: pointer;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  width: auto;
+  transition: all .2s ease-in-out;
+
+  &:visited {
+    color: $white;
+  }
+
+  &:focus {
+    background-color: $state-color-hover;
+  }
+
+  &:active {
+    background-color: $state-color-active;
+  }
+
+  &:after {
+    filter: $filter-color-white;
+  }
+}
+
+// Button: Inverted Style `Modifier` for use on dark backgrounds.
+@mixin btn--invert() {
+  background-color: $state-color--invert;
+  color: $black;
+
+  &:visited {
+    color: $black;
+  }
+
+  &:hover {
+    background-color: $state-color-hover--invert;
+    color: $black;
+  }
+
+  &:focus {
+    background-color: $state-color-hover--invert;
+    color: $black;
+    outline-color: $state-color-hover--invert;
+  }
+
+  &:active {
+    background-color: $state-color-active--invert;
+    color: $black;
+  }
+
+  &:after {
+    filter: $filter-color-black;
+  }
+}
+
+// Button: Secondary Style `Modifier`
+@mixin btn--secondary() {
+  background-color: transparent;
+  border: 2px solid $state-color;
+  color: $state-color;
+
+  &:visited {
+    color: $state-color;
+  }
+
+  &:hover {
+    border-color: $state-color-hover;
+    color: $white;
+  }
+
+  &:focus {
+    background-color: transparent;
+    border-color: $state-color-hover;
+    color: $state-color-focus;
+  }
+
+  &:active {
+    border-color: $state-color-active;
+    background-color: $state-color-active;
+    color: $white;
+  }
+
+  // Order of :after is important to make the icons the correct color in each state.
+  &:after {
+    filter: none;
+  }
+
+  &:hover:after {
+    filter: $filter-color-white;
+  }
+
+  &:focus:after {
+    filter: none;
+  }
+
+  &:active:after {
+    filter: $filter-color-white;
+  }
+}
+
+// Button: Tertiary Style `Modifier`
+@mixin btn--tertiary() {
+  background-color: transparent;
+  color: $state-color;
+
+  &:visited {
+    color: $state-color;
+  }
+
+  &:hover,
+  &:focus {
+    color: $white;
+  }
+
+  &:after {
+    filter: none;
+  }
+
+  &:hover:after,
+  &:focus:after,
+  &:active:after {
+    filter: $filter-color-white;
+  }
+
+}
+
+// Common disabled button styles.
+@mixin button-common-disabled() {
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none; // Future-proof disabling of clicks
+}
+
+// Style a button so that it looks disabled
+@mixin btn--disabled() {
+  @include button-common-disabled();
+  background-color: $state-color-disabled;
+  border-color: $state-color-disabled;
+}
+
+@mixin btn--invert-disabled() {
+  @include button-common-disabled();
+  background-color: $state-color-disabled--invert;
+  color: $state-color-disabled;
+}
+
+@mixin btn--tertiary-disabled() {
+  @include button-common-disabled();
+  background-color: transparent;
+  color: $state-color-disabled;
+}
+
+// Button: Default style
+// .button is used by jquery ui so is added for convenience.
+.btn,
+.button {
+  @include btn();
+}
+
+// Button: Inverted Style `Modifier`
+.btn--invert {
+  @include btn--invert();
+}
+
+// Button: Secondary `Modifier`
+.btn--secondary {
+  @include btn--secondary();
+}
+
+// Button: Tertiary `Modifier`
+.btn--tertiary {
+  @include btn--tertiary();
+}
+
+// Style a button so that it looks disabled
+.btn--disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+  @include btn--disabled();
+}
+
+// Button: Disabled Invert `Modifier` for when button is on a Dark Background
+.btn--invert-disabled {
+  @include btn--invert-disabled();
+}
+
+// Button: Tertiary Disabled `Modifier`
+.btn--tertiary-disabled {
+  @include btn--tertiary-disabled();
+}
+
+// Button: icon-right `Modifier`
+.btn--icon-right {
+  i {
+    margin-left: $spacer--small;
+  }
+}
+
+// Button: icon-left `Modifier`
+.btn--icon-left {
+  i {
+    margin-right: $spacer--small;
+  }
+}
+
+// Icon Button
+.icon-btn {
+  @include custom-icons();
+  position: relative;
+
+  &:after {
+    float: right;
+  }
+
+  &--internal {
+    &:after {
+      width: 1em;
+      height: .5em;
+      margin-top: .5em;
+    }
+  }
+
+  &--external {
+    &:after {
+      width: .75em;
+      height: .75em;
+      margin-top: .25em;
+    }
+  }
+
+  &--download {
+    &:after {
+      width: 1em;
+      height: 1em;
+      margin-top: .25em;
+    }
+  }
+
+  &--play {
+    &:after {
+      width: 1em;
+      height: 1em;
+      margin-top: .25em;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{#
+/**
+ * @file catalog_entity.html.twig
+ * Default theme implementation to present Product data.
+ *
+ * This template is used when viewing Product pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_product_entity()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div{{ attributes.addClass('catalog_entity') }}>
+  {% if content %}
+
+    <div class="container">
+      <div class="row title-section">
+        <div class="col-sm-12">
+          <h1 class="heading">{{ content.name }}</h1>
+        </div>
+      </div>
+      <div class="row product-section">
+        <div class="col-sm-12">
+          {{ content.field_api_product_description }}
+        </div>
+      </div>
+
+      <div class="row product-section">
+        <div class="col-sm-12">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#overview">{{ content.name }}</a></li>
+            <li ><a data-toggle="tab" href="#documentation">{{ content.name }}</a></li>
+            <li><a data-toggle="tab" href="#try">{{ content.name }}</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-12">
+          <div class="tab-content">
+
+            <div id="overview" class="tab-pane in active">
+              {{ content.field_swagger_document }}
+            </div>
+
+            <div id="documentation" class="tab-pane">
+              <div id="overview" class="tab-pane in active">
+                {{ content.field_swagger_document }}
+              </div>
+            </div>
+            <div id="try" class="tab-pane">
+              <div id="overview" class="tab-pane in active">
+                {{ content.field_swagger_document }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

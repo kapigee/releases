@@ -1,0 +1,146 @@
+//------------------------------------
+//  Hero Banner
+//------------------------------------
+
+.hero-banner {
+  position: relative;
+
+  @include breakpoint($bp-medium--up) {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  &__image {
+    @include breakpoint($bp-medium--up) {
+      width: 60%;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__video-popup {
+    position: relative;
+    height: 0;
+    margin: 0;
+    padding-bottom: 56.25%; // 16:9
+    width: 100%;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      margin-bottom: 0;
+      width: 100%;
+    }
+  }
+
+  &__body {
+    position: relative;
+    width: $container-width;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -20%;
+
+    @include breakpoint($bp-medium--up) {
+      // Position to sit on top and overlap the image.
+      position: absolute;
+      top: 0;
+      left: $container-space;
+      bottom: 0;
+      width: 55%;
+      margin: 0;
+
+      // Vertically center the content.
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @include breakpoint($bp-wide--up) {
+      left: $container-space--lg;
+    }
+  }
+
+  &__title {
+    @include heading--ribbon-branding();
+    margin-bottom: $spacer;
+
+    // Add some more space to the vertical of each word.
+    span {
+      padding: $spacer--small;
+    }
+  }
+
+  &__summary {
+    margin-bottom: $spacer;
+    padding: $spacer $spacer--small;
+    background-color: $white;
+
+    @include breakpoint($bp-medium--up) {
+      margin-right: 20%;
+      padding-left: 0;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__button {
+    @include btn();
+    margin-right: $spacer--small;
+    margin-bottom: $spacer--small;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  // ==========================================================================
+  // Alignment Option
+  // ==========================================================================
+
+  // Reverse the flow of content.
+  &--rev {
+    flex-direction: row;
+
+    .hero-banner__body {
+      text-align: right;
+
+      @include breakpoint($bp-medium--up) {
+        right: $container-space;
+        left: initial;
+      }
+
+      @include breakpoint($bp-wide--up) {
+        right: $container-space--lg;
+        left: initial;
+      }
+    }
+
+    .hero-banner__summary {
+      @include breakpoint($bp-medium--up) {
+        padding-right: 0;
+      }
+    }
+  }
+
+  // ==========================================================================
+  // Content Visibility Option
+  // ==========================================================================
+  &--image-only {
+    .hero-banner__body {
+      display: none;
+    }
+
+    .hero-banner__image {
+      @include breakpoint($bp-medium--up) {
+        width: 100%;
+      }
+    }
+  }
+
+}

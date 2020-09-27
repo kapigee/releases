@@ -1,0 +1,48 @@
+uuid: 64a6a618-5e35-4569-9dd9-0f66ac977056
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.compact
+    - field.field.user.user.field_product_category
+    - field.field.user.user.user_picture
+    - image.style.1_1_48x48
+  module:
+    - image
+    - user
+_core:
+  default_config_hash: T3stMqftYuil_qYnDcHEHyAqE-qv_Zv05s_FHr-mdqo
+id: user.user.compact
+targetEntityType: user
+bundle: user
+mode: compact
+content:
+  display_name:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  email:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  user_picture:
+    type: image
+    weight: 0
+    region: content
+    settings:
+      image_style: 1_1_48x48
+      image_link: content
+    third_party_settings: {  }
+    label: hidden
+  username:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_product_category: true
+  member_for: true
+  roles: true
+  timezone: true

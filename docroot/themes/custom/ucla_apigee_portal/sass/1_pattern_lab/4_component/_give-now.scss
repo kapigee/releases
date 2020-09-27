@@ -1,0 +1,9 @@
+.give-now {
+  padding: $spacer * 2.5;
+  background-color: $gray-10;
+  text-align: center;
+
+  &__text {
+    margin-right: $spacer--large;
+  }
+}

@@ -1,0 +1,12 @@
+//------------------------------------
+//  Event Detail page elements.
+//------------------------------------
+
+.event {
+  &__date {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: $spacer;
+  }
+}

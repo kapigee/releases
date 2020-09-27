@@ -1,0 +1,19 @@
+//------------------------------------
+//  Misc global classes
+//------------------------------------
+
+// Reset all Menus lists
+.menu {
+  @include reset-list();
+
+  li {
+    @include reset-list();
+  }
+}
+
+// Links to more content
+.view-all {
+  display: block;
+  border-top: 1px solid $brand--primary;
+  padding-top: $spacer--small;
+}

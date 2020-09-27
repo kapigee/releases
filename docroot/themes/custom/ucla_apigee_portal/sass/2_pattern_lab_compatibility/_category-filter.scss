@@ -1,0 +1,11 @@
+// Force category filter link text to be white on hover and active to stay black
+.category-filter__list-item {
+
+  & a:hover {
+    color: $white;
+  }
+
+  &--active a:hover {
+    color: $black;
+  }
+}

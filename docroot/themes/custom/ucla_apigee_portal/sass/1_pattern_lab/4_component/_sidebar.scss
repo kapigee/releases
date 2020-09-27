@@ -1,0 +1,69 @@
+//------------------------------------
+//  Sidebar navigation
+//------------------------------------
+.sidebar-nav {
+  @include reset-list();
+
+  &__second-list,
+  &__third-list {
+    @include reset-list();
+  }
+
+  &__second-list {
+    background: $table-bg-accent;
+  }
+
+  &__third-list {
+    background: #ccc;
+  }
+
+  a {
+    display: block;
+    padding: 0.625rem $spacer;
+    text-decoration: none;
+    color: $state-color;
+    font-weight: $font-weight--bold;
+
+    &:hover {
+      color: $white;
+    }
+
+    &:focus {
+      outline-offset: -0.25rem;
+    }
+
+    &.active {
+      border-left: 0.215rem $gold solid;
+    }
+  }
+
+  &__item {
+    margin: 0;
+    border-top: 1px solid #ccc;
+
+    &:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+
+    // Second level items.
+    &--second {
+      border-top: 1px solid #ccc;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      a {
+        padding: 0.625rem 2rem;
+      }
+    }
+
+    // Third level items.
+    &--third {
+      a {
+        padding: 0.625rem 3rem;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,13 @@
+uuid: 97c33152-1a61-4b91-9218-2d84b6e2c29f
+langcode: en
+status: true
+dependencies: {  }
+id: app
+label: 'App Domain Owner'
+weight: 3
+is_admin: null
+permissions:
+  - 'administer catalog entity entities'
+  - 'administer filters'
+  - 'edit catalog entity entities'
+  - 'use text format full_html'

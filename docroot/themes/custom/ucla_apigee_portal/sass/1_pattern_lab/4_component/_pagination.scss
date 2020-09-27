@@ -1,0 +1,109 @@
+//------------------------------------
+//  Pagination
+//------------------------------------
+
+// Make the active/current styles extensible for compatibility
+%pager--current {
+  color: $state-color-disabled;
+}
+
+.pager {
+  @include reset-list();
+  @include clearfix();
+
+  &__item {
+    float: left;
+
+    //round the corners of first and last child
+    &:first-child {
+
+      a {
+        border-radius: 0.125rem 0 0 0.125rem;
+      }
+    }
+
+    &:last-child {
+      a {
+        border-radius: 0 0.125rem 0.125rem 0;
+      }
+    }
+
+    // Theme links and static text the same
+    a,
+    &--static {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: bold;
+      border: 0.125rem solid $link-color;
+      padding-top: 0.4375rem;
+      margin-right: 0.0625rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      text-align: center;
+    }
+
+    // Allow the current item to have a link or just static text
+    &--current a {
+      border: 0.125rem solid $state-color-disabled;
+
+      &:hover {
+        color: $white;
+      }
+    }
+
+    &--current,
+    &--current a {
+      @extend %pager--current;
+    }
+  }
+
+  // next and previous buttons
+  &__prev a,
+  &__next a {
+    overflow: hidden;
+    display: block;
+    text-indent: -1000px;
+    position: relative;
+
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      background: url("../images/chevron-blue.svg") no-repeat 0 0;
+      background-size: 0.75rem 0.75rem;
+    }
+
+    &:hover:before {
+      filter: $filter-color-white;
+    }
+  }
+
+  &__prev a {
+
+    &:before {
+      bottom: 0.75rem;
+      right: 0.8125rem;
+      transform: rotate(180deg);
+    }
+  }
+
+  &__next a {
+
+    &:before {
+      top: 0.75rem;
+      left: 0.8125rem;
+    }
+  }
+
+  // Mini Pager modifier
+  &--mini {
+
+    .pager__item--current {
+      border: 0.125rem solid $state-color-disabled;
+      margin-right: 0.0625rem;
+      padding: .59em $spacer;
+    }
+  }
+}

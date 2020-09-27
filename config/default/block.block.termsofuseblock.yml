@@ -1,0 +1,33 @@
+uuid: 7bb3ae17-c95c-490b-8ebb-5fcdcc89f29a
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:b1a50bf0-ac94-47c8-8a0c-f84f985a9b49'
+  module:
+    - apigee_kickstart_enhancement
+    - block_content
+  theme:
+    - ucla_apigee_portal
+id: termsofuseblock
+theme: ucla_apigee_portal
+region: footer_right
+weight: -9
+provider: null
+plugin: 'block_content:b1a50bf0-ac94-47c8-8a0c-f84f985a9b49'
+settings:
+  id: 'block_content:b1a50bf0-ac94-47c8-8a0c-f84f985a9b49'
+  label: 'Terms of use block'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  block_type:
+    id: block_type
+    uuid: 7bb3ae17-c95c-490b-8ebb-5fcdcc89f29a
+    bundles: {  }
+    is_adjacent: 0
+    negate: false
+    context_mapping: {  }

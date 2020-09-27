@@ -1,0 +1,26 @@
+uuid: cfe508c8-c4bf-4107-9182-5e24104da336
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_edge_teams
+    - maxlength
+_core:
+  default_config_hash: VNQ0OMxyPod0mU3Hie4btZ_f6yI4bIBnhadyEo6VVpw
+id: team.team.default
+targetEntityType: team
+bundle: team
+mode: default
+content:
+  displayName:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 40
+        maxlength_js_label: 'Allowed special character is _'
+hidden: {  }

@@ -1,0 +1,27 @@
+uuid: 47665573-788b-488d-af06-e759f8683e4c
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - ucla_apigee_portal
+_core:
+  default_config_hash: McFrx1QCgRN3mTfL1-trOpdW5Ml_G32SrR6LRzIsvCY
+id: ucla_apigee_portal_breadcrumbs
+theme: ucla_apigee_portal
+region: title
+weight: -5
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: true
+    context_mapping: {  }

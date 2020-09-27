@@ -1,0 +1,71 @@
+uuid: 0a62e457-2f0f-4e76-97dd-8803215aca74
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.catalog_entity.catalog_entity.field_a
+    - field.field.catalog_entity.catalog_entity.field_api_product_description
+    - field.field.catalog_entity.catalog_entity.field_api_product_name
+    - field.field.catalog_entity.catalog_entity.field_environment
+    - field.field.catalog_entity.catalog_entity.field_portal_visibility
+    - field.field.catalog_entity.catalog_entity.field_product_type
+    - field.field.catalog_entity.catalog_entity.field_swagger_document
+  module:
+    - custom_api_catalog
+    - file
+    - text
+id: catalog_entity.catalog_entity.default
+targetEntityType: catalog_entity
+bundle: catalog_entity
+mode: default
+content:
+  field_a:
+    type: options_buttons
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_api_product_description:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_environment:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_portal_visibility:
+    type: options_select
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_product_type:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_swagger_document:
+    weight: 5
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  field_api_product_name: true
+  user_id: true

@@ -1,0 +1,53 @@
+//------------------------------------
+//  Alert message
+//------------------------------------
+@mixin alert-icons() {
+  display: block;
+  content: "";
+  padding-right: $spacer--large;
+  background-repeat: no-repeat;
+  background-position-x: left;
+  height: 1.3em;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  margin: .25em;
+  padding: $spacer;
+  background-color: transparent;
+  border: 2px solid $brand--info;
+  font-size: 1rem;
+  color: $gray-80;
+
+  &--secondary {
+    border: 2px solid $brand--gray;
+  }
+
+  &--success {
+    border: 2px solid $brand--success;
+
+    &:before {
+      @include alert-icons();
+      background-image: url("../images/icons/success.svg");
+    }
+  }
+
+  &--warning {
+    border: 2px solid $brand--warning;
+
+    &:before {
+      @include alert-icons();
+      background-image: url("../images/icons/warning.svg");
+    }
+  }
+
+  &--error {
+    border: 2px solid $brand--danger;
+
+    &:before {
+      @include alert-icons();
+      background-image: url("../images/icons/error.svg");
+    }
+  }
+}

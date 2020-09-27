@@ -1,0 +1,52 @@
+uuid: fcf387c7-416f-4575-be01-5f74a17a432c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.api_category.field_promote
+    - taxonomy.vocabulary.api_category
+  module:
+    - path
+    - text
+id: taxonomy_term.api_category.default
+targetEntityType: taxonomy_term
+bundle: api_category
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
+  field_promote:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+hidden: {  }

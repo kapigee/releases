@@ -1,0 +1,21 @@
+uuid: d359eab7-8bf4-439c-b235-77b1e89ceafa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_environment
+    - node.type.apidoc
+  module:
+    - options
+id: node.apidoc.field_environment
+field_name: field_environment
+entity_type: node
+bundle: apidoc
+label: Environment
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

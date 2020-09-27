@@ -1,0 +1,56 @@
+//------------------------------------
+//  Breadcrumbs
+//------------------------------------
+
+.breadcrumbs {
+  position: relative;
+  overflow: hidden;
+
+  margin-bottom: $spacer--small;
+
+  &:after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    content: "";
+    display: block;
+    width: 2rem;
+    height: 4rem;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  &__list {
+    @include list-flush();
+    color: $gray-70;
+    white-space: nowrap;
+    width: 100%;
+    overflow: scroll;
+
+    &::-webkit-scrollbar { // sass-lint:disable-line no-vendor-prefixes
+      display: none;
+    }
+
+    @include breakpoint($bp-medium--up) {
+      overflow: inherit;
+      white-space: inherit;
+    }
+
+    li {
+      display: inline-block;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 0;
+
+      &:not(:last-child):after {
+        padding: 0 $spacer--tiny;
+        content: " /";
+        color: $gray-40;
+      }
+
+      a {
+        font-weight: bold;
+        text-decoration: none;
+      }
+    }
+  }
+}

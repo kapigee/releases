@@ -1,0 +1,41 @@
+uuid: 5ff9d311-5755-4250-b596-eaf96bf84efe
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.account
+  module:
+    - apigee_kickstart_enhancement
+    - system
+    - user
+  theme:
+    - ucla_apigee_portal
+id: useraccountmenu
+theme: ucla_apigee_portal
+region: navigation
+weight: 0
+provider: null
+plugin: 'system_menu_block:account'
+settings:
+  id: 'system_menu_block:account'
+  label: 'User account menu'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 0
+  expand_all_items: true
+visibility:
+  block_type:
+    id: block_type
+    uuid: 5ff9d311-5755-4250-b596-eaf96bf84efe
+    bundles: {  }
+    is_adjacent: 0
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

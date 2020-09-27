@@ -1,0 +1,44 @@
+//------------------------------------
+//  Tags
+//------------------------------------
+
+$tags-spacing: $spacer--tiny $spacer--small;
+
+.tags {
+  @include reset-list();
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: $spacer;
+
+  // This element can be placed on either an `a` or an `li`. If it is an
+  // unordered list then it will want to go on the `li`.
+  &__tag {
+    display: flex;
+    align-items: center;
+    padding: $tags-spacing;
+    margin: 0 $spacer--tiny 0 0; // Explicitly state the margins for when this is on an `li`.
+    font-weight: $font-weight--bold;
+    text-transform: capitalize;
+
+    &:after {
+      position: relative;
+      right: -.65em;
+      height: 1em;
+      content: "";
+      border-right: 1px solid $gray-40;
+      text-align: center;
+    }
+
+    // Remove the pipe from the last element.
+    &:last-child:after {
+      display: none;
+    }
+
+    // This is a hack so that the component will work on unordered lists
+    a {
+      display: inline-block;
+      padding: $tags-spacing;
+      margin: -$spacer--small;
+    }
+  }
+}

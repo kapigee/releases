@@ -1,0 +1,9 @@
+.site-credits {
+  &__logo {
+    margin-bottom: $spacer--large;
+
+    a {
+      @include link-style--reset();
+    }
+  }
+}

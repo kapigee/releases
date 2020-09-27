@@ -1,0 +1,48 @@
+uuid: ff94fed4-6918-4fe6-b1f5-ec7ab962033b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.team_app.team_app.field_environments
+  module:
+    - apigee_edge_teams
+    - maxlength
+_core:
+  default_config_hash: JI3Uo2gWHJW6zVZgQpMrewgRftkNhweBGKL9D650nLc
+id: team_app.team_app.default
+targetEntityType: team_app
+bundle: team_app
+mode: default
+content:
+  description:
+    weight: 1
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 256
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: false
+        maxlength_js_truncate_html: false
+    type: string_textarea
+  displayName:
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: null
+        maxlength_js_label: ''
+    type: string_textfield
+  field_environments:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  callbackUrl: true

@@ -1,0 +1,22 @@
+uuid: 724d1c46-8c70-4fec-a313-0d9fac1e3e48
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - ucla_apigee_portal
+_core:
+  default_config_hash: 5MSb1HJ5_gdqlp_eFSVqaaRXOlV4geyKm7MIv0qxHzY
+id: ucla_apigee_portal_messages
+theme: ucla_apigee_portal
+region: message
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Messages
+  provider: system
+  label_display: '0'
+visibility: {  }

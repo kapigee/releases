@@ -1,0 +1,25 @@
+uuid: 613b859a-54fa-4bfe-a86f-7e5fe16849b7
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:f5909068-9787-4b95-9304-fab4f2503358'
+  module:
+    - block_content
+  theme:
+    - ucla_apigee_portal
+id: frontpagebanner
+theme: ucla_apigee_portal
+region: front_top_content
+weight: 0
+provider: null
+plugin: 'block_content:f5909068-9787-4b95-9304-fab4f2503358'
+settings:
+  id: 'block_content:f5909068-9787-4b95-9304-fab4f2503358'
+  label: 'Front Page Banner'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

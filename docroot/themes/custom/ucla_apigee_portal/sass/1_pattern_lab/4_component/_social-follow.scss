@@ -1,0 +1,73 @@
+//------------------------------------
+//  Social Follow icons
+//------------------------------------
+
+$social-follow-icon-width: 2rem;
+
+@mixin social-follow-base() {
+  @include reset-list();
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.social-follow {
+  @include social-follow-base();
+
+  // In case the .social-follow class is placed above the ul.
+  ul {
+    @include social-follow-base();
+  }
+
+  li {
+    margin: 0;
+  }
+
+  &__icon {
+    @include link-style--reset();
+    @include hide-text();
+    display: inline-block;
+    height: $social-follow-icon-width;
+    width: $social-follow-icon-width;
+    margin-right: $spacer--tiny;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &:hover {
+      filter: $filter-color-black;
+    }
+
+    .social-follow--invert & {
+      filter: $filter-color-white;
+
+      &:hover {
+        filter: $filter-color-yellow;
+        background-color: transparent;
+      }
+    }
+  }
+
+  &--facebook {
+    background-image: url("../images/icons/facebook.svg");
+  }
+
+  &--twitter {
+    background-image: url("../images/icons/twitter.svg");
+  }
+
+  &--instagram {
+    background-image: url("../images/icons/instagram.svg");
+  }
+
+  &--snapchat {
+    background-image: url("../images/icons/snapchat.svg");
+  }
+
+  &--linkedin {
+    background-image: url("../images/icons/linkedin.svg");
+  }
+
+  &--youtube {
+    background-image: url("../images/icons/youtube.svg");
+  }
+}

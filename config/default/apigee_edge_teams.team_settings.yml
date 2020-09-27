@@ -1,0 +1,10 @@
+langcode: en
+entity_label_singular: ''
+entity_label_plural: ''
+cache_expiration: 0
+non_member_team_apps_visible_api_products:
+  - public
+  - private
+  - internal
+_core:
+  default_config_hash: t08ZR8_NSX2L9NHFB9_IrZqxftBCnZTUZfiYg1oyO9E

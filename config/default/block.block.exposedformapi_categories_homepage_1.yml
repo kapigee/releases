@@ -1,0 +1,29 @@
+uuid: 90f4d9c2-4a3e-4f18-b8a2-0e3458b90522
+langcode: en
+status: false
+dependencies:
+  config:
+    - views.view.api_categories_home
+  module:
+    - system
+    - views
+  theme:
+    - ucla_apigee_portal
+id: exposedformapi_categories_homepage_1
+theme: ucla_apigee_portal
+region: full_width
+weight: -6
+provider: null
+plugin: 'views_exposed_filter_block:api_categories_home-page_1'
+settings:
+  id: 'views_exposed_filter_block:api_categories_home-page_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

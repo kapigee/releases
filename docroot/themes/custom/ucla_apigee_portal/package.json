@@ -1,0 +1,26 @@
+{
+  "name": "ucla_apigee_portal",
+  "version": "1.0.0",
+  "description": "Theme tasks for SiteDen Surface",
+  "dependencies": {},
+  "main": "gulpfile.js",
+  "private": true,
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp compile",
+    "lint": "gulp validate",
+    "themesync": "gulp themesync && gulp compile",
+    "postinstall": "find node_modules/ -name '*.info' -type f -delete && npm run build"
+  },
+  "devDependencies": {
+    "ucd-theme-tasks": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "IE 11"
+  ]
+}

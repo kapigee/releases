@@ -1,0 +1,16 @@
+uuid: 8fee4016-fe01-449c-bc47-321c8b812f6f
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: TDqslHFOAilShc_eh4IVpQrqNNZCwx7kouOOLA9hao0
+id: member
+label: 'Team Member'
+locked: true
+permissions:
+  0: api_product_access_private
+  1: api_product_access_public
+  2: team_app_view
+  3: team_app_create
+  5: team_app_delete
+  6: team_app_update

@@ -1,0 +1,4 @@
+services:
+  custom_api_catalog.auth:
+    class: Drupal\custom_api_catalog\AuthenticationKeyService
+    arguments: ['@config.factory']

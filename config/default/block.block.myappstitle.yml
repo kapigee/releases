@@ -1,0 +1,31 @@
+uuid: d8e2e5e7-421f-493e-a7ee-25329e9122e5
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:a5880e4c-197b-41ae-b1a1-26981e2ebd42'
+  module:
+    - block_content
+    - system
+  theme:
+    - ucla_apigee_portal
+id: myappstitle
+theme: ucla_apigee_portal
+region: title
+weight: 0
+provider: null
+plugin: 'block_content:a5880e4c-197b-41ae-b1a1-26981e2ebd42'
+settings:
+  id: 'block_content:a5880e4c-197b-41ae-b1a1-26981e2ebd42'
+  label: 'My Apps Title'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '/user/*/apps'
+    negate: false
+    context_mapping: {  }

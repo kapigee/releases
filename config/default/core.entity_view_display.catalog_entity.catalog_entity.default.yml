@@ -1,0 +1,56 @@
+uuid: 66833616-4247-4824-946c-a553d504e799
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.catalog_entity.catalog_entity.field_a
+    - field.field.catalog_entity.catalog_entity.field_api_product_description
+    - field.field.catalog_entity.catalog_entity.field_api_product_name
+    - field.field.catalog_entity.catalog_entity.field_environment
+    - field.field.catalog_entity.catalog_entity.field_portal_visibility
+    - field.field.catalog_entity.catalog_entity.field_product_type
+    - field.field.catalog_entity.catalog_entity.field_swagger_document
+  module:
+    - custom_api_catalog
+    - swagger_ui_formatter
+    - text
+id: catalog_entity.catalog_entity.default
+targetEntityType: catalog_entity
+bundle: catalog_entity
+mode: default
+content:
+  field_api_product_description:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_swagger_document:
+    weight: 1
+    label: inline
+    settings:
+      validator: none
+      validator_url: ''
+      doc_expansion: none
+      supported_submit_methods:
+        get: get
+        put: put
+        post: post
+        delete: delete
+        options: options
+        head: head
+        patch: patch
+      show_top_bar: false
+      sort_tags_by_name: false
+    third_party_settings: {  }
+    type: swagger_ui_file
+    region: content
+hidden:
+  field_a: true
+  field_api_product_name: true
+  field_environment: true
+  field_portal_visibility: true
+  field_product_type: true
+  name: true
+  user_id: true

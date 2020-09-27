@@ -1,0 +1,23 @@
+uuid: c20baff7-8466-48c5-be5a-c503f578d17d
+langcode: en
+status: false
+dependencies:
+  module:
+    - search
+  theme:
+    - ucla_apigee_portal
+_core:
+  default_config_hash: 3ltqpaUboas7UJ5iSmvBhEcTYky3iRi2b7j0P65sZHs
+id: ucla_apigee_portal_search
+theme: ucla_apigee_portal
+region: navigation
+weight: 0
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form'
+  provider: search
+  label_display: '0'
+  page_id: ''
+visibility: {  }

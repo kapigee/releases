@@ -1,0 +1,23 @@
+uuid: e5dbafde-e86e-4afe-be89-f6f6bb7b510d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_display_on_home_page
+    - taxonomy.vocabulary.app_domain_and_sub_domain
+id: taxonomy_term.app_domain_and_sub_domain.field_display_on_home_page
+field_name: field_display_on_home_page
+entity_type: taxonomy_term
+bundle: app_domain_and_sub_domain
+label: 'Display on home page'
+description: 'Check this to list domains on Home Page.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

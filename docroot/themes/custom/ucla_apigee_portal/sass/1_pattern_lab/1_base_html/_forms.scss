@@ -1,0 +1,79 @@
+//------------------------------------
+//  Forms
+//------------------------------------
+
+fieldset {
+  border: 1px solid $gray-60;
+  border-top: 3px solid $brand--primary;
+  margin: $spacer 0;
+  padding: $spacer;
+
+  > legend {
+    padding: $spacer--tiny;
+  }
+}
+
+label {
+  display: block;
+  padding-bottom: $spacer--tiny;
+  font-weight: normal;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid $input-border-color;
+  background-color: $input-bg;
+  color: $input-color;
+  border-radius: 2px;
+  padding-left: $spacer;
+
+  &:focus {
+    outline: 1px dotted $input-border-focus;
+    outline-offset: 1px;
+  }
+}
+
+input,
+select {
+  height: $input-height;
+}
+
+select {
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+textarea {
+  width: 100%;
+}
+
+textarea {
+  padding-top: $spacer--small;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="url"],
+input[type="number"],
+textarea {
+  appearance: none;
+}
+
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  height: auto;
+  width: auto;
+  margin-right: 0.3em;
+}
+
+// Override content-box in Normalize (* isn't specific enough)
+input[type="search"] {
+  box-sizing: border-box;
+}

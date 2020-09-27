@@ -1,0 +1,30 @@
+uuid: 4e3d25d8-5aa3-4faf-a35e-975550a0f5e3
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - options
+id: catalog_entity.field_portal_visibility
+field_name: field_portal_visibility
+entity_type: catalog_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 'Not Logged In'
+      label: 'Not Logged In'
+    -
+      value: 'Logged In'
+      label: 'Logged In'
+    -
+      value: 'Not Visible'
+      label: 'Not Visible'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

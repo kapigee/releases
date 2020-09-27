@@ -1,0 +1,30 @@
+uuid: ce51e226-2e7b-491a-a605-aa827b528b0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_a
+    - taxonomy.vocabulary.app_domain_and_sub_domain
+  module:
+    - custom_api_catalog
+id: catalog_entity.catalog_entity.field_a
+field_name: field_a
+entity_type: catalog_entity
+bundle: catalog_entity
+label: 'App Domain'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      app_domain_and_sub_domain: app_domain_and_sub_domain
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

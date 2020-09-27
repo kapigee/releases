@@ -1,0 +1,9 @@
+//styles for exposed filters Form
+.exposed-filter {
+  @include clearfix();
+
+  &__btn {
+    @include btn();
+    float: right;
+  }
+}

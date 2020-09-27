@@ -1,0 +1,57 @@
+//styles for e-newsletter form
+
+.signup-form {
+  background: $brand--primary-darker;
+
+  @include breakpoint($bp-medium--up) {
+    display: flex;
+    align-items: center;
+  }
+
+  &__text {
+    margin-right: $spacer;
+    margin-bottom: $spacer--large;
+    color: $white;
+
+    @include breakpoint($bp-medium--up) {
+      width: 40%;
+      margin-bottom: 0;
+    }
+  }
+
+  &__title {
+    color: $white;
+    font-size: 1rem;
+    text-transform: uppercase;
+  }
+
+  &__container {
+    @include breakpoint($bp-medium--up) {
+      width: 60%;
+      margin-left: $spacer--large;
+    }
+  }
+
+  &__label {
+    display: inline-block;
+    margin-bottom: $spacer--tiny;
+    color: $white;
+    font-weight: $font-weight--bold;
+  }
+
+  &__input {
+    margin-bottom: $spacer;
+    background: $white;
+
+    @include breakpoint($bp-narrow--up) {
+      width: 65%;
+      margin-left: $spacer;
+    }
+  }
+
+  &__btn {
+    @include btn();
+    @include btn--invert();
+    vertical-align: unset;
+  }
+}

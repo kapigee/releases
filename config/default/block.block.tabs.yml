@@ -1,0 +1,27 @@
+uuid: 44f3174f-3bb5-4665-83a8-479cbe98bd96
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - ucla_apigee_portal
+id: tabs
+theme: ucla_apigee_portal
+region: pre_content
+weight: -5
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility:
+  request_path:
+    id: request_path
+    pages: "/user/*\r\n/teams/*/apps/*/edit\r\n/teams/*/apps/*/delete\r\n/GetStarted"
+    negate: true
+    context_mapping: {  }

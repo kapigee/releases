@@ -1,0 +1,20 @@
+uuid: ac0ae138-55f8-480d-a6ad-33651018e5db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.catalog_entity.field_api_product_name
+  module:
+    - custom_api_catalog
+id: catalog_entity.catalog_entity.field_api_product_name
+field_name: field_api_product_name
+entity_type: catalog_entity
+bundle: catalog_entity
+label: 'Api Product Name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,41 @@
+name: UCLA Apigee Portal
+type: theme
+description: UCLA Apigee Portal theme using the UCLA  Pattern Lab style library
+package: SiteDen
+core: 8.x
+
+# Using Classy as a base theme https://www.drupal.org/docs/8/theming-drupal-8/using-classy-as-a-base-theme
+base theme: classy
+
+libraries:
+  - ucla_apigee_portal/global-styles
+  - ucla_apigee_portal/jquery-custom
+
+# Override Drupal libraries with libraries provided by this theme.
+libraries-override:
+  core/jquery: ucla_apigee_portal/jquery-custom
+  classy/base:
+    css:
+      component:
+        css/components/menu.css: false
+        css/components/pager.css: false
+        css/components/item-list.css: false
+        css/components/tabs.css: false
+
+  apigee_edge/apigee_edge.app_view: false
+
+regions:
+  header_logo: Header Logo
+  navigation: Navigation
+  front_top_content: Front Page Top Content
+  full_width: Front Page Search
+  title: Title
+  pre_content: Pre Content
+  message: Message
+  content: Content
+  sidebar_first: First Sidebar
+  sidebar_second: Second Sidebar
+  full_width_bottom: Full Width Bottom
+  footer_left: Footer Logo
+  footer_right: Footer Navigation
+

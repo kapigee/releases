@@ -1,0 +1,57 @@
+//------------------------------------
+//  Marketing Highlight Horizontal
+//------------------------------------
+
+.marketing-highlight-horizontal {
+  overflow: hidden;
+
+  @include breakpoint($bp-medium--up) {
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+  }
+
+  &__image {
+    @include breakpoint($bp-medium--up) {
+      width: 60%;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__body {
+    position: relative;
+    width: $container-width;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -10%;
+
+    @include breakpoint($bp-medium--up) {
+      // Position to sit on top and overlap the image.
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 55%;
+      margin: 0;
+
+      // Vertically center the content.
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    font-weight: $font-weight--bold;
+  }
+
+
+  &__contents {
+    padding: $spacer;
+    background-color: $white;
+  }
+}

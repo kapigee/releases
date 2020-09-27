@@ -1,0 +1,30 @@
+uuid: 060b28cb-0beb-4fbb-8b3c-c6c9b591a6f8
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_api_catalog
+    - options
+id: catalog_entity.field_environment
+field_name: field_environment
+entity_type: catalog_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: test
+      label: test
+    -
+      value: prod
+      label: prod
+    -
+      value: sandbox
+      label: sandbox
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,7 @@
+{
+    "name": "mypackage/ucla_apigee_portal",
+    "description": "Theme for the UCLS SiteDen profile built on the SiteFarm Seed distribution",
+    "type": "drupal-theme",
+    "minimum-stability": "dev",
+    "require": {}
+}

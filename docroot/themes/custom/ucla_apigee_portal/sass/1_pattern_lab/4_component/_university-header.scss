@@ -1,0 +1,29 @@
+// The top university bar.
+.university-header {
+  padding: 1em 0;
+  background-color: $brand--primary;
+  color: $white;
+  font-size: .75rem;
+  line-height: 1;
+
+  &__container {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__logo {
+    margin-right: $spacer--tiny;
+
+    img {
+      max-height: 1.5rem;
+      vertical-align: baseline;
+    }
+  }
+
+  &__text {
+    a {
+      @include link-style--invert();
+    }
+  }
+}
+

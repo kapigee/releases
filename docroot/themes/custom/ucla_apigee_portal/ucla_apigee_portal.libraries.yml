@@ -1,0 +1,25 @@
+global-styles:
+  version: VERSION
+  css:
+#    base:
+#      dist/vendor.css: {} # comment this out if not using a vendor.css file.
+    theme:
+      dist/style.css: { minified: true }  
+  js:
+    dist/scripts.js: { minified: true }
+    js/collapsible-card.js: {}
+    includes/bootstrap/js/bootstrap.min.js: {}
+  dependencies:
+    - core/normalize-css
+    - core/jquery
+    - core/jquery.once
+jquery-custom:
+  remote: https://github.com/jquery/jquery
+  version: "3.5.1"
+  license:
+    name: MIT
+    url: https://github.com/jquery/jquery/blob/3.5.1/LICENSE.txt
+    gpl-compatible: true
+  js:
+    js/jquery-3.5.1.min.js: { minified: true, weight: -30 }
+

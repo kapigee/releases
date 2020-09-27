@@ -1,0 +1,48 @@
+//------------------------------------
+//  Text
+//------------------------------------
+
+// Font Families
+.font--monospace {
+  font-family: $font-family--monospace;
+}
+
+// Caption
+.caption {
+  font-style: italic;
+}
+
+.hr-invert {
+  border-color: rgba($white, .25);
+}
+
+.byline {
+  font-weight: $font-weight--bold;
+}
+
+.meta-info {
+  @include meta-style();
+
+  &--accent {
+    font-size: 1rem; // Set font size to override if used on an H tag.
+    font-weight: $font-weight--bold;
+    line-height: $line-height;
+
+    @include breakpoint($bp-medium--up) {
+      font-size: 1.25rem;
+    }
+  }
+
+  &--normal {
+    font-weight: normal;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+// Style Modifiers
+.bold {
+  font-weight: bold;
+}

@@ -1,0 +1,31 @@
+//------------------------------------
+//  Listing (view mode)
+//------------------------------------
+
+.vm-listing {
+  align-items: center;
+  margin-bottom: $spacer;
+
+  &__title {
+    margin-bottom: $spacer--small;
+    font-size: 1rem;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  &__meta {
+    @include meta-style(normal);
+
+    li {
+      margin-top: 0;
+    }
+  }
+
+  // Set a width for the images
+  .o-media__figure {
+    max-width: 25%;
+    overflow: hidden;
+  }
+}

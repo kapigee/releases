@@ -1,0 +1,19 @@
+uuid: 4854e936-7a55-41b3-b17f-4b90c8f57a87
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: D9aK3qaiuH6ybhHQ-DFA1-_HfGvyahrKWNHE67snm8c
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access site-wide contact form'
+  - 'search content'
+  - 'use text format restricted_html'
+  - 'view media'
+  - 'view published apidoc entities'
+  - 'view published catalog entity entities'

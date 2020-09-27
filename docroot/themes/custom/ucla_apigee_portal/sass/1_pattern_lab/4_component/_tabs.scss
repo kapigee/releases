@@ -1,0 +1,39 @@
+//------------------------------------
+//  Tabs
+//------------------------------------
+
+.tabs {
+  @include reset-list();
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: $spacer;
+
+  &__tab {
+    margin-top: $spacer--tiny;
+  }
+
+  &__link {
+    display: inline-block;
+    text-decoration: none;
+    color: $gray-80;
+    margin-right: 0;
+    background-color: transparent;
+    font-weight: bold;
+    border-bottom: 0.0625rem solid $gray-10;
+    padding: $spacer--small $spacer;
+    padding-bottom: 0.6875rem;
+
+    &:hover {
+      border-bottom: 0.25rem solid $brand--primary;
+      padding-bottom: $spacer--small;
+      background-color: transparent;
+      color: $gray-80;
+    }
+
+    &.active {
+      border-bottom: 0.25rem solid $brand--secondary;
+      color: $gray-80;
+      padding-bottom: $spacer--small;
+    }
+  }
+}

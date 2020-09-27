@@ -1,0 +1,73 @@
+//------------------------------------
+//  Teaser (view mode)
+//------------------------------------
+
+.vm-teaser {
+  padding: $spacer 0;
+
+  // Remove the top padding on the first item
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &__figure {
+    max-width: 20%;
+  }
+
+  &__title,
+  &__meta {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  &__meta {
+    @include meta-style();
+
+    &--date {
+      margin-top: $spacer;
+      margin-bottom: $spacer--small;
+
+      @include breakpoint($bp-narrow--up) {
+        display: flex;
+      }
+    }
+
+    &--above li {
+      margin-top: 0;
+    }
+  }
+
+  &__flag {
+    position: absolute;
+    top: $spacer;
+    left: $spacer;
+    padding: $spacer--tiny $spacer;
+    background-color: $brand--secondary;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    @include breakpoint($bp-small--up) {
+      top: $spacer--small;
+      left: -($spacer--small);
+    }
+  }
+
+  &--featured {
+    position: relative;
+    padding: $spacer--huge $spacer $spacer;
+    background-color: $state-color-featured;
+
+    @include breakpoint($bp-small--up) {
+      padding: $spacer;
+    }
+
+    &:first-of-type {
+      padding: $spacer--huge $spacer $spacer;
+
+      @include breakpoint($bp-small--up) {
+        padding: $spacer;
+      }
+    }
+  }
+}

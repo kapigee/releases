@@ -1,0 +1,24 @@
+//------------------------------------
+//  WYSIWYG Feature Block
+//------------------------------------
+
+.wysiwyg-feature-block {
+  background-color: $blue;
+  margin-left: $spacer;
+
+  &__title {
+    display: inline-block;
+    margin: $spacer 0 0 (-$spacer);
+    padding: $spacer--large;
+    background-color: $white;
+  }
+
+  &__body {
+    padding: $spacer--large;
+    color: $white;
+
+    a {
+      color: $white;
+    }
+  }
+}

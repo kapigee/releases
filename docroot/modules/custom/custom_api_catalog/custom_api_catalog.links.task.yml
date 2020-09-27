@@ -1,0 +1,26 @@
+# Catalog entity routing definition
+catalog_entity.settings_tab:
+  route_name: catalog_entity.settings
+  title: 'Settings'
+  base_route: catalog_entity.settings
+
+entity.catalog_entity.canonical:
+  route_name: entity.catalog_entity.canonical
+  base_route: entity.catalog_entity.canonical
+  title: 'View'
+
+entity.catalog_entity.edit_form:
+  route_name: entity.catalog_entity.edit_form
+  base_route: entity.catalog_entity.canonical
+  title: 'Edit'
+
+entity.catalog_entity.version_history:
+  route_name: entity.catalog_entity.version_history
+  base_route: entity.catalog_entity.canonical
+  title: 'Revisions'
+
+entity.catalog_entity.delete_form:
+  route_name:  entity.catalog_entity.delete_form
+  base_route:  entity.catalog_entity.canonical
+  title: Delete
+  weight: 10

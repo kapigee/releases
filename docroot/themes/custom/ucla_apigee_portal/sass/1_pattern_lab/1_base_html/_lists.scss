@@ -1,0 +1,74 @@
+//------------------------------------
+//  Lists
+//------------------------------------
+$dl-spacing: $spacer--small $spacer $spacer--small 0;
+
+// All Lists
+li {
+  margin: $spacer 0;
+  line-height: $line-height--tiny;
+}
+
+// Unordered Lists
+ul {
+  list-style: none;
+
+  li {
+    &:before {
+      content: "\25AA";
+      color: $brand--primary;
+      margin: $spacer 0 $spacer (-$spacer);
+      padding-right: $spacer / 1.5;
+    }
+
+    li:before {
+      content: "\25AB";
+    }
+  }
+}
+
+// Ordered Lists
+ol li {
+  padding-left: $spacer--small;
+
+  &::marker {
+    color: $brand--primary;
+  }
+}
+
+// Definition Lists
+dl {
+  padding-left: $spacer + ($spacer * .25);
+}
+
+dt {
+  margin-top: $spacer;
+  color: $black;
+  font-weight: bold;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+dd {
+  margin: 0;
+}
+
+@include breakpoint($bp-small--up) {
+
+  dt {
+    clear: right;
+    float: left;
+    width: 40%;
+    padding: $dl-spacing;
+    margin-top: 0;
+  }
+
+  dd {
+    float: right;
+    width: 60%;
+    margin: 0;
+    padding: $dl-spacing;
+  }
+}

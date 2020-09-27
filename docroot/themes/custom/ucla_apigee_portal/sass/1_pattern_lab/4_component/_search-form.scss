@@ -1,0 +1,32 @@
+//------------------------------------
+//  Search Form
+//------------------------------------
+
+.search-form {
+  padding: $spacer--large;
+
+  @include breakpoint($bp-narrow--up) {
+    display: flex;
+  }
+
+  &__input {
+    flex-grow: 1;
+    margin-bottom: $spacer--small;
+
+    @include breakpoint($bp-narrow--up) {
+      width: auto;
+      margin-right: $spacer--tiny;
+      margin-bottom: 0;
+    }
+  }
+
+  &__btn {
+    @include btn();
+    vertical-align: unset;
+  }
+
+  input::placeholder {
+    color: $input-color-placeholder;
+  }
+
+}

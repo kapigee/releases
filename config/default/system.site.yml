@@ -1,0 +1,15 @@
+uuid: cd059e5f-2560-42da-bb9d-dd775ebb2671
+name: 'API Developer Portal'
+mail: api-dev-portal@it.ucla.edu
+slogan: ''
+page:
+  403: /node/21
+  404: /node/16
+  front: /api-categories-home
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yTxtFqBHnEWxQswuWvkjE8mKw2t8oKuCL1q8KnfHuGE
+mail_notification: ''

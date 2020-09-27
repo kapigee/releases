@@ -1,0 +1,39 @@
+uuid: 2db2a8df-c8c4-4fc9-b906-dbde47b50c3b
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:237e78e1-3b7a-497c-b739-b108c2939586'
+  module:
+    - apigee_kickstart_enhancement
+    - block_content
+    - system
+  theme:
+    - ucla_apigee_portal
+id: teamsdescriptionblock
+theme: ucla_apigee_portal
+region: content
+weight: -10
+provider: null
+plugin: 'block_content:237e78e1-3b7a-497c-b739-b108c2939586'
+settings:
+  id: 'block_content:237e78e1-3b7a-497c-b739-b108c2939586'
+  label: 'Teams Description Block'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  block_type:
+    id: block_type
+    uuid: 2db2a8df-c8c4-4fc9-b906-dbde47b50c3b
+    bundles: {  }
+    is_adjacent: 0
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: /teams
+    negate: false
+    context_mapping: {  }

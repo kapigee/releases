@@ -1,0 +1,24 @@
+//------------------------------------
+//  Footer
+//------------------------------------
+.footer {
+
+  &__info {
+    padding: $spacer--huge 0;
+    background-color: $brand--primary;
+    color: $white;
+
+    a {
+      @include link-style--invert();
+    }
+  }
+
+  &__bottom {
+    padding: $spacer--huge 0;
+    background: $brand--primary-darker;
+  }
+
+  &__copyright {
+    padding: $spacer--huge 0;
+  }
+}

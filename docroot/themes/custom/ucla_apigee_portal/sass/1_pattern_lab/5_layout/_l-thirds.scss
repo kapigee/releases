@@ -1,0 +1,12 @@
+// Create a layout for thirds
+@include breakpoint($bp-small--up) {
+  .l-thirds {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &>* {
+      width: 32%;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+uuid: 4e4d5b5d-df07-469a-9e36-41cbf3ca5640
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:45f99eda-ee0a-45e1-a8e9-33f51e5fd407'
+  module:
+    - block_content
+  theme:
+    - ucla_apigee_portal
+id: copyright
+theme: ucla_apigee_portal
+region: footer_right
+weight: -8
+provider: null
+plugin: 'block_content:45f99eda-ee0a-45e1-a8e9-33f51e5fd407'
+settings:
+  id: 'block_content:45f99eda-ee0a-45e1-a8e9-33f51e5fd407'
+  label: Copyright
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

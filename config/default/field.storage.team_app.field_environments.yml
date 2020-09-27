@@ -1,0 +1,27 @@
+uuid: e2945ea9-f560-45cd-9632-57ed9d1cccdb
+langcode: en
+status: true
+dependencies:
+  module:
+    - apigee_edge_teams
+    - options
+id: team_app.field_environments
+field_name: field_environments
+entity_type: team_app
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: test
+      label: QA
+    -
+      value: prod
+      label: PROD
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

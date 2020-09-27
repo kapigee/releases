@@ -1,0 +1,41 @@
+uuid: 0db46d6e-667a-4c23-8ca5-219da1cf0fea
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:605697f7-f6ab-472c-848b-35adf85fee64'
+  module:
+    - apigee_kickstart_enhancement
+    - block_content
+    - user
+  theme:
+    - ucla_apigee_portal
+id: userloginmenu
+theme: ucla_apigee_portal
+region: navigation
+weight: 0
+provider: null
+plugin: 'block_content:605697f7-f6ab-472c-848b-35adf85fee64'
+settings:
+  id: 'block_content:605697f7-f6ab-472c-848b-35adf85fee64'
+  label: 'User Login Menu'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  block_type:
+    id: block_type
+    uuid: 0db46d6e-667a-4c23-8ca5-219da1cf0fea
+    bundles: {  }
+    is_adjacent: 0
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

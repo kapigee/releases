@@ -1,0 +1,31 @@
+add catalog entity entities:
+  title: 'Create new Catalog entity entities'
+
+administer catalog entity entities:
+  title: 'Administer Catalog entity entities'
+  description: 'Allow to access the administration form to configure Catalog entity entities.'
+  restrict access: true
+
+delete catalog entity entities:
+  title: 'Delete Catalog entity entities'
+
+edit catalog entity entities:
+  title: 'Edit Catalog entity entities'
+
+view published catalog entity entities:
+  title: 'View published Catalog entity entities'
+
+view unpublished catalog entity entities:
+  title: 'View unpublished Catalog entity entities'
+
+view all catalog entity revisions:
+  title: 'View all Catalog entity revisions'
+
+revert all catalog entity revisions:
+  title: 'Revert all Catalog entity revisions'
+  description: 'Role requires permission <em>view Catalog entity revisions</em> and <em>edit rights</em> for catalog entity entities in question or <em>administer catalog entity entities</em>.'
+
+delete all catalog entity revisions:
+  title: 'Delete all revisions'
+  description: 'Role requires permission to <em>view Catalog entity revisions</em> and <em>delete rights</em> for catalog entity entities in question or <em>administer catalog entity entities</em>.'
+
