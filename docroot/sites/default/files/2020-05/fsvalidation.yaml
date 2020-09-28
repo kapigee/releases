@@ -1,0 +1,639 @@
+openapi: 3.0.0
+info:
+  version: v1
+  title: FS.Validation.Api
+
+
+paths:
+  "/v1/Account/{Location}/{Account}":
+    get:
+      tags:
+        - Account
+      operationId: Account_GetAccount
+      parameters:
+        - name: Location
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Account
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  "/v1/Account/{Location}/{Account}/{CostCenter}":
+    get:
+      tags:
+        - Account
+      operationId: Account_GetAccountWithCostCenter
+      parameters:
+        - name: Location
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Account
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: CostCenter
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  "/v1/accountfund/{Location}/{Account}/{Fund}":
+    get:
+      tags:
+        - AccountFund
+      operationId: AccountFund_GetAccountFund
+      parameters:
+        - name: Location
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Account
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Fund
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  "/v1/accountfund/{Location}/{Account}/{Fund}/{CostCenter}":
+    get:
+      tags:
+        - AccountFund
+      operationId: AccountFund_GetAccountFundWithCostCenter
+      parameters:
+        - name: Location
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Account
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Fund
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: CostCenter
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  /v1/budget/transaction:
+    get:
+      tags:
+        - BudgetValidation
+      operationId: BudgetValidation_GetTransaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+    post:
+      tags:
+        - BudgetValidation
+      operationId: BudgetValidation_PostTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/BudgetTransaction"
+          text/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/BudgetTransaction"
+          application/xml:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/BudgetTransaction"
+          text/xml:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/BudgetTransaction"
+          application/x-www-form-urlencoded:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/BudgetTransaction"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  /v1/Fau:
+    post:
+      tags:
+        - Fau
+      operationId: Fau_PostFau
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FAUModel"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/FAUModel"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/FAUModel"
+          text/xml:
+            schema:
+              $ref: "#/components/schemas/FAUModel"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/FAUModel"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  "/v1/fund/{Location}/{Fund}":
+    get:
+      tags:
+        - Fund
+      operationId: Fund_GetFund
+      parameters:
+        - name: Location
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Fund
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  "/v1/subobject/{SubCode}/{ObjectCode}":
+    get:
+      tags:
+        - SubObject
+      operationId: SubObject_GetSubObject
+      parameters:
+        - name: SubCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ObjectCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  /v1.1/transaction:
+    post:
+      tags:
+        - Transaction
+      operationId: Transaction_PostTransactionV2
+      requestBody:
+        $ref: "#/components/requestBodies/TransactionArray"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+  /v1/transaction:
+    get:
+      tags:
+        - Transaction
+      operationId: Transaction_GetTransaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+    post:
+      tags:
+        - Transaction
+      operationId: Transaction_PostTransaction
+      requestBody:
+        $ref: "#/components/requestBodies/TransactionArray"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+            text/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: object
+            text/xml:
+              schema:
+                type: object
+servers:
+  - url: https://test.api.ucla.edu/admin/finance/validation
+components:
+  requestBodies:
+    TransactionArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Transaction"
+        text/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Transaction"
+        application/xml:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Transaction"
+        text/xml:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Transaction"
+        application/x-www-form-urlencoded:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Transaction"
+      required: true
+  schemas:
+    AccountRequest:
+      required:
+        - Location
+        - Account
+      type: object
+      properties: {}
+    AccountFundRequest:
+      required:
+        - Location
+        - Account
+        - Fund
+      type: object
+      properties: {}
+    BudgetTransaction:
+      required:
+        - DocumentNumber
+        - Location
+        - Account
+        - CC
+        - Fund
+        - Project
+        - SubCode
+        - ObjectCode
+        - Source
+        - Description
+        - Amount
+        - SubCampus
+        - SAU
+        - TransClass
+        - TransType
+        - PfFlag
+        - Ssid
+        - TransMDY
+      type: object
+      properties:
+        DocumentNumber:
+          type: string
+        Location:
+          pattern: ^[40MS]{1}$
+          type: string
+        Account:
+          pattern: ^[0-9]{6}$
+          type: string
+        CC:
+          pattern: ^[0-9A-Z\s]{0,2}$
+          type: string
+        Fund:
+          pattern: ^[0-9\s]{5}$
+          type: string
+        Project:
+          pattern: ^.{0,6}$
+          type: string
+        SubCode:
+          pattern: ^[0-9A-Z\s]{0,2}$
+          type: string
+        ObjectCode:
+          pattern: ^[0-9\s]{0,4}$
+          type: string
+        Source:
+          pattern: ^.{0,6}$
+          type: string
+        Description:
+          pattern: ^[ -`{|}~]+
+          type: string
+        Amount:
+          format: int32
+          maximum: 999999999
+          minimum: -999999999
+          type: integer
+        SubCampus:
+          type: string
+        SAU:
+          type: string
+        TransClass:
+          type: string
+        TransType:
+          type: string
+        PfFlag:
+          pattern: ^[ PF]{0,1}
+          type: string
+        Ssid:
+          type: string
+        TransMDY:
+          type: string
+        FTE:
+          format: double
+          type: number
+    FAUModel:
+      required:
+        - Location
+        - Account
+        - CC
+        - Fund
+        - Project
+        - SubCode
+        - ObjectCode
+        - Source
+      type: object
+      properties:
+        Location:
+          pattern: ^[40MS]{1}$
+          type: string
+        Account:
+          pattern: ^[0-9]{6}$
+          type: string
+        CC:
+          pattern: ^[0-9A-Z\s]{0,2}$
+          type: string
+        Fund:
+          pattern: ^[0-9\s]{5}$
+          type: string
+        Project:
+          pattern: ^[A-Z0-9#$%&*()_+-:";?,./']+
+          type: string
+        SubCode:
+          pattern: ^[0-9A-Z\s]{0,2}$
+          type: string
+        ObjectCode:
+          pattern: ^[0-9\s]{0,4}$
+          type: string
+        Source:
+          pattern: ^[A-Z0-9#$%&*()_+\s-:\u0022;?,./]+
+          type: string
+    FundRequest:
+      required:
+        - Location
+        - Fund
+      type: object
+      properties: {}
+    SubObjectRequest:
+      required:
+        - SubCode
+        - ObjectCode
+      type: object
+      properties: {}
+    Transaction:
+      required:
+        - Location
+        - Account
+        - CC
+        - Fund
+        - Project
+        - SubCode
+        - ObjectCode
+        - Source
+        - Description
+        - Reference
+        - Amount
+        - Ssid
+        - TypeEntry
+        - EffectiveDate
+        - DocumentDate
+        - PfFlag
+      type: object
+      properties:
+        Location:
+          pattern: ^[40MS]{1}$
+          type: string
+        Account:
+          pattern: ^[0-9]{6}$
+          type: string
+        CC:
+          pattern: ^[0-9A-Z\s]{0,2}$
+          type: string
+        Fund:
+          pattern: ^[0-9\s]{5}$
+          type: string
+        Project:
+          pattern: ^.{0,6}$
+          type: string
+        SubCode:
+          pattern: ^[0-9A-Z\s]{0,2}$
+          type: string
+        ObjectCode:
+          pattern: ^[0-9\s]{0,4}$
+          type: string
+        Source:
+          pattern: ^.{0,6}$
+          type: string
+        Description:
+          pattern: ^[ -`{|}~]+
+          type: string
+        Reference:
+          pattern: ^.{0,10}$
+          type: string
+        Amount:
+          format: double
+          type: number
+        Ssid:
+          type: string
+        TypeEntry:
+          pattern: ^[0-9A-Z]{2}$
+          type: string
+        EffectiveDate:
+          format: date-time
+          type: string
+        DocumentDate:
+          format: date-time
+          type: string
+        PfFlag:
+          pattern: ^[ PF]{0,1}
+          type: string
+        Transid:
+          pattern: ^[0-9A-Z]{0,6}$
+          type: string
+  securitySchemes:
+    ApiKeyAuth:       
+      type: apiKey
+      in: header       
+      name: x-apikey
+
+security:
+  - ApiKeyAuth: []         

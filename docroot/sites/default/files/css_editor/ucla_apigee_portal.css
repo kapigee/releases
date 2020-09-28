@@ -1,0 +1,11 @@
+.collapsible-card .collapsible-card__header .field.field--name-status .field__label {
+  display: none;
+}
+form a.use-ajax:before,
+form a.use-ajax:after{
+  pointer-events: none;
+}
+.select-products .view-filters .views-exposed-form .form-actions,
+.select-products .view-filters .views-exposed-form .form-actions .form-submit {
+  display: block !important;
+}

@@ -1,0 +1,638 @@
+.l-highlighted .views-exposed-form form input#edit-name {
+    background: #fff;
+    font-size: 16px;
+    padding: 20px;
+    border: 1px solid #eee;
+}
+/** Sorting style - api catalog **/
+
+.all-apis .form-item.js-form-type-select.js-form-item-sort-by {
+	display: none;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order label.form-item__label {
+	display: none;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div#edit-sort-order {
+	left: 652px;
+	position: absolute;
+	top: 10px;
+	z-index: 11;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div#edit-sort-order>div {
+	/* display: none; */
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div#edit-sort-order>div.bef-link-active {
+	display: none;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div#edit-sort-order>div>a {
+	white-space: nowrap;
+}
+
+.select-products .views-field-views-bulk-operations-bulk-form .form-item__checkbox {
+	width: auto !important;
+	height: auto !important;
+	position: relative !important;
+}
+
+.ui-dialog.ui-front {
+	z-index: 111;
+}
+
+@media (min-width: 43.75em) {
+	.select-products .view__filters {
+		width: 30%;
+		padding: 0px 15px;
+		float: left;
+	}
+	.select-products .view__content {
+		width: 70%;
+		padding: 0px 15px;
+		float: left;
+	}
+	.select-products {
+		display: inline-block;
+		width: 100%;
+	}
+	.select-products .fieldset__legend {
+		position: relative;
+	}
+	.select-products .fieldset__legend {
+		position: relative;
+		top: -10px;
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+	}
+}
+
+div#block-sorting {
+    padding-top: 15px;
+}
+
+h2.field-content.card__title {
+    padding-bottom: 20px;
+}
+.all-apis h2.field-content.card__title {
+    min-height: 38px;
+    font-size: 18px;
+}
+table#team_apps_table {
+    max-width: 1000px !important;
+    margin: 20px auto;
+    min-width: 85%;
+    border-collapse: separate;
+    border-spacing: 0px 4px;
+
+}
+table#team_apps_table tr td {
+    border-right: none;
+    border-left: none;
+    border-color: #ddd;
+  padding: 2px 2px 2px 20px !important;
+}
+
+table#team_apps_table tr td:last-child {
+    border-right: 1px solid #ddd;
+  text-align: right;
+}
+
+table#team_apps_table tr td:first-child {
+    border-left: 1px solid #ddd;
+      white-space: nowrap;
+}
+table#team_apps_table tr td:nth-child(2) a {
+    line-height: 20px !important;
+    margin: 2px 15px 0px 0px;
+}
+table#team_apps_table tr td:last-child span {
+    background: #efefef;
+    color: #333;
+    padding: 10px 15px;
+    min-width: 100px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+}
+
+table#team_apps_table tr td a {
+    line-height: 42px;
+}
+@media (min-width: 43.75em) {
+.all-apis .col-sm-3 {
+    border: 2px solid #ddd;
+}
+}
+.swagger-ui .info hgroup.main {
+min-height: auto;
+}
+.fieldset__legend {
+  position: relative;
+}
+a.use-ajax {
+    display: inline-block;
+    margin: 0px 0px 10px;
+}
+.ui-dialog.ui-front .ui-dialog-buttonpane {
+    display: none;
+}
+.select-products details.details {
+    display: none;
+}
+.select-products .view__footer a.button {
+    color: #fff;
+    font-size: 16px;
+    float: left;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.select-products .view__footer {
+    display: inline-block;
+    width: 100%;
+  padding: 0px 15px;
+}
+.select-products h2.field-content.card__title {
+    min-height: 38px;
+    font-size: 18px;
+}
+.select-products .card .field-content.describ {
+  min-height: 90px;
+}
+
+
+form#team-app-add-for-team-form .form-item > label {
+    min-width: 150px;
+    float: left;
+}
+
+form#team-app-add-for-team-form .form-item > .form-item__description {
+    margin-left: 150px;
+}
+
+
+
+.ui-dialog.ui-front .ui-dialog-titlebar.ui-widget-header {
+  display: none; }
+
+.select-products .views-field-views-bulk-operations-bulk-form {
+  text-align: center; }
+  .select-products .views-field-views-bulk-operations-bulk-form .form-item__checkbox {
+    width: auto !important;
+    height: auto !important;
+    position: relative !important; }
+
+.select-products .view__filters {
+  border: 2px solid #ddd;
+  position: relative; }
+  .select-products .view__filters .form-actions .button {
+    background: #ffbf0f;
+    color: #333;
+    width: auto !important;
+    height: auto !important;
+    font-size: 2rem;
+    font-weight: normal;
+    line-height: 28px;
+    margin-bottom: 0px;
+    padding: 6px 10px !important; }
+
+.select-products .form-item.form-item--textfield {
+  left: 300px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0px;
+  z-index: 11;
+  font-size: 16px; }
+  .select-products .form-item.form-item--textfield input {
+    height: 40px !important;
+    margin-left: 10px; }
+
+.select-products .form-item.form-item--id-field-api-product-name-value {
+  left: 300px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0px;
+  z-index: 11; }
+  .select-products .form-item.form-item--id-field-api-product-name-value label {
+    margin-right: 10px; }
+
+.select-products .views-form {
+  margin-top: 47px; }
+
+.select-products .view__content {
+  padding-top: 20px; }
+
+.select-products .form-item.form-item--select.form-item--id-sort-by.js-form-item-sort-by {
+  display: none; }
+
+.select-products .form-item.js-form-item.js-form-type-select.js-form-item-sort-order .form-select > div.bef-link-active,
+.select-products .form-item.js-form-item.js-form-type-select.js-form-item-sort-order label.form-item__label {
+  display: none; }
+
+.select-products .form-item.js-form-item.js-form-type-select.js-form-item-sort-order .form-select > div > a {
+  white-space: nowrap;
+  color: #23527c;
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: underline; }
+
+.select-products details.details {
+  display: none; }
+
+.select-products .view__header > a {
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none; }
+
+.select-products .view__footer {
+  display: inline-block;
+  width: 100%;
+  padding: 0px 15px; }
+  .select-products .view__footer a.button {
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 15px;
+    float: left;
+    display: inline-block;
+    text-decoration: none; }
+
+.select-products h2.field-content.card__title {
+  min-height: 38px;
+  font-size: 18px; }
+
+.select-products .card .field-content.describ {
+  min-height: 90px; }
+
+@media (min-width: 43.75em) {
+  .select-products .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div.form-select {
+    display: flex;
+    align-items: center;
+    left: 725px;
+    position: absolute;
+    top: 10px;
+    z-index: 11; } }
+
+@media (min-width: 43.75em) {
+  .select-products .form-actions {
+    left: 625px;
+    position: absolute;
+    top: 3px;
+    z-index: 11; } }
+
+
+.apigee-entity--app.apigee-entity--app--view-mode-full> ul {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    margin: 10px auto 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.apigee-entity--app.apigee-entity--app--view-mode-full> ul li.nav-item a {
+    background-color: #eeeeee;
+    color: #333;
+    font-size: 14px;
+}
+.apigee-entity--app.apigee-entity--app--view-mode-full> ul li.nav-item.active a {
+    font-weight: bold;
+}
+
+.apigee-entity--app.apigee-entity--app--view-mode-full .tab-content > .tab-pane.show {
+    display: none !important;
+}
+.apigee-entity--app.apigee-entity--app--view-mode-full .tab-content > .tab-pane:last-child > div {
+    display: flex;
+}
+
+.apigee-entity--app.apigee-entity--app--view-mode-full .tab-content > .tab-pane:last-child > div > div {
+    min-width: 150px;
+    padding: 0px 0px 10px;
+}
+.apigee-entity--app.apigee-entity--app--view-mode-full .tab-content > .tab-pane.show.active {
+    display: block !important;
+}
+.apigee-entity--app.apigee-entity--app--view-mode-full .tab-content .tab-pane .item-property label {
+    display: inline-block;
+    min-width: 160px;
+    letter-spacing: 0.25px;
+    font-weight: 500;
+}
+
+
+.apigee-entity--app.apigee-entity--app--view-mode-full .tab-content .tab-pane .item-property {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1.2rem 0;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+@media screen and (max-width: 767px) {
+  .l-highlighted .views-exposed-form form input#edit-name {
+    max-width: calc(100vw - 40px);
+  }
+    .main .all-apis {
+      margin-top: 10px;
+    }
+  
+  .all-apis .form-item.form-item--textfield input {
+    margin-left:0px;
+  }
+  .all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div#edit-sort-order {
+    position: relative;
+    left: 0px;
+    top: 0px;
+  }
+  
+  
+}
+
+@media screen and (min-width: 700px) and (max-width: 900px) {
+  .all-apis .view__content {
+    padding-top: 0px;
+  }
+.all-apis .form-item.form-item--textfield {
+  position: relative;
+  margin-top: 10px;
+  left: 0px;
+  display: inline-block;
+    max-width: 100%;
+  }
+  .all-apis .form-actions {
+   position: relative;
+  margin-top: 10px;
+  left: 0px;
+  }
+  .all-apis .form-item.form-item--textfield input {
+  margin-left: 0px;
+  }
+  .all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div#edit-sort-order {
+    position: relative;
+    left: 0px !important;
+  }
+}
+@media screen and (max-width: 700px) {
+.l-footer div#block-copyright  p, .l-footer div#block-copyrighttext  p {
+    padding-bottom: 12px;
+      margin-bottom: 0px;
+  }
+  .l-footer .menu--footer {
+        display: block;
+    width: 100%;
+    margin-top: -20px;
+    margin-bottom: 10px;
+  }
+  .l-footer .menu--footer li:first-child {
+    margin-left: 0px;
+}
+  .front_section .l-highlighted {
+    margin-bottom: 25px;
+  }
+  .tabs--primary .tabs__items li a {
+  border-left:0px;
+  }
+}
+.all-apis .col-sm-3 {
+  margin-bottom: 20px;
+}
+
+/* styling for api catalog page filters with indentation */
+.all-apis .form-item--checkboxes ul {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.all-apis .form-item--checkboxes ul > li > ul {
+    padding-left: 20px;
+}
+
+.all-apis .form-item__checkbox + .form-item__label::before {
+    margin-top: -4px !important;
+}
+
+/* homepage API Product categories title styling */
+.front_section .all-apis .view__content {
+  padding-top: 0px !important;
+}
+
+/* team member form styling */
+@media screen and (min-width: 768px) {
+    div#edit-developers--description {
+    margin-left: 115px;
+}
+}
+div#edit-team-roles .form-item {
+    margin-top: 15px;
+    display: block;
+}
+#apigee-edge-teams-add-team-member-form .fieldset__content {
+    display: inline-block;
+}
+
+fieldset#edit-team-roles--wrapper span.fieldset__legend-text {
+    font-size: 15px;
+    color: #000;
+    font-weight: bold;
+}
+#apigee-edge-teams-add-team-member-form legend.fieldset__legend {
+    min-width:  115px;
+    float: left;
+    border: none;
+}
+
+/* page title styling */
+.main h1.page-title {
+    font-size: 26px;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+}
+
+/* API product detail page description and tab styling  */
+.documents-section {
+    margin-top: 30px;
+}
+.documents-section ul.nav.nav-tabs li:first-child {
+    padding-left: 0px;
+}
+
+/*** Api Catalog button fixes **/
+@media screen and (min-width: 900px) {
+  .all-apis .form-item.js-form-type-select.js-form-item-sort-by {
+	display: none;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order label.form-item__label {
+	display: none;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div.form-select {
+	left: 795px !important;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	top: 10px;
+	z-index: 11;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div.form-select > div.bef-link-active {
+	display: none;
+}
+
+.all-apis .form-item.js-form-item.js-form-type-select.js-form-item-sort-order div.form-select > div > a {
+	white-space: nowrap;
+	font-weight: bold;
+	font-size: 16px;
+	text-decoration: underline;
+}
+
+.all-apis .form-actions {
+	left: 676px;
+	position: absolute;
+	top: 3px;
+	z-index: 11;
+}
+
+.all-apis .form-actions .button {
+	background: #ffc72c;
+	color: #333;
+	font-size: 2rem;
+	font-weight: normal;
+	line-height: 30px;
+	margin-bottom: 0px;
+	padding: 6px 20px;
+}
+
+form#team-form {
+	margin-top: 20px;
+}
+}
+@media screen and (max-width: 900px) {
+.l-footer div#block-copyright p, .l-footer div#block-copyrighttext p {
+	padding-bottom: 12px;
+	margin-bottom: 0px;
+}
+
+.l-footer .menu--footer {
+	display: block;
+	width: 100%;
+	margin-top: -20px;
+	margin-bottom: 10px;
+}
+
+.l-footer .menu--footer li:first-child {
+	margin-left: 0px;
+}
+
+.tabs--primary .tabs__items li a {
+	border-left: 0px;
+}
+}
+@media screen and (max-width: 700px) {
+form#team-app-add-for-team-form .form-item > input[type="text"], 
+form#team-app-add-for-team-form .form-item > textarea, 
+form#team-app-edit-form .form-item > input[type="text"], 
+form#team-app-edit-form .form-item > textarea, 
+form.developer-app-form .form-item > input[type="text"], 
+form.developer-app-form .form-item > textarea {
+    max-width: 100%;
+}
+  form#team-app-add-for-team-form .form-item > .form-item__description, 
+  form#team-app-edit-form .form-item > .form-item__description, 
+  form.developer-app-form .form-item > .form-item__description {
+    margin-left: 0px;
+  }
+  form#team-app-add-for-team-form a.use-ajax:before, 
+  form#team-app-edit-form a.use-ajax:before, 
+  form.developer-app-form a.use-ajax:before {
+  position: absolute;
+  left: 0px;
+  }
+  form#team-app-add-for-team-form a.use-ajax, form#team-app-edit-form a.use-ajax, form.developer-app-form a.use-ajax {
+  margin-left: 150px;
+  }
+  table#team_apps_table tr td a {
+      white-space: normal;
+    word-break: break-all;
+    line-height: normal;
+ }
+  .all-apis .card {
+    margin-bottom: 1.2rem;
+}
+
+.all-apis .l-grid--3col {
+    margin-bottom: 15px;
+}
+    .select-products .form-item.form-item--textfield {
+    position: relative;
+    left: 0px;
+    display: inline-block;
+}
+
+.select-products .view__filters {
+    border: none;
+}
+
+.select-products .form-item.form-item--textfield input {
+    margin-left: 0px;
+}
+
+.select-products .views-form {
+    margin-top: 0px;
+}
+
+.ui-dialog.ui-front {
+    z-index: 111;
+    max-width: 95%;
+}
+  .collapsible-card .collapsible-card__header .collapsible-card__toggle {
+        word-break: break-all;
+    white-space: normal;
+    text-align: left;
+  }
+  .collapsible-card__content .tab-content .tab-pane .item-property {
+  overflow: auto;
+  }
+  .apigee-edge-app-analytics > div {
+    margin-top: 15px;
+  }
+  .main .all-apis .l-grid--5col {
+    margin-bottom: 10px;
+  }
+}
+/** 02/18/2020 - add team and apigee edge app forms **/
+form#team-add-form .form-actions,
+form.apigee-edge--form .form-actions {
+    margin-top: 40px;
+}
+/** hiding Delete and Analytics tab from developers apps **/
+.apigee-entity--app .collapsible-card__content ul.nav.nav-tabs--secondary li:last-child {
+    display: none;
+}
+@media screen and (max-width: 700px) {
+.user-logged-in .mobile-menu__menu li a[href="/unauthorized"]:before {
+    background: #f1f1f1;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    z-index: 111;
+}
+  .swagger-ui .opblock-tag {
+  font-size: 16px;
+  }
+  .swagger-ui .info .title {
+  font-size: 20px;
+  }
+}
+
+.menu--footer li:last-child:before {
+    display: none;
+}
