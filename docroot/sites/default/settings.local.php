@@ -168,10 +168,20 @@ if (file_exists('/var/www/site-php')) {
 $config_directories['sync'] = '../config/';
 
 # Docksal DB connection settings.
+/*
+*$databases['default']['default'] = array (
+*  'database' => 'default',
+*  'username' => 'user',
+*  'password' => 'user',
+*  'host' => 'db',
+*  'driver' => 'mysql',
+*);
+*/
+
 $databases['default']['default'] = array (
-  'database' => 'default',
-  'username' => 'user',
-  'password' => 'user',
-  'host' => 'db',
+  'database' => 'drupal',
+  'username' => 'admin',
+  'password' => 'apigee123',
+  'host' => 'dbapigeeportaldb.cox6bzsepnq8.us-east-1.rds.amazonaws.com',
   'driver' => 'mysql',
 );
