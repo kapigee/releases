@@ -182,6 +182,6 @@ $databases['default']['default'] = array (
   'database' => 'drupal',
   'username' => 'admin',
   'password' => 'apigee123',
-  'host' => 'dbapigeeportaldb.cox6bzsepnq8.us-east-1.rds.amazonaws.com',
+  'host' => 'apigeeportaldb.cox6bzsepnq8.us-east-1.rds.amazonaws.com',
   'driver' => 'mysql',
 );
